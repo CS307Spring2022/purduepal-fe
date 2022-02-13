@@ -1,41 +1,49 @@
-import React from "react";
+import {React, useState} from "react";
 import "./App.css";
-import { Stack, ThemeProvider, createTheme } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
-import { Home } from "./pages/Home";
+import { Stack, Fab, ThemeProvider, createTheme } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { Home } from "./pages/Home/Home";
 import { NavBar } from "./components/Navbar";
-import { Explore } from "./pages/Explore";
-import { Profile } from "./pages/Profile";
-import { CreatePost } from "./components/CreatePost";
+import { Explore } from "./pages/Explore/Explore";
+import { Profile } from "./pages/Profile/Profile";
+import { SignIn } from "./pages/SignIn/SignIn";
+
+import { getDesignTokens } from './themes/Theme';
 
 function App() {
-  const theme = createTheme({
-    // palette values for dark mode
-    palette: {
-      primary: {
-        main: "#DAAA00",
-      },
-      secondary: {
-        main: "#6F727B",
-      },
-      background: {
-        default: "#000000",
-      },
-      text: {
-        primary: "#ffffff",
-      },
-    },
-  });
+  const theme = createTheme(getDesignTokens('dark'))
+  const location = useLocation()
+
+  console.log(location.pathname);
+
+  const [isSignedIn,setIsSignedIn] = useState(location.pathname!=="/"); //temporary till signin is actually implemented
+
   return (
     <ThemeProvider theme={theme}>
-      <Stack direction={"row"} className="App">
-        <NavBar />
+      <Stack direction={"row"} sx={{backgroundColor: theme.palette.background.default}}>
+        {isSignedIn ? <NavBar/> : null}
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<SignIn/>} />
+          <Route path="/home" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
-        <CreatePost />
+        {isSignedIn ? 
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={{
+            position: "absolute",
+            bottom: 16,
+            right: 16,
+          }}
+        >
+          <AddIcon />
+        </Fab>
+        :
+        null  
+      }
       </Stack>
     </ThemeProvider>
   );

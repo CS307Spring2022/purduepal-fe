@@ -1,13 +1,13 @@
 import { Button, Stack } from "@mui/material";
 
-export const Home = () => {
+export const Explore = () => {
   return (
     <Stack
       width={"calc(100vh - 75px)"}
       justifyContent={"center"}
       alignItems={"center"}
     >
-      <Button>Home Page</Button>
+      <Button>Explore page</Button>
     </Stack>
   );
 };

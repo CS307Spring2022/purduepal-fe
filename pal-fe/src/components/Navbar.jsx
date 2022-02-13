@@ -11,7 +11,7 @@ export const NavBar = () => {
       sx={{ backgroundColor: "rgba(255,255,255,0.07)" }}
       height={"100vh"}
     >
-      <IconButton color="primary" href="/">
+      <IconButton color="primary" href="/home">
         <HomeRoundedIcon fontSize="large" />
       </IconButton>
       <IconButton color="primary" href="/explore">

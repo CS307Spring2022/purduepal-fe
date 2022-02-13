@@ -1,13 +1,13 @@
 import { Button, Stack } from "@mui/material";
 
-export const Profile = () => {
+export const Home = () => {
   return (
     <Stack
-      width={"calc(100vw - 75px)"}
+      width={"calc(100vh - 75px)"}
       justifyContent={"center"}
       alignItems={"center"}
     >
-      <Button>Profile page</Button>
+      <Button>Home Page</Button>
     </Stack>
   );
 };

@@ -1,12 +1,12 @@
 import React from "react";
 import "./App.css";
-import { Stack, Fab, ThemeProvider, createTheme } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Stack, ThemeProvider, createTheme } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { NavBar } from "./components/Navbar";
 import { Explore } from "./pages/Explore";
 import { Profile } from "./pages/Profile";
+import { CreatePost } from "./components/CreatePost";
 
 function App() {
   const theme = createTheme({
@@ -35,17 +35,7 @@ function App() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
-        <Fab
-          color="primary"
-          aria-label="add"
-          sx={{
-            position: "absolute",
-            bottom: 16,
-            right: 16,
-          }}
-        >
-          <AddIcon />
-        </Fab>
+        <CreatePost />
       </Stack>
     </ThemeProvider>
   );

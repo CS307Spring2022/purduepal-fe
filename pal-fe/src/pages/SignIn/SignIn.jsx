@@ -11,14 +11,12 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import {useTheme} from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 
+import { ReactComponent as Logo } from "./../../icons/logo.svg";
+import { ReactComponent as Train } from "../../icons/trainSmall.svg";
 
-import {ReactComponent as Logo} from "./../../icons/logo.svg"
-import {ReactComponent as Train} from "../../icons/trainSmall.svg"
-
-import "./SignIn.css"
-
+import "./SignIn.css";
 
 export const SignIn = () => {
   const theme = useTheme();
@@ -31,27 +29,33 @@ export const SignIn = () => {
   const [invalidPass, setInvalidPass] = useState(false);
   const [passErrMsg, setPassErrMsg] = useState("");
 
-
   useEffect(() => {
-      if (email.match(/[\w\d]+@([\w]*.)*purdue\.edu/)===null && email.length!==0) {
-        setInvalidEmail(true);  
-        setEmailErrMsg("Input must be a valid Purdue email")
-      }
+    if (
+      email.match(/[\w\d]+@([\w]*.)*purdue\.edu/) === null &&
+      email.length !== 0
+    ) {
+      setInvalidEmail(true);
+      setEmailErrMsg("Input must be a valid Purdue email");
+    }
   }, [email]);
 
   useEffect(() => {
-      if (email.match(/[\w\d]+@([\w]*.)*purdue\.edu/)!== null && email.length > 0 && emailErrMsg) {
-          setEmailErrMsg("");
-          setInvalidEmail(false);
-      }
-  }, [email,emailErrMsg]);
+    if (
+      email.match(/[\w\d]+@([\w]*.)*purdue\.edu/) !== null &&
+      email.length > 0 &&
+      emailErrMsg
+    ) {
+      setEmailErrMsg("");
+      setInvalidEmail(false);
+    }
+  }, [email, emailErrMsg]);
 
   useEffect(() => {
-        if (pass.length > 0 && passErrMsg) {
-            setPassErrMsg("");
-            setInvalidPass(false);
-        }
-    }, [pass,passErrMsg]);
+    if (pass.length > 0 && passErrMsg) {
+      setPassErrMsg("");
+      setInvalidPass(false);
+    }
+  }, [pass, passErrMsg]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -62,42 +66,45 @@ export const SignIn = () => {
     //   password: data.get("password"),
     // });
     if (data.get("email").length === 0) {
-        setEmailErrMsg("Email is Required")
-        setInvalidEmail(true);
+      setEmailErrMsg("Email is Required");
+      setInvalidEmail(true);
     }
 
     if (data.get("password").length === 0) {
-        setPassErrMsg("Password is Required");
-        setInvalidPass(true);
+      setPassErrMsg("Password is Required");
+      setInvalidPass(true);
     }
-
   };
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
-      <CssBaseline/>
+      <CssBaseline />
       <Grid
         item
-        xs={
-            false
-        }
+        xs={false}
         sm={4}
         md={7}
         sx={{
-          display:["none","block","block","block","block"],
+          display: ["none", "block", "block", "block", "block"],
           backgroundRepeat: "no-repeat",
           backgroundColor: theme.palette.background.default,
           backgroundSize: "cover",
           backgroundPosition: "center",
           textAlign: "center",
-        }}>
-          <Typography component="h1" variant="h3" 
-                    style={{marginTop: "10vh", textAlign: "center"}}>
+        }}
+      >
+        <Link href="/" underline="none">
+          <Typography
+            component="h1"
+            variant="h3"
+            style={{ marginTop: "10vh", textAlign: "center" }}
+          >
             PurduePAL
           </Typography>
-          <div className="trainContainer">
-              <Train/>        
-          </div>
+        </Link>
+        <div className="trainContainer">
+          <Train />
+        </div>
       </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
@@ -159,7 +166,11 @@ export const SignIn = () => {
             >
               Sign In
             </Button>
-            <Grid container justifyContent="center" sx={{alignItems:"center",textAlign:"center"}}>
+            <Grid
+              container
+              justifyContent="center"
+              sx={{ alignItems: "center", textAlign: "center" }}
+            >
               <Grid item xs={6} sm={6} md={6}>
                 <Link href="#" variant="body2">
                   Forgot password?
@@ -170,8 +181,8 @@ export const SignIn = () => {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-              <Grid item style={{width:"100%"}} sx={{ mt: 3, mb: 2 }}>
-                  <Logo fill={theme.palette.primary.main}/>
+              <Grid item style={{ width: "100%" }} sx={{ mt: 3, mb: 2 }}>
+                <Logo fill={theme.palette.primary.main} />
               </Grid>
             </Grid>
           </Box>
@@ -179,4 +190,4 @@ export const SignIn = () => {
       </Grid>
     </Grid>
   );
-}
+};

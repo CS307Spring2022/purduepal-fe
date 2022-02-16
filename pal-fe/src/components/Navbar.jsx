@@ -3,6 +3,8 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import TagRoundedIcon from "@mui/icons-material/TagRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { ReactComponent as Logo } from "../icons/logo.svg";
+import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
+import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 
 export const NavBar = () => {
   const theme = useTheme();
@@ -28,6 +30,14 @@ export const NavBar = () => {
     {
       logo: <AccountCircleRoundedIcon fontSize="large" />,
       href: "/explore",
+    },
+    {
+      logo: <BookmarkBorderRoundedIcon fontSize="large" />,
+      href: "/saved",
+    },
+    {
+      logo: <NotificationsNoneRoundedIcon fontSize="large" />,
+      href: "/notifications",
     },
   ];
 

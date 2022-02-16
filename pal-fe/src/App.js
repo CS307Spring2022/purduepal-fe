@@ -9,9 +9,11 @@ import { Profile } from "./pages/Profile/Profile";
 import { SignIn } from "./pages/SignIn/SignIn";
 import { CreatePost } from "./components/CreatePost";
 import { SignUp } from "./pages/SignUp/SignUp";
-import { ForgotPassword } from "./pages/ForgotPassword/ForgotPassword"
+import { ForgotPassword } from "./pages/ForgotPassword/ForgotPassword";
 
 import { getDesignTokens } from "./themes/Theme";
+import { Saved } from "./pages/Saved/Saved";
+import { Notications } from "./pages/Notifications/Notifications";
 
 function App() {
   const theme = createTheme(getDesignTokens("dark"));
@@ -19,7 +21,11 @@ function App() {
 
   console.log(location.pathname);
 
-  const [isSignedIn, setIsSignedIn] = useState(location.pathname !== "/" && location.pathname !== "/signup" && location.pathname !== "/forgotPassword"); //temporary till signin is actually implemented
+  const [isSignedIn, setIsSignedIn] = useState(
+    location.pathname !== "/" &&
+      location.pathname !== "/signup" &&
+      location.pathname !== "/forgotPassword"
+  ); //temporary till signin is actually implemented
 
   return (
     <ThemeProvider theme={theme}>
@@ -30,11 +36,13 @@ function App() {
         {isSignedIn ? <NavBar /> : null}
         <Routes>
           <Route path="/" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp/>} />
-          <Route path="/forgotPassword" element={<ForgotPassword/>} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/home" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/saved" element={<Saved />} />
+          <Route path="/notifications" element={<Notications />} />
         </Routes>
         {isSignedIn ? <CreatePost /> : null}
       </Stack>

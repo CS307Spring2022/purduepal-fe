@@ -8,8 +8,10 @@ import { Explore } from "./pages/Explore/Explore";
 import { Profile } from "./pages/Profile/Profile";
 import { SignIn } from "./pages/SignIn/SignIn";
 import { CreatePost } from "./components/CreatePost";
+import { SignUp } from "./pages/SignUp/SignUp";
+import { ForgotPassword } from "./pages/ForgotPassword/ForgotPassword"
 
-import { getDesignTokens } from "./Themes/Theme";
+import { getDesignTokens } from "./themes/Theme";
 
 function App() {
   const theme = createTheme(getDesignTokens("dark"));
@@ -17,7 +19,7 @@ function App() {
 
   console.log(location.pathname);
 
-  const [isSignedIn, setIsSignedIn] = useState(location.pathname !== "/"); //temporary till signin is actually implemented
+  const [isSignedIn, setIsSignedIn] = useState(location.pathname !== "/" && location.pathname !== "/signup" && location.pathname !== "/forgotPassword"); //temporary till signin is actually implemented
 
   return (
     <ThemeProvider theme={theme}>
@@ -28,6 +30,8 @@ function App() {
         {isSignedIn ? <NavBar /> : null}
         <Routes>
           <Route path="/" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp/>} />
+          <Route path="/forgotPassword" element={<ForgotPassword/>} />
           <Route path="/home" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/profile" element={<Profile />} />

@@ -10,3 +10,7 @@
     width: 100%;
     margin-top: 50px;
 }
+
+.MuiOutlinedInput-input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 100px #2C2C2C inset !important;
+  }

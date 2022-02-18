@@ -45,7 +45,7 @@ export const NavBar = () => {
     <Stack
       minWidth={"75px"}
       spacing={1.5}
-      sx={{ backgroundColor: "rgba(255,255,255,0.07)" }}
+      sx={{ backgroundColor: "rgba(255,255,255,0.07)", position: "fixed", maxHeight: "100vh" }}
       height={"100vh"}
       pt={2}
     >

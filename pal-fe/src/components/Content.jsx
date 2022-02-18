@@ -8,7 +8,7 @@ export const Content = ({ data }) => {
       container
       justifyContent={"center"}
       alignContent={"space-between"}
-      sx={{ width: "50vw", height: "30vh", border: "2.5px white solid" }}
+      sx={{ width: "50vw", height: "30vh", borderRadius: "15px", backgroundColor: "#121212" }}
     >
       <Grid item container direction={"row"} justifyContent={"space-around"}>
         <Grid item mt={1} md={2} container justifyContent={"center"}>

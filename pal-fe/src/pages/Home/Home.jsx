@@ -18,7 +18,7 @@ const sampleData = [
     username: "@ironman",
     date: "05/02/08",
     topic: "Marvel",
-    content: "I am IronMan",
+    content: "I. am. IronMan.",
     img: null,
     up: 3000,
     down: 0,
@@ -28,7 +28,7 @@ const sampleData = [
     username: "@captainamerica",
     date: "07/19/11",
     topic: "Marvel",
-    content: "Avengers Assemble",
+    content: "Avengers... Assemble",
     img: null,
     up: 75,
     down: 0,
@@ -42,6 +42,7 @@ export const Home = () => {
       justifyContent={"center"}
       alignItems={"center"}
       spacing={2}
+      height={"100vh"}
       overflow={"auto"}
     >
       {sampleData.map((data, index) => {

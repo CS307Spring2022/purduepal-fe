@@ -45,9 +45,9 @@ export const CreatePost = () => {
         color="primary"
         aria-label="add"
         sx={{
-          position: "absolute",
-          bottom: 16,
-          right: 16,
+          position: "fixed",
+          bottom: "16px",
+          right: "16px",
         }}
         onClick={handleOpen}
       >

@@ -7,8 +7,12 @@ import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import ChatRoundedIcon from "@mui/icons-material/ChatRounded";
 import ThumbDownAltRoundedIcon from "@mui/icons-material/ThumbDownAltRounded";
 import { useState } from "react";
+import { format } from "d3-format";
 
-export const Interactions = () => {
+const thousandFormat = format(",.2s");
+const numberFormat = format(",~s");
+
+export const Interactions = ({ up, down }) => {
   const [action, setAction] = useState(0); //temporary to test interaction
   return (
     <Stack direction={"row"} justifyContent={"space-around"}>
@@ -27,7 +31,7 @@ export const Interactions = () => {
           )}
         </IconButton>
         <Typography variant="body2" color={"primary"}>
-          5M
+          {up > 999 ? thousandFormat(up) : numberFormat(up)}
         </Typography>
       </Stack>
       <Stack direction={"row"} spacing={0} alignItems={"center"}>
@@ -45,7 +49,7 @@ export const Interactions = () => {
           )}
         </IconButton>
         <Typography variant="body2" color={"primary"}>
-          1M
+          {down > 999 ? thousandFormat(down) : numberFormat(down)}
         </Typography>
       </Stack>
       <IconButton color="primary">

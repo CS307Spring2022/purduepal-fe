@@ -1,15 +1,14 @@
 import { Grid, IconButton, Stack, Typography } from "@mui/material";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { Interactions } from "./Interactions";
-import { useState } from "react";
 
-export const Content = () => {
+export const Content = ({ data }) => {
   return (
     <Grid
       container
       justifyContent={"center"}
       alignContent={"space-between"}
-      sx={{ width: "50%", height: "50%", border: "2.5px white solid" }}
+      sx={{ width: "50vw", height: "30vh", border: "2.5px white solid" }}
     >
       <Grid item container direction={"row"} justifyContent={"space-around"}>
         <Grid item mt={1} md={2} container justifyContent={"center"}>
@@ -27,34 +26,33 @@ export const Content = () => {
             <Grid item>
               <Stack direction={"row"} spacing={0.25}>
                 <Typography variant="h5" color={"#fff"}>
-                  Stephen Strange
+                  {data.name}
                 </Typography>
                 <Typography variant="h6" color={"#bbb"}>
-                  @drstrange
+                  {data.username}
                 </Typography>
               </Stack>
             </Grid>
             <Grid item>
               <Typography variant="body2" color={"#ddd"}>
-                Marvel
+                {data.topic}
               </Typography>
             </Grid>
           </Grid>
           <Grid item mr={1}>
             <Typography variant="body1" component={"p"} color={"#fff"}>
-              It's not Mr. Strange, not Master Strange. It's Doctor Strange!
-              When I became a doctor, I swore to do no harm.
+              {data.content}
             </Typography>
           </Grid>
         </Grid>
         <Grid item md={2}>
           <Typography mt={2} variant="body1" component={"p"} color={"#fff"}>
-            10/20/16
+            {data.date}
           </Typography>
         </Grid>
       </Grid>
       <Grid item md={12} mx={1}>
-        <Interactions />
+        <Interactions up={data.up} down={data.down} />
       </Grid>
     </Grid>
   );

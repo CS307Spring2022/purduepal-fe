@@ -1,9 +1,15 @@
 import { React, useState } from "react";
 import "./App.css";
-import { Stack, ThemeProvider, createTheme } from "@mui/material";
+import {
+  Stack,
+  ThemeProvider,
+  createTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Home } from "./pages/Home/Home";
-import { NavBar } from "./components/Navbar";
+import { VerticalNavbar } from "./components/VerticalNavbar";
+import { Navbar } from "./components/Navbar";
 import { Explore } from "./pages/Explore/Explore";
 import { Profile } from "./pages/Profile/Profile";
 import { SignIn } from "./pages/SignIn/SignIn";
@@ -17,7 +23,9 @@ import { Notications } from "./pages/Notifications/Notifications";
 
 function App() {
   const theme = createTheme(getDesignTokens("dark"));
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
+  const navigation = matches ? <Navbar /> : <VerticalNavbar />;
 
   console.log(location.pathname);
 
@@ -33,7 +41,7 @@ function App() {
         direction={"row"}
         sx={{ backgroundColor: theme.palette.background.default }}
       >
-        {isSignedIn ? <NavBar /> : null}
+        {isSignedIn ? navigation : null}
         <Routes>
           <Route path="/" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />

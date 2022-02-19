@@ -1,61 +1,64 @@
-import { IconButton, Stack, useTheme } from "@mui/material";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import TagRoundedIcon from "@mui/icons-material/TagRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import { ReactComponent as Logo } from "../icons/logo.svg";
-import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
-import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
+import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Paper from "@mui/material/Paper";
+import { Link, useLocation } from "react-router-dom";
 
-export const NavBar = () => {
-  const theme = useTheme();
-  const icons = [
-    {
-      logo: (
-        <Logo
-          fill={theme.palette.primary.main}
-          width={"30px"}
-          height={"30px"}
-        />
-      ),
-      href: "/home",
-    },
-    {
-      logo: <HomeRoundedIcon fontSize="large" />,
-      href: "/home",
-    },
-    {
-      logo: <TagRoundedIcon fontSize="large" />,
-      href: "/explore",
-    },
-    {
-      logo: <AccountCircleRoundedIcon fontSize="large" />,
-      href: "/explore",
-    },
-    {
-      logo: <BookmarkBorderRoundedIcon fontSize="large" />,
-      href: "/saved",
-    },
-    {
-      logo: <NotificationsNoneRoundedIcon fontSize="large" />,
-      href: "/notifications",
-    },
-  ];
+export const Navbar = () => {
+  const pathname = useLocation();
+  const [value, setValue] = useState(pathname.pathname);
 
   return (
-    <Stack
-      minWidth={"75px"}
-      spacing={1.5}
-      sx={{ backgroundColor: "rgba(255,255,255,0.07)", position: "fixed", maxHeight: "100vh" }}
-      height={"100vh"}
-      pt={2}
-    >
-      {icons.map((d, i) => {
-        return (
-          <IconButton color="primary" key={i} href={d.href}>
-            {d.logo}
-          </IconButton>
-        );
-      })}
-    </Stack>
+    <Box sx={{ pb: 7 }}>
+      <CssBaseline />
+
+      <Paper
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+        elevation={3}
+      >
+        <BottomNavigation
+          showLabels
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+        >
+          <BottomNavigationAction
+            label="Home"
+            to={"/home"}
+            value={"/home"}
+            component={Link}
+            icon={<HomeRoundedIcon />}
+          />
+          <BottomNavigationAction
+            label="Explore"
+            to={"/explore"}
+            value={"/explore"}
+            component={Link}
+            icon={<TagRoundedIcon />}
+          />
+          <BottomNavigationAction
+            label="Notifcations"
+            to={"/notifications"}
+            value={"/notifications"}
+            component={Link}
+            icon={<NotificationsNoneRoundedIcon />}
+          />
+          <BottomNavigationAction
+            label="Profile"
+            to={"/profile"}
+            value={"/profile"}
+            component={Link}
+            icon={<AccountCircleRoundedIcon />}
+          />
+        </BottomNavigation>
+      </Paper>
+    </Box>
   );
 };

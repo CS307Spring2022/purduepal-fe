@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import { Button, Fab, IconButton, Stack, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -21,6 +22,10 @@ const style = {
 const ariaLabel = { "aria-label": "description" };
 
 export const CreatePost = () => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const fabPosWidth = matches ? "75px" : "16px";
+  const fabPosHeight = matches ? "25px" : "16px";
   const [postText, setPostText] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -46,8 +51,8 @@ export const CreatePost = () => {
         aria-label="add"
         sx={{
           position: "fixed",
-          bottom: "16px",
-          right: "16px",
+          bottom: fabPosWidth,
+          right: fabPosHeight,
         }}
         onClick={handleOpen}
       >

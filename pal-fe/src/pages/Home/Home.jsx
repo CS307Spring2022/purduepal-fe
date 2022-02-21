@@ -43,11 +43,11 @@ const sampleData = [
     img: null,
     up: 80,
     down: 0,
-  }
+  },
 ];
 
 export const Home = () => {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <Stack
       width={"calc(100vw)"}
@@ -60,8 +60,18 @@ export const Home = () => {
       {sampleData.map((data, index) => {
         return <Content key={index} data={data} />;
       })}
-      <Typography variant="p" sx={{fontSize: "30px"}} color="primary">End of Posts!</Typography>
-      <div><svg width={100} height={50}><rect width="100%" height={50} fill={theme.palette.background.default}></rect></svg></div>
+      <Typography variant="p" sx={{ fontSize: "30px" }} color="primary">
+        End of Posts!
+      </Typography>
+      <div>
+        <svg width={100} height={50}>
+          <rect
+            width="100%"
+            height={50}
+            fill={theme.palette.background.default}
+          ></rect>
+        </svg>
+      </div>
     </Stack>
   );
 };

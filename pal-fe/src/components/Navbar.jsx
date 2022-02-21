@@ -15,7 +15,7 @@ export const Navbar = () => {
   const [value, setValue] = useState(pathname.pathname);
 
   return (
-    <Box sx={{ pb: 7 }}>
+    <Box sx={{ zIndex: 1, pb: 7 }}>
       <CssBaseline />
 
       <Paper

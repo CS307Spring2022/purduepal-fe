@@ -1,5 +1,6 @@
-import { Stack } from "@mui/material";
-import { Content } from "../../components/Content";
+import { useTheme } from "@mui/material/styles";
+import { Stack, Typography } from "@mui/material";
+import { Content } from "../../components/Content/Content";
 
 const sampleData = [
   {
@@ -33,12 +34,23 @@ const sampleData = [
     up: 75,
     down: 0,
   },
+  {
+    name: "Hulk",
+    username: "@greenguy",
+    date: "07/19/11",
+    topic: "Marvel",
+    content: "Strongest Avenger",
+    img: null,
+    up: 80,
+    down: 0,
+  }
 ];
 
 export const Home = () => {
+  const theme = useTheme()
   return (
     <Stack
-      width={"calc(100vw - 75px)"}
+      width={"calc(100vw)"}
       justifyContent={"center"}
       alignItems={"center"}
       spacing={2}
@@ -48,6 +60,8 @@ export const Home = () => {
       {sampleData.map((data, index) => {
         return <Content key={index} data={data} />;
       })}
+      <Typography variant="p" sx={{fontSize: "30px"}} color="primary">End of Posts!</Typography>
+      <div><svg width={100} height={50}><rect width="100%" height={50} fill={theme.palette.background.default}></rect></svg></div>
     </Stack>
   );
 };

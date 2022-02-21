@@ -24,8 +24,8 @@ const ariaLabel = { "aria-label": "description" };
 export const CreatePost = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
-  const fabPosWidth = matches ? "75px" : "16px";
-  const fabPosHeight = matches ? "25px" : "16px";
+  const fabPosWidth = matches ? "80px" : "16px";
+  const fabPosHeight = matches ? "22px" : "40px";
   const [postText, setPostText] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

@@ -39,7 +39,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <Stack
         direction={"row"}
-        sx={{ backgroundColor: theme.palette.background.default }}
+        sx={{ backgroundColor: theme.palette.background.default, width: "100vw",overflow:"hidden"}}
+        height={"100vh"}
+        overflow={"auto"}
       >
         {isSignedIn ? navigation : null}
         <Routes>

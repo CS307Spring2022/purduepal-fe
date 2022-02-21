@@ -16,6 +16,7 @@ import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneR
 export const VerticalNavbar = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
+
   console.log(matches);
   const icons = [
     {

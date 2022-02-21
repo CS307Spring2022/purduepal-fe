@@ -1,13 +1,15 @@
-import { Button, Stack } from "@mui/material";
+import { Grid, Button } from "@mui/material";
+import { ProfileDetails } from "./ProfileDetails";
 
 export const Profile = () => {
   return (
-    <Stack
-      width={"calc(100vw - 75px)"}
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <Button>Profile page</Button>
-    </Stack>
+    <Grid container >
+      <Grid sm={8} item>
+        <ProfileDetails />
+      </Grid>
+      <Grid sm={4} item container justifyContent={"center"} alignItems={'center'}>
+        <Button>Right Nav</Button>
+      </Grid>
+    </Grid>
   );
 };

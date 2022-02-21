@@ -10,7 +10,7 @@ export const Content = ({ data }) => {
       container
       justifyContent={"center"}
       alignContent={"space-between"}
-      mt={35}
+      mt={{xs:40,sm:45,md:45,lg:45}}
       sx={{padding: "10px", width: "98vw", maxWidth:{sm:500,md:600,lg:600,xl:600}, maxHeight: "50vh", borderRadius: "15px", backgroundColor: "#121212" }}
     >
       <Grid item container direction={"row"} justifyContent={"space-around"}>

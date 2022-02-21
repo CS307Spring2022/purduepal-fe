@@ -12,6 +12,7 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { ReactComponent as Logo } from "../icons/logo.svg";
 import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export const VerticalNavbar = () => {
   const theme = useTheme();
@@ -54,6 +55,11 @@ export const VerticalNavbar = () => {
       logo: <NotificationsNoneRoundedIcon fontSize="large" />,
       href: "/notifications",
       text: "Notifications",
+    },
+    {
+      logo: <SettingsIcon fontSize="large" />,
+      href: "/settings",
+      text: "Settings",
     },
   ];
 

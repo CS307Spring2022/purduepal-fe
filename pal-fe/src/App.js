@@ -20,6 +20,7 @@ import { ForgotPassword } from "./pages/ForgotPassword/ForgotPassword";
 import { getDesignTokens } from "./themes/Theme";
 import { Saved } from "./pages/Saved/Saved";
 import { Notications } from "./pages/Notifications/Notifications";
+import { Settings } from "./pages/Settings/Settings";
 
 function App() {
   const theme = createTheme(getDesignTokens("dark"));
@@ -53,6 +54,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/notifications" element={<Notications />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
         {isSignedIn ? <CreatePost /> : null}
       </Stack>

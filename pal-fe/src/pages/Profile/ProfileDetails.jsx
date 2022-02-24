@@ -5,15 +5,19 @@ import {
   Stack,
   Typography,
   IconButton,
+  Modal,
+  TextField,
+  Button,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EditIcon from "@mui/icons-material/Edit";
 
-import * as React from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import { useEffect } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,7 +53,7 @@ function a11yProps(index) {
 }
 
 function BasicTabs() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -82,10 +86,59 @@ function BasicTabs() {
   );
 }
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 800,
+  bgcolor: "secondary.main",
+  border: "2px solid #000",
+  boxShadow: 50,
+  p: 4,
+};
+
 export const ProfileDetails = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
   const widthCalc = `calc(100vw - ${matches ? "200" : "75"}px)`;
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [firstName, setFirstName] = useState("Dr. Stephen");
+  const [invalidFirstName, setInvalidFirstName] = useState(false);
+  const [firstNameErrMsg, setFirstNameErrMsg] = useState("");
+
+  const [lastName, setLastName] = useState("Strange");
+  const [invalidLastName, setInvalidLastName] = useState(false);
+  const [lastNameErrMsg, setLastNameErrMsg] = useState("");
+
+  const [bio, setBio] = useState('MD. Sorcerer Supreme. Avenger.');
+  const [invalidBio, setInvalidBio] = useState(false);
+  const [bioErrMsg, setBioErrMsg] = useState("");
+
+  useEffect(() => {
+    if (firstName.length > 0 && firstNameErrMsg) {
+      setFirstNameErrMsg("");
+      setInvalidFirstName(false);
+    }
+  }, [firstName, firstNameErrMsg]);
+
+  useEffect(() => {
+    if (lastName.length > 0 && lastNameErrMsg) {
+      setLastNameErrMsg("");
+      setInvalidLastName(false);
+    }
+  }, [lastName, lastNameErrMsg]);
+
+  useEffect(() => {
+    if (bio.length > 0 && bioErrMsg) {
+      setBioErrMsg("");
+      setInvalidBio(false);
+    }
+  }, [bio, bioErrMsg]);
+
   return (
     <Grid container spacing={2}>
       <Grid
@@ -112,7 +165,7 @@ export const ProfileDetails = () => {
           <Grid sm={7} item>
             <Stack direction="column">
               <Typography color={"#fff"} variant={"h4"}>
-                Dr. Stephen Strange
+                {`${firstName} ${lastName}`}
               </Typography>
               <Typography color={"#ddd"} variant={"subtitle1"}>
                 @drstrange
@@ -120,15 +173,83 @@ export const ProfileDetails = () => {
             </Stack>
           </Grid>
           <Grid sm={2} item>
-            <IconButton color={"primary"} variant={"outlined"}>
+            <IconButton
+              color={"primary"}
+              variant={"outlined"}
+              onClick={handleOpen}
+            >
               <EditIcon />
             </IconButton>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography
+                  color={"#fff"}
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                >
+                  Edit Profile Details
+                </Typography>
+
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="FirstName"
+                  label="First Name"
+                  name="firstName"
+                  autoComplete="given-name"
+                  autoFocus
+                  error={invalidFirstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  helperText={firstNameErrMsg}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="Lastname"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="given-name"
+                  autoFocus
+                  error={invalidLastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  helperText={lastNameErrMsg}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="Bio"
+                  label="Bio"
+                  name="bio"
+                  autoComplete="given-name"
+                  autoFocus
+                  error={invalidBio}
+                  onChange={(e) => setBio(e.target.value)}
+                  helperText={bioErrMsg}
+                />
+                <Button
+                  variant="filled"
+                  color={"success"}
+                  onClick={handleClose}
+                >
+                  Submit
+                </Button>
+              </Box>
+            </Modal>
           </Grid>
         </Grid>
       </Grid>
       <Grid item ml={2.5}>
         <Typography variant="h6" color="#fff">
-          MD. Sorcerer Supreme. Avenger.
+          {`${bio}`}
         </Typography>
       </Grid>
       <Grid item ml={2.5} sm={12}>

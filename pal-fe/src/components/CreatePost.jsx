@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -19,20 +19,52 @@ const filter = createFilterOptions();
 
 export default function FreeSoloCreateOption() {
   const [value, setValue] = useState(null);
+  const [errorTopic,setErrorTopic] = useState(false)
+  const [errorTopicMessage,setErrorTopicMessage] = useState("")
+
+  useEffect(() => {
+    if (value !== null) {
+      if (value.length <= 0 || value.length > 50) {
+        setErrorTopic(true)
+        setErrorTopicMessage("Topic must be between 1-50 characters")
+      } else {
+        setErrorTopic(false)
+        setErrorTopicMessage("")
+      }
+    }
+  }, [value]);
+
 
   return (
     <Autocomplete
       value={value}
       onChange={(event, newValue) => {
+        console.log(newValue)
         if (typeof newValue === "string") {
-          setValue({
-            title: newValue,
-          });
+          console.log(newValue,newValue.length)
+          if (newValue.length === 0 || newValue.length > 50) {
+            setErrorTopic(true)
+            setErrorTopicMessage("Topic must be 1-50 characters")
+          } else {
+            setErrorTopic(false)
+            setErrorTopicMessage("")
+            setValue({
+              title: newValue,
+            });
+          }
         } else if (newValue && newValue.inputValue) {
           // Create a new value from the user input
-          setValue({
-            title: newValue.inputValue,
-          });
+          console.log(newValue,newValue.length)
+          if (newValue.inputValue.length === 0 || newValue.inputValue.length > 50) {
+            setErrorTopic(true)
+            setErrorTopicMessage("Topic must be 1-50 characters")
+          } else {
+            setErrorTopic(false)
+            setErrorTopicMessage("")
+            setValue({
+              title: newValue.inputValue,
+            });
+          }
         } else {
           setValue(newValue);
         }
@@ -74,7 +106,7 @@ export default function FreeSoloCreateOption() {
       renderOption={(props, option) => <li {...props}>{option.title}</li>}
       sx={{ width: "50%" }}
       freeSolo
-      renderInput={(params) => <TextField {...params} label="Choose Topic" />}
+      renderInput={(params) => <TextField {...params} error={errorTopic} helperText={errorTopicMessage} label="Choose Topic" />}
     />
   );
 }
@@ -108,7 +140,11 @@ export const CreatePost = () => {
   const [postText, setPostText] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setErrorText(false);
+    setErrorTextMessage("");
+  }
   const [post, setPost] = useState(false);
   const handleSubmit = () => {
     //dummy code to handle creating post
@@ -117,12 +153,47 @@ export const CreatePost = () => {
     setPost(false);
     console.log(post);
   };
-  const [errorText, setErrorText] = useState(false);
-  const handleTextLength = (text) =>
-    text.length > 280 || text.length <= 0
-      ? setErrorText(true)
-      : setErrorText(false);
 
+  const isURL = (str) => {
+    let url;
+  
+    try {
+      url = new URL(str);
+    } catch (_) {
+      return false;  
+    }
+
+    return true;
+  }
+
+  const [paste,setPaste] = useState(false);
+  const [errorText, setErrorText] = useState(false);
+  const [errorTextMessage, setErrorTextMessage] = useState("");
+  const handleTextLength = (text) => {
+    // console.log(isURL(text),text);
+    const urlValid = isURL(text);
+    if (text.length > 280 || text.length <= 0) {
+      console.log(urlValid,text)
+      if (!urlValid && (text.includes("http://") || (text.includes("https://")))) {
+        setErrorText(true);
+        setErrorTextMessage("URL is invalid") 
+      } else if (!urlValid) {
+        setErrorText(true);
+        setErrorTextMessage("Post Must Contain Between 1-280 characters")
+      } else {
+        setErrorText(false)
+        setErrorTextMessage("")          
+      }
+    } else {
+      if (!urlValid && (text.includes("http://") || (text.includes("https://")))) {
+        setErrorText(true);
+        setErrorTextMessage("URL is invalid") 
+      } else {
+        setErrorText(false)
+        setErrorTextMessage("")
+      }
+    }
+  }
   return (
     <div>
       <Fab
@@ -161,9 +232,23 @@ export const CreatePost = () => {
               fullWidth
               placeholder="Type something"
               inputProps={ariaLabel}
+              helperText={errorTextMessage}
               onChange={(e) => {
-                setPostText(e.target.value);
-                handleTextLength(postText);
+                if (!paste) {
+                  // console.log("changed!! "+e.target.value)
+                  setPostText(e.target.value);
+                  console.log("changed!! "+postText)
+                  handleTextLength(e.target.value);
+                }
+                setPaste(false);
+              }}
+              onPaste={(e) => {
+                // console.log("pasted!! ")
+                setPaste(true);
+                e.clipboardData.items[0].getAsString(text=>{
+                  setPostText(text);
+                  handleTextLength(text);
+                })
               }}
             />
             <Stack direction={"row"}>

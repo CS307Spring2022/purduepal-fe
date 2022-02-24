@@ -1,62 +1,56 @@
-import { Grid, IconButton, Stack, Typography } from "@mui/material";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { Interactions } from "../Interactions";
+
+import Card from '@mui/material/Card';
+import { useTheme } from '@mui/material';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
 import "./Content.css"
 
 export const Content = ({ data }) => {
+
+  const theme = useTheme();
+
   return (
-    <Grid
-      container
-      justifyContent={"center"}
-      alignContent={"space-between"}
-      mt={{xs:40,sm:45,md:45,lg:45}}
-      sx={{padding: "10px", width: "98vw", maxWidth:{sm:500,md:600,lg:600,xl:600}, maxHeight: "50vh", borderRadius: "15px", backgroundColor: "#121212" }}
-    >
-      <Grid item container direction={"row"} justifyContent={"space-around"}>
-        <Grid item md={1} container justifyContent={"center"}>
-          <Grid item>
-            <IconButton>
-              <AccountCircleRoundedIcon
-                sx={{fontSize:{xs: "40px",sm:"45px",md:"60px",lg:"75px"}}}
-                color="primary"
-              />
-            </IconButton>
-          </Grid>
-        </Grid>
-        <Grid item container direction={"column"} spacing={2}>
-          <Grid item container direction={"column"}>
-            <Grid item>
-              <Stack direction={"row"} spacing={0.25}>
-                <Typography variant="h5" color={"#fff"} sx={{fontSize:{xs:"18px",sm:"22px"}}}>
-                  {data.name}
-                </Typography>
-                <Typography variant="h6" color={"#bbb"} sx={{fontSize:{xs:"15px"}}}>
-                  {data.username}
-                </Typography>
-              </Stack>
-            </Grid>
-            <Grid item>
-              <Typography variant="body2" color={"#ddd"}>
-                {data.topic}
-              </Typography>
-            </Grid>
-            <Grid item md={2}>
-              <Typography variant="body1" component={"p"} color={"#fff"}>
-                {data.date}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item mr={1}>
-            <Typography variant="body1" component={"p"} color={"#fff"}>
-              {data.content}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item md={12} mx={1}>
-        <Interactions up={data.up} down={data.down} />
-      </Grid>
-    </Grid>
+    <Card sx={{ padding: "10px", width: "98vw", maxWidth:{sm:400,md:500,lg:600,xl:600}, maxHeight: "150vh", borderRadius: "15px", backgroundColor: "#121212" }}>
+      <CardHeader
+        avatar={
+          <Avatar sx={{ bgcolor: theme.palette.primary.main }} aria-label={data.name}>
+          </Avatar>
+        }
+        action={
+          <>
+          <Typography variant="body1" fontSize={15} component={"p"} color={"#fff"}>
+            {data.topic}
+          </Typography>
+          <Typography variant="body1" fontSize={12} component={"p"} color={"#c4c4c4"}>
+            {data.date}
+          </Typography>
+          </>
+        }
+        title={data.name}
+        subheader={data.username}
+      />
+      {
+        data.img ?  
+        <CardMedia
+        component="img"
+        image={data.img}
+      />
+        : null
+      }
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {data.content}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Interactions up={data.up} down={data.down}/>
+      </CardActions>
+    </Card>
   );
-};
+}

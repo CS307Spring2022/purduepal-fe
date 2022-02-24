@@ -6,6 +6,7 @@ export const Saved = () => {
       width={"calc(100vw - 75px)"}
       justifyContent={"center"}
       alignItems={"center"}
+      minHeight="100vh"
     >
       <Button>Saved page</Button>
     </Stack>

@@ -35,6 +35,16 @@ const sampleData = [
     down: 0,
   },
   {
+    name: "Thor",
+    username: "@godofthunder",
+    date: "11/11/11",
+    topic: "Marvel",
+    content: "Stormbreaker",
+    img: "https://i0.wp.com/thenewsfetcher.com/wp-content/uploads/2020/01/45dc07a7fec3414781000b10577e539e.jpeg",
+    up: 1000,
+    down: 0,
+  },
+  {
     name: "Hulk",
     username: "@greenguy",
     date: "07/19/11",
@@ -44,18 +54,31 @@ const sampleData = [
     up: 80,
     down: 0,
   },
+  {
+    name: "Jim",
+    username: "@jimmy",
+    date: "07/11/12",
+    topic: "Food",
+    content: "Some Paella",
+    img: "https://mui.com/static/images/cards/paella.jpg",
+    up: 800,
+    down: 0,
+  }
 ];
 
 export const Home = () => {
   const theme = useTheme();
   return (
     <Stack
-      width={"calc(100vw)"}
+      width={"100vw"}
       justifyContent={"center"}
       alignItems={"center"}
       spacing={2}
-      height={"100vh"}
+      // height={"100vh"}
+      minHeight={"100vh"}
       overflow={"auto"}
+      mt={2}
+      sx={{marginLeft: {xs: "0px", sm: "75px", md:"200px", lg:"200px"}}}
     >
       {sampleData.map((data, index) => {
         return <Content key={index} data={data} />;

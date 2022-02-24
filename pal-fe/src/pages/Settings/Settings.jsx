@@ -31,7 +31,9 @@ export const Settings = () => {
       alignItems={"center"}
       width="100%"
       mt={3}
+      ml={{xs:0,sm:"110px",md:"240px",lg:"240px"}}
       height="100%"
+      minHeight="100vh"
     >
       <Accordion
         expanded={expanded === "panel1"}

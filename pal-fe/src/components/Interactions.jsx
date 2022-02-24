@@ -15,7 +15,7 @@ const numberFormat = format(",~s");
 export const Interactions = ({ up, down }) => {
   const [action, setAction] = useState(0); //temporary to test interaction
   return (
-    <Stack direction={"row"} spacing={{xs: 4, sm: 8, md: 8, lg: 8}} justifyContent={"space-around"}>
+    <Stack width={"100%"} direction={"row"} spacing={{xs: 4, sm: 5, md: 6, lg: 10}} justifyContent={"space-around"} alignItems={"center"}>
       <Stack direction={"row"} spacing={0} alignItems={"center"}>
         <IconButton
           onClick={() => {

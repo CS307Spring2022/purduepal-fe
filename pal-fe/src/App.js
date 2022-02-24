@@ -42,11 +42,8 @@ function App() {
         direction={"row"}
         sx={{
           backgroundColor: theme.palette.background.default,
-          width: "100vw",
-          overflow: "hidden",
+          maxWidth: "100vw",
         }}
-        height={"100vh"}
-        overflow={"auto"}
       >
         {isSignedIn ? navigation : null}
         <Routes>

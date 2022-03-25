@@ -1,11 +1,13 @@
 import { useTheme } from "@mui/material/styles";
 import { Stack, Typography } from "@mui/material";
 import { Content } from "../../components/Content/Content";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const sampleData = [
   {
     name: "Dr. Stephen Strange",
-    username: "@drstrange",
+    username: "drstrange",
     date: "10/20/16",
     topic: "Marvel",
     content:
@@ -16,7 +18,7 @@ const sampleData = [
   },
   {
     name: "Tony Stark",
-    username: "@ironman",
+    username: "ironman",
     date: "05/02/08",
     topic: "Marvel",
     content: "I. am. IronMan.",
@@ -26,7 +28,7 @@ const sampleData = [
   },
   {
     name: "Steve Rogers",
-    username: "@captainamerica",
+    username: "captainamerica",
     date: "07/19/11",
     topic: "Marvel",
     content: "Avengers... Assemble",
@@ -36,7 +38,7 @@ const sampleData = [
   },
   {
     name: "Thor",
-    username: "@godofthunder",
+    username: "godofthunder",
     date: "11/11/11",
     topic: "Marvel",
     content: "Stormbreaker",
@@ -46,7 +48,7 @@ const sampleData = [
   },
   {
     name: "Hulk",
-    username: "@greenguy",
+    username: "greenguy",
     date: "07/19/11",
     topic: "Marvel",
     content: "Strongest Avenger",
@@ -56,15 +58,40 @@ const sampleData = [
   },
   {
     name: "Jim",
-    username: "@jimmy",
+    username: "jimmy",
     date: "07/11/12",
     topic: "Food",
     content: "Some Paella",
     img: "https://mui.com/static/images/cards/paella.jpg",
     up: 800,
     down: 0,
-  }
+  },
 ];
+
+const RecordsList = () => {
+  const [records, setRecords] = useState([]);
+
+  useEffect(() => {
+    async function getRecords() {
+      const response = await fetch("http://127.0.0.1:5000/posts/");
+
+      if (!response.OK) {
+        const messsage = `An error occurred: ${response.statusText}`;
+        console.log(messsage);
+        return;
+      }
+
+      const records = await response.json();
+      setRecords(records);
+    }
+
+    getRecords();
+    return;
+  }, [records.length]);
+
+  console.log(records);
+  return <h1>Something</h1>;
+};
 
 export const Home = () => {
   const theme = useTheme();
@@ -78,7 +105,7 @@ export const Home = () => {
       minHeight={"100vh"}
       overflow={"auto"}
       mt={2}
-      sx={{marginLeft: {xs: "0px", sm: "75px", md:"200px", lg:"200px"}}}
+      sx={{ marginLeft: { xs: "0px", sm: "75px", md: "200px", lg: "200px" } }}
     >
       {sampleData.map((data, index) => {
         return <Content key={index} data={data} />;
@@ -86,6 +113,7 @@ export const Home = () => {
       <Typography variant="p" sx={{ fontSize: "30px" }} color="primary">
         End of Posts!
       </Typography>
+      {<RecordsList/>}
       <div>
         <svg width={100} height={50}>
           <rect

@@ -19,6 +19,8 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useEffect } from "react";
 
+import { url } from "../../ENV";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -70,7 +72,6 @@ function BasicTabs() {
         >
           <Tab label="Posts" {...a11yProps(0)} />
           <Tab label="Interactions" {...a11yProps(1)} />
-          <Tab label="Media" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -78,9 +79,6 @@ function BasicTabs() {
       </TabPanel>
       <TabPanel value={value} index={1}>
         Interactions
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Media
       </TabPanel>
     </Box>
   );
@@ -104,7 +102,31 @@ export const ProfileDetails = () => {
   const widthCalc = `calc(100vw - ${matches ? "200" : "75"}px)`;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+
+    async function onSubmit() {
+
+      const email = localStorage.getItem("email");
+      const editedPerson = {
+        firstName: firstName,
+        lastName: lastName,
+        bio: bio,
+        email: email,
+      };
+
+      console.log(JSON.stringify(editedPerson));
+
+      await fetch(`${url}/update`, {
+        method: "POST",
+        body: JSON.stringify(editedPerson),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+    onSubmit()
+  };
 
   const [firstName, setFirstName] = useState("Dr. Stephen");
   const [invalidFirstName, setInvalidFirstName] = useState(false);
@@ -114,7 +136,7 @@ export const ProfileDetails = () => {
   const [invalidLastName, setInvalidLastName] = useState(false);
   const [lastNameErrMsg, setLastNameErrMsg] = useState("");
 
-  const [bio, setBio] = useState('MD. Sorcerer Supreme. Avenger.');
+  const [bio, setBio] = useState("MD. Sorcerer Supreme. Avenger.");
   const [invalidBio, setInvalidBio] = useState(false);
   const [bioErrMsg, setBioErrMsg] = useState("");
 
@@ -133,7 +155,7 @@ export const ProfileDetails = () => {
   }, [lastName, lastNameErrMsg]);
 
   useEffect(() => {
-    if (bio.length > 0 && bioErrMsg) {
+    if (bio.length > 0 && bioErrMsg && bio.length < 240) {
       setBioErrMsg("");
       setInvalidBio(false);
     }

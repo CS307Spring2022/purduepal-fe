@@ -163,6 +163,9 @@ export const SignIn = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => {
+                localStorage.setItem("email",email);
+              }}
             >
               Sign In
             </Button>

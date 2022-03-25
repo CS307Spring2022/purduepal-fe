@@ -5,6 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Stack, Snackbar, Alert } from "@mui/material";
+import {url} from "../../ENV";
 
 export const Settings = () => {
   const [expanded, setExpanded] = useState(false);
@@ -17,6 +18,26 @@ export const Settings = () => {
 
   const handleClick = () => {
     setOpen(true);
+    //request
+
+    async function onSubmit() {
+      const email = localStorage.getItem("email");
+      localStorage.setItem("email","");
+      const editedPerson = {
+        email: email,
+      };
+
+      console.log(JSON.stringify(editedPerson));
+
+      await fetch(`${url}/delete_user`, {
+        method: "POST",
+        body: JSON.stringify(editedPerson),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+    onSubmit();
   };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -31,7 +52,7 @@ export const Settings = () => {
       alignItems={"center"}
       width="100%"
       mt={3}
-      ml={{xs:0,sm:"110px",md:"240px",lg:"240px"}}
+      ml={{ xs: 0, sm: "110px", md: "240px", lg: "240px" }}
       height="100%"
       minHeight="100vh"
     >

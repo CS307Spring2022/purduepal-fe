@@ -75,7 +75,7 @@ export const ForgotPassword = () => {
           textAlign: "center",
         }}
       >
-        <Link href="/" underline="none">
+        <Link href="/purduepal-fe" underline="none">
           <Typography
             component="h1"
             variant="h3"
@@ -137,7 +137,7 @@ export const ForgotPassword = () => {
               sx={{ alignItems: "center", textAlign: "center" }}
             >
               <Grid item xs={6} sm={6} md={6}>
-                <Link href="/signup" variant="body2">
+              <Link href="/purduepal-fe/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

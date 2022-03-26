@@ -18,6 +18,13 @@ export const VerticalNavbar = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
 
+  const routeParser = (page) => {
+    // if (page === "home") {
+    //   return "/purduepal-fe";
+    // }
+    return "/purduepal-fe/" + page.toLowerCase();
+  };
+
   console.log(matches);
   const icons = [
     {
@@ -28,37 +35,37 @@ export const VerticalNavbar = () => {
           height={"30px"}
         />
       ),
-      href: "/home",
+      href: "home",
       text: null,
     },
     {
       logo: <HomeRoundedIcon fontSize="large" />,
-      href: "/home",
+      href: "home",
       text: "Home",
     },
     {
       logo: <TagRoundedIcon fontSize="large" />,
-      href: "/explore",
+      href: "explore",
       text: "Explore",
     },
     {
       logo: <AccountCircleRoundedIcon fontSize="large" />,
-      href: "/profile",
+      href: "profile",
       text: "Profile",
     },
     {
       logo: <BookmarkBorderRoundedIcon fontSize="large" />,
-      href: "/saved",
+      href: "saved",
       text: "Saved",
     },
     {
       logo: <NotificationsNoneRoundedIcon fontSize="large" />,
-      href: "/notifications",
+      href: "notifications",
       text: "Notifications",
     },
     {
       logo: <SettingsIcon fontSize="large" />,
-      href: "/settings",
+      href: "settings",
       text: "Settings",
     },
   ];
@@ -85,7 +92,7 @@ export const VerticalNavbar = () => {
             </IconButton>
             {matches ? (
               <Typography variant="h5" color={theme.palette.primary.main}>
-                <Link href={d.href} underline="none">
+                <Link href={routeParser(d.href)} underline="none">
                   {d.text}
                 </Link>
               </Typography>

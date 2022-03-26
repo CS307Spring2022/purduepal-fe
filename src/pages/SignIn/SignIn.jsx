@@ -175,12 +175,12 @@ export const SignIn = () => {
               sx={{ alignItems: "center", textAlign: "center" }}
             >
               <Grid item xs={6} sm={6} md={6}>
-                <Link href="/forgotPassword" variant="body2">
+                <Link href="/purduepal-fe/forgotPassword" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item xs={6} sm={6} md={6}>
-                <Link href="/signup" variant="body2">
+                <Link href="/purduepal-fe/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

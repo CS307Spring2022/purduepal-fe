@@ -15,6 +15,13 @@ export const Navbar = () => {
   const pathname = useLocation();
   const [value, setValue] = useState(pathname.pathname);
 
+  const routeParser = (page) => {
+    // if (page === "home") {
+    //   return "/purduepal-fe";
+    // }
+    return "/purduepal-fe/" + page.toLowerCase();
+  };
+
   return (
     <Box sx={{ zIndex: 1, pb: 7 }}>
       <CssBaseline />
@@ -32,36 +39,36 @@ export const Navbar = () => {
         >
           <BottomNavigationAction
             label="Home"
-            to={"/home"}
-            value={"/home"}
+            to={routeParser("home")}
+            value={routeParser("home")}
             component={Link}
             icon={<HomeRoundedIcon />}
           />
           <BottomNavigationAction
             label="Explore"
-            to={"/explore"}
-            value={"/explore"}
+            to={routeParser("explore")}
+            value={routeParser("explore")}
             component={Link}
             icon={<TagRoundedIcon />}
           />
           <BottomNavigationAction
             label="Notifcations"
-            to={"/notifications"}
-            value={"/notifications"}
+            to={routeParser("notifications")}
+            value={routeParser("notifications")}
             component={Link}
             icon={<NotificationsNoneRoundedIcon />}
           />
           <BottomNavigationAction
             label="Profile"
-            to={"/profile"}
-            value={"/profile"}
+            to={routeParser("profile")}
+            value={routeParser("profile")}
             component={Link}
             icon={<AccountCircleRoundedIcon />}
           />
           <BottomNavigationAction
             label="Settings"
-            to={"/settings"}
-            value={"/settings"}
+            to={routeParser("settings")}
+            value={routeParser("settings")}
             component={Link}
             icon={<SettingsIcon />}
           />

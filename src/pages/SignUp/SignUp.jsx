@@ -280,7 +280,7 @@ export const SignUp = () => {
               sx={{ alignItems: "center", textAlign: "center" }}
             >
               <Grid item xs={6} sm={6} md={6}>
-                <Link href="/" variant="body2">
+                <Link href="/purduepal-fe" variant="body2">
                   {"Have An Account? Sign In!"}
                 </Link>
               </Grid>

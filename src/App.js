@@ -21,6 +21,7 @@ import { getDesignTokens } from "./themes/Theme";
 import { Saved } from "./pages/Saved/Saved";
 import { Notications } from "./pages/Notifications/Notifications";
 import { Settings } from "./pages/Settings/Settings";
+import { FollowingList } from "./components/FolllowingList";
 
 function App() {
   const theme = createTheme(getDesignTokens("dark"));
@@ -56,6 +57,7 @@ function App() {
           <Route path="/saved" element={<Saved />} />
           <Route path="/notifications" element={<Notications />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/following-list" element={<FollowingList/>} />
         </Routes>
         {isSignedIn ? <CreatePost /> : null}
       </Stack>

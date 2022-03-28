@@ -4,8 +4,7 @@ import { Content } from "../../components/Content/Content";
 import { useState, useContext } from "react";
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import GlobalState from '../../contexts/GlobalStates'
-
+import GlobalState from "../../contexts/GlobalStates";
 
 const sampleData = [
   {
@@ -92,16 +91,16 @@ const RecordsList = () => {
     return;
   }, [records.length]);
 
-  // console.log(records); 
+  // console.log(records);
   return <h1>Something</h1>;
 };
 
 export const Home = () => {
   const theme = useTheme();
-  const [isSignedIn,setIsSignedIn] = useContext(GlobalState);
+  const [isSignedIn] = useContext(GlobalState);
 
   if (!isSignedIn) {
-    return <Navigate to="/"/>;
+    return <Navigate to="/" />;
   }
 
   return (
@@ -110,7 +109,6 @@ export const Home = () => {
       justifyContent={"center"}
       alignItems={"center"}
       spacing={2}
-      // height={"100vh"}
       minHeight={"100vh"}
       overflow={"auto"}
       mt={2}
@@ -122,7 +120,7 @@ export const Home = () => {
       <Typography variant="p" sx={{ fontSize: "30px" }} color="primary">
         End of Posts!
       </Typography>
-      {<RecordsList/>}
+      {<RecordsList />}
       <div>
         <svg width={100} height={50}>
           <rect

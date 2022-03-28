@@ -1,90 +1,90 @@
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import Avatar from "@mui/material/Avatar";
-import { red } from "@mui/material/colors";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
 import { Stack } from "@mui/material";
-import { Typography, IconButton } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Card, CardHeader, Avatar } from "@mui/material";
 
-export default function FollowingProfile({ name, bio }) {
+const followingList = [
+  { name: "Bruce Banner", bio: "Smash" },
+  { name: "Thor", bio: "Worthy" },
+  { name: "Bruce Banner", bio: "Smash" },
+];
+
+const topics = ["Marvel", "Twitter", "DC", "Netflix", "Cricket"];
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  height: "75%",
+  bgcolor: "#444",
+  border: "2px solid #ddd",
+  boxShadow: 24,
+  p: 4,
+  overflow: "scroll",
+};
+
+const DisplayCard = ({ name, bio }) => {
   return (
-    <Card sx={{ width: "75vw" }}>
+    <Card>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="following-name">
-          </Avatar>
-        }
+        avatar={<Avatar aria-label="recipe"></Avatar>}
         title={name}
         subheader={bio}
       />
     </Card>
   );
-}
-
-export const FollowingList = () => {
-  const peopleList = [
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-    { title: "Bruce Banner", subheader: "Smash" },
-    { title: "Thor", subheader: "Worthy" },
-  ];
-
+};
+const DisplayTopic = ({ name }) => {
   return (
-    <>
-      <Stack>
-        <Stack
-          ml={30}
-          direction="row"
-          sx={{
-            position: "fixed",
-            backgroundColor: "#000",
-            overflowX: "hidden",
-          }}
-          width={"100%"}
-        >
-          <IconButton
-            href="/purduepal-fe/profile"
-            color="secondary"
-            aria-label="add an alarm"
-          >
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography variant="h3" color="#fff">
-            Following List
-          </Typography>
-        </Stack>
-        <Stack
-          width={"100vw"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          spacing={2}
-          minHeight={"100vh"}
-          overflow={"auto"}
-          mt={2}
-          sx={{
-            marginLeft: { xs: "0px", sm: "75px", md: "200px", lg: "200px" },
-            overflowX: "hidden",
-          }}
-        >
-          {peopleList.map((d) => {
-            return <FollowingProfile name={d.title} bio={d.subheader} />;
-          })}
-        </Stack>
-      </Stack>
-    </>
+    <Card>
+      <CardHeader title={name} />
+    </Card>
   );
 };
+
+export default function FollowingList({ number, property, isTopic }) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  return (
+    <div>
+      <Button onClick={handleOpen} disableRipple disableElevation>
+        <Stack direction="row" spacing={0.5}>
+          <Typography variant="subtitle2" color="#fff">
+            {number ? number : topics.length}
+          </Typography>
+          <Typography variant="subtitle2" color="#ddd">
+            {property}
+          </Typography>
+        </Stack>
+      </Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Stack spacing={1}>
+            <Typography id="modal-modal-title" variant="h4" component="h2">
+              <strong>{property}</strong>
+            </Typography>
+            {isTopic
+              ? topics.map((d) => {
+                  return <DisplayTopic key={d} name={d} />;
+                })
+              : followingList.map((d, i) => {
+                  return <DisplayCard key={i} name={d.name} bio={d.bio} />;
+                })}
+          </Stack>
+        </Box>
+      </Modal>
+    </div>
+  );
+}

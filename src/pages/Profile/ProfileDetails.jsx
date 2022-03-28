@@ -17,9 +17,11 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import GlobalState from "../../contexts/GlobalStates";
 
 import { url } from "../../ENV";
+import FollowingList from "../../components/FolllowingList";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -100,13 +102,15 @@ export const ProfileDetails = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
   const widthCalc = `calc(100vw - ${matches ? "200" : "75"}px)`;
+
+  const [isSignedIn, setIsSignedIn] = useContext(GlobalState);
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
 
     async function onSubmit() {
-
       const email = localStorage.getItem("email");
       const editedPerson = {
         firstName: firstName,
@@ -125,7 +129,7 @@ export const ProfileDetails = () => {
         },
       });
     }
-    onSubmit()
+    onSubmit();
   };
 
   const [firstName, setFirstName] = useState("Dr. Stephen");
@@ -195,13 +199,17 @@ export const ProfileDetails = () => {
             </Stack>
           </Grid>
           <Grid sm={2} item>
-            <IconButton
-              color={"primary"}
-              variant={"outlined"}
-              onClick={handleOpen}
-            >
-              <EditIcon />
-            </IconButton>
+            {isSignedIn ? (
+              <IconButton
+                color={"primary"}
+                variant={"outlined"}
+                onClick={handleOpen}
+              >
+                <EditIcon />
+              </IconButton>
+            ) : (
+              <Button>Follow</Button>
+            )}
             <Modal
               open={open}
               onClose={handleClose}
@@ -276,22 +284,15 @@ export const ProfileDetails = () => {
       </Grid>
       <Grid item ml={2.5} sm={12}>
         <Stack direction={"row"} spacing={3}>
-          <Stack direction="row" spacing={0.5}>
-            <Typography variant="subtitle2" color={"#fff"}>
-              10M
-            </Typography>
-            <Typography variant="subtitle2" color={"#ddd"}>
-              Followers
-            </Typography>
-          </Stack>
-          <Stack direction="row" spacing={0.5}>
-            <Typography variant="subtitle2" color={"#fff"}>
-              23
-            </Typography>
-            <Typography variant="subtitle2" color={"#ddd"}>
-              Following
-            </Typography>
-          </Stack>
+          <FollowingList
+            number={"10M"}
+            property={"Followers"}
+            isTopic={false}
+          />
+
+          <FollowingList number={3} property={"Following"} isTopic={false} />
+
+          <FollowingList property={"Topics"} isTopic />
         </Stack>
       </Grid>
       <Grid item sm={12}>

@@ -20,7 +20,6 @@ import Box from "@mui/material/Box";
 import { useEffect } from "react";
 
 import { url } from "../../ENV";
-import { Link } from "@mui/material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -107,6 +106,7 @@ export const ProfileDetails = () => {
     setOpen(false);
 
     async function onSubmit() {
+
       const email = localStorage.getItem("email");
       const editedPerson = {
         firstName: firstName,
@@ -125,14 +125,7 @@ export const ProfileDetails = () => {
         },
       });
     }
-    onSubmit();
-  };
-
-  const routeParser = (page) => {
-    // if (page === "home") {
-    //   return "/purduepal-fe";
-    // }
-    return "/purduepal-fe/" + page.toLowerCase();
+    onSubmit()
   };
 
   const [firstName, setFirstName] = useState("Dr. Stephen");
@@ -291,12 +284,13 @@ export const ProfileDetails = () => {
               Followers
             </Typography>
           </Stack>
-          <Stack direction="row" spacing={0.25}>
-            <Link href={routeParser("following-list")} underline="none">
-              <Typography variant="subtitle2" color={"#fff"}>
-                23 Following
-              </Typography>
-            </Link>
+          <Stack direction="row" spacing={0.5}>
+            <Typography variant="subtitle2" color={"#fff"}>
+              23
+            </Typography>
+            <Typography variant="subtitle2" color={"#ddd"}>
+              Following
+            </Typography>
           </Stack>
         </Stack>
       </Grid>

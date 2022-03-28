@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Stack, Snackbar, Alert } from "@mui/material";
+
+import { useNavigate, Navigate } from "react-router-dom";
+
+import GlobalState from "../../contexts/GlobalStates";
 import {url} from "../../ENV";
 
 export const Settings = () => {
+  const navigate = useNavigate();
+  const [isSignedIn,setIsSignedIn] = useContext(GlobalState);
+
   const [expanded, setExpanded] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -16,7 +23,7 @@ export const Settings = () => {
 
   const [open, setOpen] = useState(false);
 
-  const handleClick = () => {
+  const handleDeleteClick = () => {
     setOpen(true);
     //request
 
@@ -39,12 +46,23 @@ export const Settings = () => {
     }
     onSubmit();
   };
+
+  const handleLogoutClick = () => {
+    localStorage.removeItem("email");
+    setIsSignedIn(false);
+    navigate("/");
+  };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setOpen(false);
   };
+
+  if (!isSignedIn) {
+    return <Navigate to="/"/>;
+  }
 
   return (
     <Stack
@@ -70,11 +88,12 @@ export const Settings = () => {
             Account Settings
           </Typography>
           <Typography sx={{ color: "text.secondary" }}>
-            Delete your account and associated data
+            Logout and Account Deletion
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Button onClick={handleClick}>Delete Account and Data</Button>
+          <Button onClick={handleLogoutClick}>Logout</Button>
+          <Button onClick={handleDeleteClick}>Delete Account and Data</Button>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert
               onClose={handleClose}

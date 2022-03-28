@@ -14,14 +14,20 @@ import { useTheme } from "@mui/material/styles";
 import { ReactComponent as Logo } from "./../../icons/logo.svg";
 import { ReactComponent as Train } from "../../icons/trainSmall.svg";
 
+import { useNavigate } from "react-router-dom";
+
+import { url } from "../../ENV";
+
 // import { MostCommonPasswords } from "../../utils/MostCommonPasswords";
 
 import "./SignUp.css";
 
 export const SignUp = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
-
+  const [signUpStatus,setSignUpStatus] = useState("");
+  const [signUpSuccess,setSignUpSuccess] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [invalidFirstName, setInvalidFirstName] = useState(false);
@@ -42,6 +48,11 @@ export const SignUp = () => {
   const [pass, setPass] = useState("");
   const [invalidPass, setInvalidPass] = useState(false);
   const [passErrMsg, setPassErrMsg] = useState("");
+
+  const [confirmPass, setConfirmPass] = useState("");
+  const [invalidConfirmPass, setInvalidConfirmPass] = useState(false);
+  const [confirmPassErrMsg, setConfirmPassErrMsg] = useState("");
+  
   // const [isCommonPass, setIsCommonPass] =useState(false);
 
 
@@ -104,14 +115,29 @@ export const SignUp = () => {
         setInvalidPass(true);
       }
     }
+
+    if (confirmPass.length > 0) {
+      if (confirmPass !== pass) {
+        setConfirmPassErrMsg("Passwords Do Not Match!");
+        setInvalidConfirmPass(true);
+      } else {
+        setConfirmPassErrMsg("");
+        setInvalidConfirmPass(false);
+      }
+    }
   }, [firstName, firstNameErrMsg, lastName, lastNameErrMsg,
-      username, usernameErrMsg, pass, passErrMsg]);
+      username, usernameErrMsg, pass, passErrMsg,confirmPass,confirmPassErrMsg]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    let valid = true;
+    let valid = !(invalidFirstName || invalidLastName || invalidEmail || invalidUsername || invalidPass || invalidConfirmPass);
+
+    if (!valid) {
+      alert("Form data Invalid!");
+      return;
+    }
 
     if (data.get("firstName").length === 0) {
       setFirstNameErrMsg("First Name is Required");
@@ -145,10 +171,67 @@ export const SignUp = () => {
       valid = false;
     }
 
+    if (data.get("confirmPassword").length === 0) {
+      setConfirmPassErrMsg("Confim Password is Required")
+      setInvalidConfirmPass(true);
+      valid = false;
+    }
+
     if (!valid) {
       alert("Form data Invalid!!");
     } else {
-      alert("Form data Valid!");
+      async function onSubmit() {
+
+        // const email = localStorage.getItem("email");
+        const signInDetails = {
+          firstName: data.get("firstName"),
+          lastName: data.get("lastName"),
+          email: data.get("email"),
+          username: data.get("username"),
+          password: data.get("password"),
+          confirmPassword: data.get("confirmPassword")
+        };
+  
+        console.log(JSON.stringify(signInDetails));
+  
+        const response = await fetch(`${url}/sign_up`, {
+          method: "POST",
+          body: JSON.stringify(signInDetails),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        return response.json()
+      }
+
+      function sleep(delay) {
+        return new Promise( res => setTimeout(res, delay) );
+      }
+      async function handleResponse(result) {
+        console.log(result)
+        if (result['return_code']) {
+          setSignUpSuccess(true);
+          setSignUpStatus("Signup Successful! Redirecting to Login Page shortly...");
+          await sleep(1200);
+          navigate("/");
+          setSignUpStatus("");
+          setSignUpSuccess(false);
+        } else {
+          if (result['msg'] === "Email in Use!" || result['msg'] === "Username Taken! Please Choose Another.") {
+            setSignUpSuccess(false);
+            setSignUpStatus(result["msg"])
+          } else {
+            setSignUpSuccess(false);
+            setSignUpStatus("We've Encountered an Error! Sorry, please try again at a later time.")
+          }
+        }
+      }
+
+      const signUpResponse = onSubmit().then(result => {
+        handleResponse(result);
+      });
+      return signUpResponse;
     }
 
   };
@@ -170,15 +253,13 @@ export const SignUp = () => {
           textAlign: "center",
         }}
       >
-        <Link href="/" underline="none">
-          <Typography
-            component="h1"
-            variant="h3"
-            style={{ marginTop: "10vh", textAlign: "center" }}
-          >
-            PurduePAL
-          </Typography>
-        </Link>
+        <Typography
+          component="h1"
+          variant="h3"
+          style={{ marginTop: "10vh", textAlign: "center", color: theme.palette.primary.main }}
+        >
+          PurduePAL
+        </Typography>
         <div className="trainContainer">
           <Train />
         </div>
@@ -198,6 +279,9 @@ export const SignUp = () => {
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign Up
+          </Typography>
+          <Typography component="p" variant="p" color={signUpSuccess ? theme.palette.success.main : theme.palette.error.main}>
+            {signUpStatus}
           </Typography>
           <Box
             component="form"
@@ -265,6 +349,18 @@ export const SignUp = () => {
               error={invalidPass}
               onChange={(e) => {setPass(e.target.value)}}
               helperText={passErrMsg}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              error={invalidConfirmPass}
+              onChange={(e) => {setConfirmPass(e.target.value)}}
+              helperText={confirmPassErrMsg}
             />
             <Button
               type="submit"

@@ -25,7 +25,7 @@ export const VerticalNavbar = () => {
     return "/purduepal-fe/" + page.toLowerCase();
   };
 
-  console.log(matches);
+  // console.log(matches);
   const icons = [
     {
       logo: (

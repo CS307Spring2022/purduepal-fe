@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,10 +17,26 @@ import { useTheme } from "@mui/material/styles";
 import { ReactComponent as Logo } from "./../../icons/logo.svg";
 import { ReactComponent as Train } from "../../icons/trainSmall.svg";
 
+
+import GlobalState from '../../contexts/GlobalStates'
+import { url } from "../../ENV";
+
 import "./SignIn.css";
 
 export const SignIn = () => {
   const theme = useTheme();
+  const [isSignedIn,setIsSignedIn] = useContext(GlobalState);
+  const navigate = useNavigate();
+
+  // console.log(isSignedIn);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate('/home');
+    }
+  });
+
+  const [loginStatus,setLoginStatus] = useState("");
 
   const [email, setEmail] = useState("");
   const [invalidEmail, setInvalidEmail] = useState(false);
@@ -29,26 +46,26 @@ export const SignIn = () => {
   const [invalidPass, setInvalidPass] = useState(false);
   const [passErrMsg, setPassErrMsg] = useState("");
 
-  useEffect(() => {
-    if (
-      email.match(/[\w\d]+@([\w]*.)*purdue\.edu/) === null &&
-      email.length !== 0
-    ) {
-      setInvalidEmail(true);
-      setEmailErrMsg("Input must be a valid Purdue email");
-    }
-  }, [email]);
+  // useEffect(() => {
+  //   if (
+  //     email.match(/[\w\d]+@([\w]*.)*purdue\.edu/) === null &&
+  //     email.length !== 0
+  //   ) {
+  //     setInvalidEmail(true);
+  //     setEmailErrMsg("Input must be a valid Purdue email");
+  //   }
+  // }, [email]);
 
-  useEffect(() => {
-    if (
-      email.match(/[\w\d]+@([\w]*.)*purdue\.edu/) !== null &&
-      email.length > 0 &&
-      emailErrMsg
-    ) {
-      setEmailErrMsg("");
-      setInvalidEmail(false);
-    }
-  }, [email, emailErrMsg]);
+  // useEffect(() => {
+  //   if (
+  //     email.match(/[\w\d]+@([\w]*.)*purdue\.edu/) !== null &&
+  //     email.length > 0 &&
+  //     emailErrMsg
+  //   ) {
+  //     setEmailErrMsg("");
+  //     setInvalidEmail(false);
+  //   }
+  // }, [email, emailErrMsg]);
 
   useEffect(() => {
     if (pass.length > 0 && passErrMsg) {
@@ -65,15 +82,60 @@ export const SignIn = () => {
     //   email: data.get("email"),
     //   password: data.get("password"),
     // });
+    let valid = true;
     if (data.get("email").length === 0) {
-      setEmailErrMsg("Email is Required");
+      setEmailErrMsg("Email or Username is Required");
       setInvalidEmail(true);
+      valid = false;
     }
 
     if (data.get("password").length === 0) {
       setPassErrMsg("Password is Required");
       setInvalidPass(true);
+      valid = false;
     }
+
+    if (!valid) {
+      // alert("Invalid Data!");
+      setLoginStatus("Login Failed! Check Email and Password!");
+    } else {
+      setLoginStatus("");
+      async function onSubmit() {
+
+        // const email = localStorage.getItem("email");
+        const signInDetails = {
+          email: data.get("email"),
+          password: data.get("password"),
+        };
+  
+        console.log(JSON.stringify(signInDetails));
+  
+        const response = await fetch(`${url}/login`, {
+          method: "POST",
+          body: JSON.stringify(signInDetails),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        return response.json()
+      }
+      const loginSuccess = onSubmit().then(result => {
+        if (result['return_code']) {
+          localStorage.setItem("email",result['email']);
+          setIsSignedIn(true)
+          // navigate('/home');
+          navigate('/home');
+          return true;
+        }
+        setLoginStatus("Login Failed! Check Email and Password!");
+        setIsSignedIn(false);
+        return false
+      })
+
+      return loginSuccess
+    }
+
   };
 
   return (
@@ -93,15 +155,13 @@ export const SignIn = () => {
           textAlign: "center",
         }}
       >
-        <Link href="/" underline="none">
-          <Typography
-            component="h1"
-            variant="h3"
-            style={{ marginTop: "10vh", textAlign: "center" }}
-          >
-            PurduePAL
-          </Typography>
-        </Link>
+        <Typography
+          component="h1"
+          variant="h3"
+          style={{ marginTop: "10vh", textAlign: "center", color: theme.palette.primary.main }}
+        >
+          PurduePAL
+        </Typography>
         <div className="trainContainer">
           <Train />
         </div>
@@ -122,6 +182,9 @@ export const SignIn = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          <Typography component="p" variant="p" sx={{color: theme.palette.error.main}}>
+            {loginStatus}
+          </Typography>
           <Box
             component="form"
             noValidate
@@ -133,9 +196,9 @@ export const SignIn = () => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email Address or Username"
               name="email"
-              autoComplete="email"
+              autoComplete="username"
               autoFocus
               error={invalidEmail}
               onChange={(e) => setEmail(e.target.value)}
@@ -163,9 +226,6 @@ export const SignIn = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={() => {
-                localStorage.setItem("email",email);
-              }}
             >
               Sign In
             </Button>

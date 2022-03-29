@@ -50,7 +50,7 @@ export const VerticalNavbar = () => {
     },
     {
       logo: <AccountCircleRoundedIcon fontSize="large" />,
-      href: "profile",
+      href: "profile?user="+localStorage.getItem("username"),
       text: "Profile",
     },
     {

@@ -20,6 +20,8 @@ import Box from "@mui/material/Box";
 import { useEffect, useContext } from "react";
 import GlobalState from "../../contexts/GlobalStates";
 
+import { useSearchParams } from "react-router-dom";
+
 import { url } from "../../ENV";
 import FollowingList from "../../components/FolllowingList";
 
@@ -103,7 +105,12 @@ export const ProfileDetails = () => {
   const matches = useMediaQuery(theme.breakpoints.up("md"));
   const widthCalc = `calc(100vw - ${matches ? "200" : "75"}px)`;
 
-  const [isSignedIn, setIsSignedIn] = useContext(GlobalState);
+  const [searchParams] = useSearchParams()
+
+  const [match] = useState(searchParams.get("user")===localStorage.getItem("username"))
+
+
+  const [isSignedIn] = useContext(GlobalState);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -199,7 +206,7 @@ export const ProfileDetails = () => {
             </Stack>
           </Grid>
           <Grid sm={2} item>
-            {isSignedIn ? (
+            {isSignedIn && match ? (
               <IconButton
                 color={"primary"}
                 variant={"outlined"}

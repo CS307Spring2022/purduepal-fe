@@ -3,13 +3,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Stack } from "@mui/material";
+import { Stack, useTheme } from "@mui/material";
 import { Card, CardHeader, Avatar } from "@mui/material";
 
 const followingList = [
   { name: "Bruce Banner", bio: "Smash" },
   { name: "Thor", bio: "Worthy" },
-  { name: "Bruce Banner", bio: "Smash" },
+  { name: "Wong", bio: ".." },
 ];
 
 const topics = ["Marvel", "Twitter", "DC", "Netflix", "Cricket"];
@@ -21,11 +21,11 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   height: "75%",
-  bgcolor: "#444",
+  bgcolor: "#000",
   border: "2px solid #ddd",
   boxShadow: 24,
   p: 4,
-  overflow: "scroll",
+  overflowY: "scroll",
 };
 
 const DisplayCard = ({ name, bio }) => {
@@ -48,6 +48,9 @@ const DisplayTopic = ({ name }) => {
 };
 
 export default function FollowingList({ number, property, isTopic }) {
+  const theme = useTheme();
+
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -56,10 +59,10 @@ export default function FollowingList({ number, property, isTopic }) {
     <div>
       <Button onClick={handleOpen} disableRipple disableElevation>
         <Stack direction="row" spacing={0.5}>
-          <Typography variant="subtitle2" color="#fff">
+          <Typography variant="subtitle2">
             {number ? number : topics.length}
           </Typography>
-          <Typography variant="subtitle2" color="#ddd">
+          <Typography variant="subtitle2" color="#c4c4c4">
             {property}
           </Typography>
         </Stack>
@@ -72,7 +75,7 @@ export default function FollowingList({ number, property, isTopic }) {
       >
         <Box sx={style}>
           <Stack spacing={1}>
-            <Typography id="modal-modal-title" variant="h4" component="h2">
+            <Typography id="modal-modal-title" variant="h4" component="h2" color={theme.palette.primary.main}>
               <strong>{property}</strong>
             </Typography>
             {isTopic

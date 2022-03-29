@@ -123,6 +123,7 @@ export const SignIn = () => {
       const loginSuccess = onSubmit().then(result => {
         if (result['return_code']) {
           localStorage.setItem("email",result['email']);
+          localStorage.setItem("username",result['username']);
           setIsSignedIn(true)
           // navigate('/home');
           navigate('/home');

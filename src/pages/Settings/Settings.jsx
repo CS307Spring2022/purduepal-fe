@@ -49,6 +49,7 @@ export const Settings = () => {
 
   const handleLogoutClick = () => {
     localStorage.removeItem("email");
+    localStorage.removeItem("username");
     setIsSignedIn(false);
     navigate("/");
   };

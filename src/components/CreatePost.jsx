@@ -13,7 +13,9 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import { CommentRounded } from "@mui/icons-material";
 import { useTheme, useMediaQuery } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 const filter = createFilterOptions();
 
@@ -21,6 +23,10 @@ export default function FreeSoloCreateOption() {
   const [value, setValue] = useState(null);
   const [errorTopic,setErrorTopic] = useState(false)
   const [errorTopicMessage,setErrorTopicMessage] = useState("")
+
+  // const [searchParams] = useSearchParams();
+
+  // const [isComment,setIsComment] = useState(searchParams.get("postId")!==null);
 
   useEffect(() => {
     if (value !== null) {
@@ -133,6 +139,9 @@ const style = {
 const ariaLabel = { "aria-label": "description" };
 
 export const CreatePost = () => {
+  const [searchParams] = useSearchParams();
+
+  const [isComment,setIsComment] = useState(searchParams.get("postId")!==null);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const fabPosWidth = matches ? "80px" : "16px";
@@ -206,7 +215,7 @@ export const CreatePost = () => {
         }}
         onClick={handleOpen}
       >
-        <AddIcon />
+        {isComment ? <CommentRounded/> : <AddIcon />}
       </Fab>
       <Modal
         open={open}
@@ -222,7 +231,7 @@ export const CreatePost = () => {
               variant="h6"
               component="h2"
             >
-              Create a Post
+              {isComment ? "Reply to Post" : "Create a Post"}
             </Typography>
             <FreeSoloCreateOption />
             <TextField

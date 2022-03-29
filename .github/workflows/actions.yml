@@ -32,6 +32,7 @@ jobs:
     - name: Install dependencies    
       run: npm ci
     
+    # keep CI='' or false to not treat warnings as errors
     - name: Build
       run: CI='' npm run build --if-present
 

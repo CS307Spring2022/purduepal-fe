@@ -9,7 +9,17 @@ import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
+import { Link } from "react-router-dom";
+
 import "./Content.css";
+
+function writeContent(data) {
+  if (data.parentId === "") {
+    return data.content;
+  }
+
+  return "Replying to @"+data.parentId+"\u000A\u000A"+data.content;
+}
 
 export const Content = ({ data }) => {
   const theme = useTheme();
@@ -18,7 +28,7 @@ export const Content = ({ data }) => {
     <Card
       sx={{
         padding: "10px",
-        width: "98vw",
+        width: "80vw",
         maxWidth: { sm: 400, md: 500, lg: 600, xl: 600 },
         maxHeight: "150vh",
         borderRadius: "15px",
@@ -27,10 +37,12 @@ export const Content = ({ data }) => {
     >
       <CardHeader
         avatar={
-          <Avatar
-            sx={{ bgcolor: theme.palette.primary.main }}
-            aria-label={data.name}
-          ></Avatar>
+          <Link to={"/profile?user="+data["username"]}>
+            <Avatar
+              sx={{ bgcolor: theme.palette.primary.main }}
+              aria-label={data.name}
+            ></Avatar>
+          </Link>
         }
         action={
           <>
@@ -55,6 +67,9 @@ export const Content = ({ data }) => {
         title={data.name}
         subheader={`@${data.username}`}
       />
+      {data.parentId!=="" ? <Typography sx={{fontWeight: 300, whiteSpace: "pre-wrap"}} variant="body1" color="text.primary">
+          {"Replying to @"+data.parentId}
+        </Typography> : null}
       {data.img ? <CardMedia component="img" image={data.img} /> : null}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
@@ -62,7 +77,7 @@ export const Content = ({ data }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Interactions up={data.up} down={data.down} />
+        <Interactions up={data.up} down={data.down} uuid={data.uuid} />
       </CardActions>
     </Card>
   );

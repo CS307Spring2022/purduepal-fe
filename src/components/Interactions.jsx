@@ -12,10 +12,10 @@ import { format } from "d3-format";
 const thousandFormat = format(",.2s");
 const numberFormat = format(",~s");
 
-export const Interactions = ({ up, down }) => {
+export const Interactions = ({ up, down, uuid }) => {
   const [action, setAction] = useState(0); //temporary to test interaction
   return (
-    <Stack width={"100%"} direction={"row"} spacing={{xs: 4, sm: 5, md: 6, lg: 10}} justifyContent={"space-around"} alignItems={"center"}>
+    <Stack width={"100%"} direction={"row"} spacing={{xs: 2.5, sm: 5, md: 6, lg: 10}} justifyContent={"space-around"} alignItems={"center"}>
       <Stack direction={"row"} spacing={0} alignItems={"center"}>
         <IconButton
           onClick={() => {
@@ -52,8 +52,8 @@ export const Interactions = ({ up, down }) => {
           {down > 999 ? thousandFormat(down) : numberFormat(down)}
         </Typography>
       </Stack>
-      <IconButton color="primary">
-        <ChatRoundedIcon />
+      <IconButton color="primary" href={"/purduepal-fe/postThread?postId="+uuid}>
+        <ChatRoundedIcon/>
       </IconButton>
       <IconButton color="primary">
         <ShareRoundedIcon />

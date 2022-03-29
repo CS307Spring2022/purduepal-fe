@@ -1,18 +1,19 @@
 {
   "files": {
     "main.css": "/purduepal-fe/static/css/main.a8f7d099.css",
-    "main.js": "/purduepal-fe/static/js/main.63eb1aec.js",
+    "main.js": "/purduepal-fe/static/js/main.985b018b.js",
     "static/js/377.9c7bcbb3.chunk.js": "/purduepal-fe/static/js/377.9c7bcbb3.chunk.js",
     "service-worker.js": "/purduepal-fe/service-worker.js",
     "static/media/trainSmall.svg": "/purduepal-fe/static/media/trainSmall.7e21a1300509c34d446872b5cb244257.svg",
+    "static/media/not-found.png": "/purduepal-fe/static/media/not-found.0853cb91374eb704be2a.png",
     "static/media/logo.svg": "/purduepal-fe/static/media/logo.36bba99d9c34abe431f1fe0cdea2d949.svg",
     "index.html": "/purduepal-fe/index.html",
     "main.a8f7d099.css.map": "/purduepal-fe/static/css/main.a8f7d099.css.map",
-    "main.63eb1aec.js.map": "/purduepal-fe/static/js/main.63eb1aec.js.map",
+    "main.985b018b.js.map": "/purduepal-fe/static/js/main.985b018b.js.map",
     "377.9c7bcbb3.chunk.js.map": "/purduepal-fe/static/js/377.9c7bcbb3.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a8f7d099.css",
-    "static/js/main.63eb1aec.js"
+    "static/js/main.985b018b.js"
   ]
 }

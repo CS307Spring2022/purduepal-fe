@@ -1,8 +1,7 @@
 import { useTheme } from "@mui/material/styles";
 import { Stack, Typography } from "@mui/material";
 import { Content } from "../../components/Content/Content";
-import { useState, useContext } from "react";
-import { useEffect } from "react";
+import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import GlobalState from "../../contexts/GlobalStates";
 
@@ -18,7 +17,7 @@ const sampleData = [
     img: null,
     up: 14000605,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "0756sd8asdsdfhj",
@@ -30,7 +29,7 @@ const sampleData = [
     img: null,
     up: 3000,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "agg6jgsgdsbsd2gj",
@@ -42,7 +41,7 @@ const sampleData = [
     img: null,
     up: 75,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "6zbkp4s4a43sghgeha",
@@ -54,7 +53,7 @@ const sampleData = [
     img: "https://i0.wp.com/thenewsfetcher.com/wp-content/uploads/2020/01/45dc07a7fec3414781000b10577e539e.jpeg",
     up: 1000,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "b04uwqual3s2f0j",
@@ -66,7 +65,7 @@ const sampleData = [
     img: null,
     up: 80,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "erxok768yi730qpfsda",
@@ -78,38 +77,34 @@ const sampleData = [
     img: "https://mui.com/static/images/cards/paella.jpg",
     up: 800,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
 ];
 
-const RecordsList = () => {
-  const [records, setRecords] = useState([]);
-
-  useEffect(() => {
-    async function getRecords() {
-      const response = await fetch("http://127.0.0.1:5000/posts/");
-
-      if (!response.OK) {
-        const messsage = `An error occurred: ${response.statusText}`;
-        console.log(messsage);
-        return;
-      }
-
-      const records = await response.json();
-      setRecords(records);
-    }
-
-    getRecords();
-    return;
-  }, [records.length]);
-
-  // console.log(records);
-  return <h1>Something</h1>;
-};
-
-export const Home = () => {
+const Home = () => {
   const theme = useTheme();
   const [isSignedIn] = useContext(GlobalState);
+
+  // const [posts, setPosts] = useState([]);
+
+  // useEffect(() => {
+  //   async function getPosts() {
+  //     const response = await fetch(`http://localhost:5000/posts`);
+  //     if (!response.ok) {
+  //       const message = `An error oc`;
+  //       window.alert(message);
+  //       return;
+  //     }
+
+  //     const records = await response.json();
+  //     setPosts(records);
+  //   }
+
+  //   const postTimer = setInterval(() => {
+  //     getPosts();
+  //   }, 650);
+  //   return () => clearInterval(postTimer);
+  // }, [posts.length]);
 
   if (!isSignedIn) {
     return <Navigate to="/" />;
@@ -132,7 +127,7 @@ export const Home = () => {
       <Typography variant="p" sx={{ fontSize: "30px" }} color="primary">
         End of Posts!
       </Typography>
-      {<RecordsList />}
+
       <div>
         <svg width={100} height={50}>
           <rect
@@ -145,3 +140,5 @@ export const Home = () => {
     </Stack>
   );
 };
+
+export default Home;

@@ -82,7 +82,7 @@ const RecordsList = () => {
   return <h1>Something</h1>;
 };
 
-export const PostThread = () => {
+const PostThread = () => {
   const theme = useTheme();
   const [isSignedIn] = useContext(GlobalState);
   const [searchParams] = useSearchParams();
@@ -125,3 +125,5 @@ export const PostThread = () => {
     </Stack>
   );
 };
+
+export default PostThread;

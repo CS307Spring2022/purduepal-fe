@@ -17,26 +17,25 @@ import { useTheme } from "@mui/material/styles";
 import { ReactComponent as Logo } from "./../../icons/logo.svg";
 import { ReactComponent as Train } from "../../icons/trainSmall.svg";
 
-
-import GlobalState from '../../contexts/GlobalStates'
+import GlobalState from "../../contexts/GlobalStates";
 import { url } from "../../ENV";
 
 import "./SignIn.css";
 
-export const SignIn = () => {
+const SignIn = () => {
   const theme = useTheme();
-  const [isSignedIn,setIsSignedIn] = useContext(GlobalState);
+  const [isSignedIn, setIsSignedIn] = useContext(GlobalState);
   const navigate = useNavigate();
 
   // console.log(isSignedIn);
 
   useEffect(() => {
     if (isSignedIn) {
-      navigate('/home');
+      navigate("/home");
     }
   });
 
-  const [loginStatus,setLoginStatus] = useState("");
+  const [loginStatus, setLoginStatus] = useState("");
 
   const [email, setEmail] = useState("");
   const [invalidEmail, setInvalidEmail] = useState(false);
@@ -101,15 +100,14 @@ export const SignIn = () => {
     } else {
       setLoginStatus("");
       async function onSubmit() {
-
         // const email = localStorage.getItem("email");
         const signInDetails = {
           email: data.get("email"),
           password: data.get("password"),
         };
-  
+
         console.log(JSON.stringify(signInDetails));
-  
+
         const response = await fetch(`${url}/login`, {
           method: "POST",
           body: JSON.stringify(signInDetails),
@@ -118,25 +116,24 @@ export const SignIn = () => {
           },
         });
 
-        return response.json()
+        return response.json();
       }
-      const loginSuccess = onSubmit().then(result => {
-        if (result['return_code']) {
-          localStorage.setItem("email",result['email']);
-          localStorage.setItem("username",result['username']);
-          setIsSignedIn(true)
+      const loginSuccess = onSubmit().then((result) => {
+        if (result["return_code"]) {
+          localStorage.setItem("email", result["email"]);
+          localStorage.setItem("username", result["username"]);
+          setIsSignedIn(true);
           // navigate('/home');
-          navigate('/home');
+          navigate("/home");
           return true;
         }
         setLoginStatus("Login Failed! Check Email and Password!");
         setIsSignedIn(false);
-        return false
-      })
+        return false;
+      });
 
-      return loginSuccess
+      return loginSuccess;
     }
-
   };
 
   return (
@@ -159,7 +156,11 @@ export const SignIn = () => {
         <Typography
           component="h1"
           variant="h3"
-          style={{ marginTop: "10vh", textAlign: "center", color: theme.palette.primary.main }}
+          style={{
+            marginTop: "10vh",
+            textAlign: "center",
+            color: theme.palette.primary.main,
+          }}
         >
           PurduePAL
         </Typography>
@@ -183,7 +184,11 @@ export const SignIn = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Typography component="p" variant="p" sx={{color: theme.palette.error.main}}>
+          <Typography
+            component="p"
+            variant="p"
+            sx={{ color: theme.palette.error.main }}
+          >
             {loginStatus}
           </Typography>
           <Box
@@ -255,3 +260,5 @@ export const SignIn = () => {
     </Grid>
   );
 };
+
+export default SignIn;

@@ -4,12 +4,11 @@ import { Navigate } from "react-router-dom";
 
 import GlobalState from "../../contexts/GlobalStates";
 
-
-export const Notications = () => {
-  const [isSignedIn,setIsSignedIn] = useContext(GlobalState);
+const Notifications = () => {
+  const [isSignedIn] = useContext(GlobalState);
 
   if (!isSignedIn) {
-    return <Navigate to="/"/>;
+    return <Navigate to="/" />;
   }
 
   return (
@@ -23,3 +22,5 @@ export const Notications = () => {
     </Stack>
   );
 };
+
+export default Notifications;

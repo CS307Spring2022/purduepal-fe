@@ -4,8 +4,8 @@ import { useContext } from "react";
 
 import GlobalState from "../../contexts/GlobalStates";
 
-export const Saved = () => {
-  const [isSignedIn,setIsSignedIn] = useContext(GlobalState);
+const Saved = () => {
+  const [isSignedIn] = useContext(GlobalState);
 
   if (!isSignedIn) {
     return <Navigate to="/"/>;
@@ -22,3 +22,5 @@ export const Saved = () => {
     </Stack>
   );
 };
+
+export default Saved

@@ -13,14 +13,6 @@ import { Link } from "react-router-dom";
 
 import "./Content.css";
 
-function writeContent(data) {
-  if (data.parentId === "") {
-    return data.content;
-  }
-
-  return "Replying to @"+data.parentId+"\u000A\u000A"+data.content;
-}
-
 export const Content = ({ data }) => {
   const theme = useTheme();
 

@@ -100,15 +100,16 @@ const style = {
   p: 4,
 };
 
-export const ProfileDetails = () => {
+const ProfileDetails = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
   const widthCalc = `calc(100vw - ${matches ? "200" : "75"}px)`;
 
-  const [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams();
 
-  const [match] = useState(searchParams.get("user")===localStorage.getItem("username"))
-
+  const [match] = useState(
+    searchParams.get("user") === localStorage.getItem("username")
+  );
 
   const [isSignedIn] = useContext(GlobalState);
 
@@ -308,3 +309,5 @@ export const ProfileDetails = () => {
     </Grid>
   );
 };
+
+export default ProfileDetails;

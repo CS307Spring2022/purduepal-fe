@@ -1,11 +1,14 @@
 import { Grid, Button } from "@mui/material";
-import { ProfileDetails } from "./ProfileDetails";
+import { lazy } from "react";
+// import { ProfileDetails } from "./ProfileDetails";
 import { useContext} from "react";
 import { Navigate } from "react-router-dom";
 
 import GlobalState from "../../contexts/GlobalStates";
 
-export const Profile = () => {
+const ProfileDetails = lazy(() => import("./ProfileDetails"));
+
+const Profile = () => {
   const [isSignedIn] = useContext(GlobalState);
 
   if (!isSignedIn) {
@@ -23,3 +26,5 @@ export const Profile = () => {
     </Grid>
   );
 };
+
+export default Profile;

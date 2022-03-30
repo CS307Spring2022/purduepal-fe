@@ -16,7 +16,7 @@ import { ReactComponent as Train } from "../../icons/trainSmall.svg";
 
 import "./ForgotPassword.css";
 
-export const ForgotPassword = () => {
+const ForgotPassword = () => {
   const theme = useTheme();
 
   const [email, setEmail] = useState("");
@@ -137,7 +137,7 @@ export const ForgotPassword = () => {
               sx={{ alignItems: "center", textAlign: "center" }}
             >
               <Grid item xs={6} sm={6} md={6}>
-              <Link href="/purduepal-fe/signup" variant="body2">
+                <Link href="/purduepal-fe/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -151,3 +151,5 @@ export const ForgotPassword = () => {
     </Grid>
   );
 };
+
+export default ForgotPassword;

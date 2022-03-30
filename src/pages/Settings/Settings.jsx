@@ -11,7 +11,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import GlobalState from "../../contexts/GlobalStates";
 import {url} from "../../ENV";
 
-export const Settings = () => {
+const Settings = () => {
   const navigate = useNavigate();
   const [isSignedIn,setIsSignedIn] = useContext(GlobalState);
 
@@ -109,3 +109,5 @@ export const Settings = () => {
     </Stack>
   );
 };
+
+export default Settings;

@@ -22,7 +22,7 @@ import { url } from "../../ENV";
 
 import "./SignUp.css";
 
-export const SignUp = () => {
+const SignUp = () => {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -162,7 +162,7 @@ export const SignUp = () => {
       setInvalidEmail(true);
       valid = false;
     }
-    const standardizedPass = data.get("password").toLowerCase();
+    // const standardizedPass = data.get("password").toLowerCase();
     // const isCommon = MostCommonPasswords.has(standardizedPass) || MostCommonPasswords.has(data.get("password"));
     // console.log(data.get("password"),isCommon);
     if (data.get("password").length === 0) {
@@ -390,3 +390,5 @@ export const SignUp = () => {
     </Grid>
   );
 };
+
+export default SignUp;

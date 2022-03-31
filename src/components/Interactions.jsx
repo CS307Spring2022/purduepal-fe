@@ -17,8 +17,8 @@ const thousandFormat = format(",.2s");
 const numberFormat = format(",~s");
 let messageToSend = 5;
 
-export const Interactions = ({ up, down, uuid, isSaved }) => {
-  const [action, setAction] = useState(0); //temporary to test interaction
+export const Interactions = ({ up, down, initialReaction, uuid, isSaved }) => {
+  const [action, setAction] = useState(initialReaction); //temporary to test interaction
   // 1: upvote, 2: downvote, 3: undo up, 4: undo down, 5: uninteraction
 
   const [saved, setSaved] = useState(isSaved);

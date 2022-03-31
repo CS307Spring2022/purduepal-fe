@@ -15,6 +15,14 @@ import { Link } from "react-router-dom";
 export const ContentLarge = ({ data }) => {
   const theme = useTheme();
 
+  const dateTimeFormatter = new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
+
   return (
     <Card
       sx={{
@@ -31,7 +39,7 @@ export const ContentLarge = ({ data }) => {
           avatar={
             <Avatar
               sx={{ bgcolor: theme.palette.primary.main }}
-              aria-label={data.name}
+              aria-label={data.user.firstname + " " + data.user.lastName}
             ></Avatar>
           }
           action={
@@ -50,12 +58,12 @@ export const ContentLarge = ({ data }) => {
                 component={"p"}
                 color={"#c4c4c4"}
               >
-                {data.date}
+                {dateTimeFormatter.format(new Date(data.timestamp))}
               </Typography>
             </>
           }
-          title={data.name}
-          subheader={`@${data.username}`}
+          title={data.user.firstName + " " + data.user.lastName}
+        subheader={`@${data.user.username}`}
         />
       </Link>
       {data.img ? <CardMedia component="img" image={data.img} /> : null}
@@ -65,7 +73,11 @@ export const ContentLarge = ({ data }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Interactions up={data.up} down={data.down} />
+        <Interactions up={data.likeCount == null ? 0 : data.likeCount}
+          down={data.dislikeCount == null ? 0 : data.dislikeCount}
+          uuid={data._id}
+          initialReaction={data.reactionType}
+          isSaved={data.isSaved}/>
       </CardActions>
     </Card>
   );

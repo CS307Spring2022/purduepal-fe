@@ -76,7 +76,7 @@ export const Content = ({ data, saved }) => {
           {"Replying to @" + data.parentId}
         </Typography>
       ) : null}
-      {/* {data.img ? <CardMedia component="img" image={data.img} /> : null} */}
+      {data.img ? <CardMedia component="img" image={data.img} /> : null}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {data.content}
@@ -87,7 +87,8 @@ export const Content = ({ data, saved }) => {
           up={data.likeCount == null ? 0 : data.likeCount}
           down={data.dislikeCount == null ? 0 : data.dislikeCount}
           uuid={data._id}
-          isSaved={saved}
+          initialReaction={data.reactionType}
+          isSaved={data.isSaved}
         />
       </CardActions>
     </Card>

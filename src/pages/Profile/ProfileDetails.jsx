@@ -187,6 +187,8 @@ const ProfileDetails = ({ data }) => {
   const handleFileChange = (e) => {
     e.preventDefault();
 
+    let reader = new FileReader()
+    
     let formData = new FormData();
     formData.append("profileImage", e.target.files[0]);
     formData.append("email", localStorage.getItem("email"));

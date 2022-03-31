@@ -7,6 +7,7 @@ import {
   Fab,
   IconButton,
   Stack,
+  Input,
   TextField,
   Autocomplete,
   createFilterOptions,
@@ -20,10 +21,12 @@ import { url } from "../ENV";
 
 const filter = createFilterOptions();
 
-export default function FreeSoloCreateOption() {
+export default function FreeSoloCreateOption({ isComment }) {
   const [value, setValue] = useState(null);
   const [errorTopic, setErrorTopic] = useState(false);
   const [errorTopicMessage, setErrorTopicMessage] = useState("");
+
+  console.log(isComment)
 
   // const [searchParams] = useSearchParams();
 
@@ -41,13 +44,16 @@ export default function FreeSoloCreateOption() {
     }
   }, [value]);
 
+  if (isComment) {
+    return null;
+  }
   return (
     <Autocomplete
       value={value}
       onChange={(event, newValue) => {
         console.log(newValue);
         if (typeof newValue === "string") {
-          console.log(newValue, newValue.length);
+          console.log("here",newValue, newValue.length);
           if (newValue.length === 0 || newValue.length > 50) {
             setErrorTopic(true);
             setErrorTopicMessage("Topic must be 1-50 characters");
@@ -57,7 +63,8 @@ export default function FreeSoloCreateOption() {
             setValue({
               title: newValue,
             });
-            // localStorage.setItem("topicName",newValue);
+            console.log(newValue)
+            localStorage.setItem("topicName",newValue.title);
           }
         } else if (newValue && newValue.inputValue) {
           // Create a new value from the user input
@@ -74,11 +81,13 @@ export default function FreeSoloCreateOption() {
             setValue({
               title: newValue.inputValue,
             });
-            // localStorage.setItem("topicName",newValue);
+            console.log(newValue)
+            localStorage.setItem("topicName",newValue.inputValue);
           }
         } else {
           setValue(newValue);
-          // localStorage.setItem("topicName",newValue);
+          console.log(newValue);
+          localStorage.setItem("topicName",newValue.title);
 
         }
       }}
@@ -105,15 +114,19 @@ export default function FreeSoloCreateOption() {
       id="topic-chosen-autocomplete"
       options={topicOptions}
       getOptionLabel={(option) => {
+        // console.log(option)
         // Value selected with enter, right from the input
         if (typeof option === "string") {
+          console.log("hit 1")
           return option;
         }
         // Add "xxx" option created dynamically
         if (option.inputValue) {
+          console.log("hit 2")
           return option.inputValue;
         }
         // Regular option
+        console.log("hit 3")
         return option.title;
       }}
       renderOption={(props, option) => <li {...props}>{option.title}</li>}
@@ -171,32 +184,47 @@ export const CreatePost = () => {
     setErrorText(false);
     setErrorTextMessage("");
   };
-  const [post, setPost] = useState(false);
+  // const [post, setPost] = useState(false);
   const handleSubmit = () => {
     //dummy code to handle creating post
-    setPost(true);
-    setInterval(setPost(true), 1000);
-    setPost(false);
-    console.log(post);
+    // setPost(true);
+    // setInterval(setPost(true), 1000);
+    // setPost(false);
+    // console.log(post);
 
-    /* 
-    find topicName's local storage by searching through the file. There are 3 instances where topicName is set.
-    */
+    async function makePost() {
+      const body = {
+        "user": localStorage.getItem("email"),
+        "contentType": 0,
+        "content": postText,
+        "postImage": image,
+        "parentID": isComment ? searchParams.get("postId") : null,
+        "topicName": localStorage.getItem("topicName")
+      }
+      console.log(body)
+      let response;
+      response = await fetch(`http://localhost:5000/createPost`,{
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    // async function onSubmit() {
-    //   let formData = new FormData();
-    //   formData.append("topicName", localStorage.getItem("topicName"));
-    //   formData.append("user",localStorage.getItem("email"));
-    //   formData.append("user",localStorage.getItem("email"));
-    //   formData.append("contentType",postText ? "text" : "image");
-    //   formData.append("content", postText ? postText : "image");
+      if (!response.ok) {
+        const message = `An error oc`;
+        // window.alert(message);
+        console.log(response)
+        return;
+      }
 
-    //   await fetch(`${url}/createPost`, {
-    //     method: "POST",
-    //     // body:
-    //   });
-    // }
-  };
+      const records = await response.json();
+      // console.log(records)
+
+      }
+
+      makePost();
+    }
 
   const isURL = (str) => {
     let url;
@@ -209,6 +237,8 @@ export const CreatePost = () => {
 
     return true;
   };
+
+  const [image,setImage] = useState("");
 
   const [paste, setPaste] = useState(false);
   const [errorText, setErrorText] = useState(false);
@@ -244,6 +274,21 @@ export const CreatePost = () => {
       }
     }
   };
+
+  async function handleFileChange(e) {
+    e.preventDefault();
+
+    // let formData = new FormData();
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = (e) => {
+      let res = reader.result
+      console.log(res)
+      setImage(res)
+      console.log(image)
+    }
+  };
+
   return (
     <div>
       <Fab
@@ -274,7 +319,7 @@ export const CreatePost = () => {
             >
               {isComment ? "Reply to Post" : "Create a Post"}
             </Typography>
-            <FreeSoloCreateOption />
+            <FreeSoloCreateOption isComment={isComment} />
             <TextField
               multiline
               rows={4}
@@ -302,9 +347,18 @@ export const CreatePost = () => {
               }}
             />
             <Stack direction={"row"}>
-              <IconButton color="primary">
-                <AddAPhotoIcon />
-              </IconButton>
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="upload-pic"
+                type="file"
+                onChange={(e) => {let file = e.target.files[0]; console.log(file); let reader = new FileReader(); reader.readAsDataURL(file); console.log(reader.result); handleFileChange(e)}}
+              />
+              <label htmlFor="upload-pic">
+                <IconButton color="primary" variant="raised" component="span">
+                  <AddAPhotoIcon/>
+                </IconButton>
+              </label> 
             </Stack>
             <Button
               disabled={errorText ? true : false}

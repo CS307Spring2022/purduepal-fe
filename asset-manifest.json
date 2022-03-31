@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/purduepal-fe/static/css/main.f552fb60.css",
-    "main.js": "/purduepal-fe/static/js/main.49df75e8.js",
-    "static/js/544.79e5b4c3.chunk.js": "/purduepal-fe/static/js/544.79e5b4c3.chunk.js",
+    "main.js": "/purduepal-fe/static/js/main.529321b3.js",
+    "static/js/544.9a1735b0.chunk.js": "/purduepal-fe/static/js/544.9a1735b0.chunk.js",
     "static/css/717.de9f65ea.chunk.css": "/purduepal-fe/static/css/717.de9f65ea.chunk.css",
     "static/js/717.cd050809.chunk.js": "/purduepal-fe/static/js/717.cd050809.chunk.js",
     "static/js/768.9763ca4d.chunk.js": "/purduepal-fe/static/js/768.9763ca4d.chunk.js",
     "static/css/187.0e4dbee5.chunk.css": "/purduepal-fe/static/css/187.0e4dbee5.chunk.css",
     "static/js/187.54cd6797.chunk.js": "/purduepal-fe/static/js/187.54cd6797.chunk.js",
     "static/js/609.1a3642c7.chunk.js": "/purduepal-fe/static/js/609.1a3642c7.chunk.js",
-    "static/js/342.2bd6a313.chunk.js": "/purduepal-fe/static/js/342.2bd6a313.chunk.js",
+    "static/js/342.429fc85b.chunk.js": "/purduepal-fe/static/js/342.429fc85b.chunk.js",
     "static/css/454.9f7dbec7.chunk.css": "/purduepal-fe/static/css/454.9f7dbec7.chunk.css",
     "static/js/454.b92fa592.chunk.js": "/purduepal-fe/static/js/454.b92fa592.chunk.js",
     "static/js/491.c89f44b5.chunk.js": "/purduepal-fe/static/js/491.c89f44b5.chunk.js",
@@ -17,7 +17,7 @@
     "static/js/924.9fddbe32.chunk.js": "/purduepal-fe/static/js/924.9fddbe32.chunk.js",
     "static/js/253.46e7e7cd.chunk.js": "/purduepal-fe/static/js/253.46e7e7cd.chunk.js",
     "static/js/377.9c7bcbb3.chunk.js": "/purduepal-fe/static/js/377.9c7bcbb3.chunk.js",
-    "static/js/169.eb0b4501.chunk.js": "/purduepal-fe/static/js/169.eb0b4501.chunk.js",
+    "static/js/169.044e5852.chunk.js": "/purduepal-fe/static/js/169.044e5852.chunk.js",
     "static/js/889.d496366b.chunk.js": "/purduepal-fe/static/js/889.d496366b.chunk.js",
     "static/js/249.ba3a0cc1.chunk.js": "/purduepal-fe/static/js/249.ba3a0cc1.chunk.js",
     "static/js/48.5de22cc3.chunk.js": "/purduepal-fe/static/js/48.5de22cc3.chunk.js",
@@ -27,15 +27,15 @@
     "static/media/logo.svg": "/purduepal-fe/static/media/logo.36bba99d9c34abe431f1fe0cdea2d949.svg",
     "index.html": "/purduepal-fe/index.html",
     "main.f552fb60.css.map": "/purduepal-fe/static/css/main.f552fb60.css.map",
-    "main.49df75e8.js.map": "/purduepal-fe/static/js/main.49df75e8.js.map",
-    "544.79e5b4c3.chunk.js.map": "/purduepal-fe/static/js/544.79e5b4c3.chunk.js.map",
+    "main.529321b3.js.map": "/purduepal-fe/static/js/main.529321b3.js.map",
+    "544.9a1735b0.chunk.js.map": "/purduepal-fe/static/js/544.9a1735b0.chunk.js.map",
     "717.de9f65ea.chunk.css.map": "/purduepal-fe/static/css/717.de9f65ea.chunk.css.map",
     "717.cd050809.chunk.js.map": "/purduepal-fe/static/js/717.cd050809.chunk.js.map",
     "768.9763ca4d.chunk.js.map": "/purduepal-fe/static/js/768.9763ca4d.chunk.js.map",
     "187.0e4dbee5.chunk.css.map": "/purduepal-fe/static/css/187.0e4dbee5.chunk.css.map",
     "187.54cd6797.chunk.js.map": "/purduepal-fe/static/js/187.54cd6797.chunk.js.map",
     "609.1a3642c7.chunk.js.map": "/purduepal-fe/static/js/609.1a3642c7.chunk.js.map",
-    "342.2bd6a313.chunk.js.map": "/purduepal-fe/static/js/342.2bd6a313.chunk.js.map",
+    "342.429fc85b.chunk.js.map": "/purduepal-fe/static/js/342.429fc85b.chunk.js.map",
     "454.9f7dbec7.chunk.css.map": "/purduepal-fe/static/css/454.9f7dbec7.chunk.css.map",
     "454.b92fa592.chunk.js.map": "/purduepal-fe/static/js/454.b92fa592.chunk.js.map",
     "491.c89f44b5.chunk.js.map": "/purduepal-fe/static/js/491.c89f44b5.chunk.js.map",
@@ -43,13 +43,13 @@
     "924.9fddbe32.chunk.js.map": "/purduepal-fe/static/js/924.9fddbe32.chunk.js.map",
     "253.46e7e7cd.chunk.js.map": "/purduepal-fe/static/js/253.46e7e7cd.chunk.js.map",
     "377.9c7bcbb3.chunk.js.map": "/purduepal-fe/static/js/377.9c7bcbb3.chunk.js.map",
-    "169.eb0b4501.chunk.js.map": "/purduepal-fe/static/js/169.eb0b4501.chunk.js.map",
+    "169.044e5852.chunk.js.map": "/purduepal-fe/static/js/169.044e5852.chunk.js.map",
     "889.d496366b.chunk.js.map": "/purduepal-fe/static/js/889.d496366b.chunk.js.map",
     "249.ba3a0cc1.chunk.js.map": "/purduepal-fe/static/js/249.ba3a0cc1.chunk.js.map",
     "48.5de22cc3.chunk.js.map": "/purduepal-fe/static/js/48.5de22cc3.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f552fb60.css",
-    "static/js/main.49df75e8.js"
+    "static/js/main.529321b3.js"
   ]
 }

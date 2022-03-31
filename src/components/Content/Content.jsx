@@ -16,6 +16,14 @@ import "./Content.css";
 export const Content = ({ data }) => {
   const theme = useTheme();
 
+  const dateTimeFormatter = new Intl.DateTimeFormat('en',{
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute:"numeric"
+  });
+
   return (
     <Card
       sx={{
@@ -29,10 +37,10 @@ export const Content = ({ data }) => {
     >
       <CardHeader
         avatar={
-          <Link to={"/profile?user="+data["username"]}>
+          <Link to={"/profile?user="+data.user.username}>
             <Avatar
               sx={{ bgcolor: theme.palette.primary.main }}
-              aria-label={data.name}
+              aria-label={data.user.firstname+" "+data.user.lastName}
             ></Avatar>
           </Link>
         }
@@ -52,24 +60,24 @@ export const Content = ({ data }) => {
               component={"p"}
               color={"#c4c4c4"}
             >
-              {data.date}
+              {dateTimeFormatter.format(new Date(data.timestamp))}
             </Typography>
           </>
         }
-        title={data.name}
-        subheader={`@${data.username}`}
+        title={data.user.firstName+" "+data.user.lastName}
+        subheader={`@${data.user.username}`}
       />
-      {data.parentId!=="" ? <Typography sx={{fontWeight: 300, whiteSpace: "pre-wrap"}} variant="body1" color="text.primary">
+      {data.parentId!==undefined ? <Typography sx={{fontWeight: 300, whiteSpace: "pre-wrap"}} variant="body1" color="text.primary">
           {"Replying to @"+data.parentId}
         </Typography> : null}
-      {data.img ? <CardMedia component="img" image={data.img} /> : null}
+      {/* {data.img ? <CardMedia component="img" image={data.img} /> : null} */}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {data.content}
         </Typography>
       </CardContent>
       <CardActions>
-        <Interactions up={data.up} down={data.down} uuid={data.uuid} />
+        <Interactions up={data.likeCount==null ? 0 : data.likeCount} down={data.dislikeCount==null ? 0 : data.dislikeCount} uuid={data._id} />
       </CardActions>
     </Card>
   );

@@ -22,8 +22,9 @@ export const VerticalNavbar = () => {
     // if (page === "home") {
     //   return "/purduepal-fe";
     // }
-    return "/purduepal-fe/" + page.toLowerCase();
+    return "/purduepal-fe/" + page;
   };
+  console.log("profile?user="+localStorage.getItem("username"));
 
   // console.log(matches);
   const icons = [

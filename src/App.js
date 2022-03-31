@@ -93,19 +93,19 @@ function App() {
           >
             {isSignedIn && !on404 ? navigation : null}
             <Routes>
-              <Route path="/" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/forgotPassword" element={<ForgotPassword />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/explore" element={<Explore />} />
-              <Route path="/topicFeed" element={<TopicFeed />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/saved" element={<Saved />} />
-              <Route path="/notifications" element={<Notifications />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/postThread" element={<PostThread />} />
-              <Route path="/404" element={<Error404 />} />
-              <Route path="*" element={<Navigate replace to="/404" />} />
+              <Route caseSensitive path="/" element={<SignIn />} />
+              <Route caseSensitive path="/signup" element={<SignUp />} />
+              <Route caseSensitive path="/forgotPassword" element={<ForgotPassword />} />
+              <Route caseSensitive path="/home" element={<Home />} />
+              <Route caseSensitive path="/explore" element={<Explore />} />
+              <Route caseSensitive path="/topicFeed" element={<TopicFeed />} />
+              <Route caseSensitive path="/profile" element={<Profile />} />
+              <Route caseSensitive path="/saved" element={<Saved />} />
+              <Route caseSensitive path="/notifications" element={<Notifications />} />
+              <Route caseSensitive path="/settings" element={<Settings />} />
+              <Route caseSensitive path="/postThread" element={<PostThread />} />
+              <Route caseSensitive path="/404" element={<Error404 />} />
+              <Route caseSensitive path="*" element={<Navigate replace to="/404" />} />
             </Routes>
             {isSignedIn && isOnPosts && !on404 ? <CreatePost /> : null}
           </Stack>

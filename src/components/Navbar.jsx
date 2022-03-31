@@ -19,7 +19,7 @@ export const Navbar = () => {
     // if (page === "home") {
     //   return "/purduepal-fe";
     // }
-    return page.toLowerCase();
+    return page;
   };
 
   return (

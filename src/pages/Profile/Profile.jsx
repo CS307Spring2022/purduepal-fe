@@ -25,6 +25,8 @@ const Profile = () => {
       const loggedUser = localStorage.getItem("username");
       const profileUser = searchParams.get("user");
 
+      console.log(profileUser);
+
       const userBody = {
         "loggedEmail": loggedEmail,
         "loggedUser": loggedUser,
@@ -40,7 +42,7 @@ const Profile = () => {
       });
 
       if (!response.ok) {
-        const message = `An error oc`;
+        // const message = `An error oc`;
         // window.alert(message);
         console.log(response)
         return;
@@ -63,7 +65,7 @@ const Profile = () => {
     }
 
     getProfile()
-  },[]);
+  },[searchParams]);
 
   if (!isSignedIn) {
     return <Navigate to="/"/>;

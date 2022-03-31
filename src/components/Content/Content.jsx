@@ -13,15 +13,15 @@ import { Link } from "react-router-dom";
 
 import "./Content.css";
 
-export const Content = ({ data }) => {
+export const Content = ({ data, saved }) => {
   const theme = useTheme();
 
-  const dateTimeFormatter = new Intl.DateTimeFormat('en',{
+  const dateTimeFormatter = new Intl.DateTimeFormat("en", {
     year: "numeric",
     month: "long",
     day: "numeric",
     hour: "numeric",
-    minute:"numeric"
+    minute: "numeric",
   });
 
   return (
@@ -37,10 +37,10 @@ export const Content = ({ data }) => {
     >
       <CardHeader
         avatar={
-          <Link to={"/profile?user="+data.user.username}>
+          <Link to={"/profile?user=" + data.user.username}>
             <Avatar
               sx={{ bgcolor: theme.palette.primary.main }}
-              aria-label={data.user.firstname+" "+data.user.lastName}
+              aria-label={data.user.firstname + " " + data.user.lastName}
             ></Avatar>
           </Link>
         }
@@ -64,12 +64,18 @@ export const Content = ({ data }) => {
             </Typography>
           </>
         }
-        title={data.user.firstName+" "+data.user.lastName}
+        title={data.user.firstName + " " + data.user.lastName}
         subheader={`@${data.user.username}`}
       />
-      {data.parentId!==undefined ? <Typography sx={{fontWeight: 300, whiteSpace: "pre-wrap"}} variant="body1" color="text.primary">
-          {"Replying to @"+data.parentId}
-        </Typography> : null}
+      {data.parentId !== undefined ? (
+        <Typography
+          sx={{ fontWeight: 300, whiteSpace: "pre-wrap" }}
+          variant="body1"
+          color="text.primary"
+        >
+          {"Replying to @" + data.parentId}
+        </Typography>
+      ) : null}
       {/* {data.img ? <CardMedia component="img" image={data.img} /> : null} */}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
@@ -77,7 +83,12 @@ export const Content = ({ data }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Interactions up={data.likeCount==null ? 0 : data.likeCount} down={data.dislikeCount==null ? 0 : data.dislikeCount} uuid={data._id} />
+        <Interactions
+          up={data.likeCount == null ? 0 : data.likeCount}
+          down={data.dislikeCount == null ? 0 : data.dislikeCount}
+          uuid={data._id}
+          isSaved={saved}
+        />
       </CardActions>
     </Card>
   );

@@ -8,6 +8,7 @@ import {
   Modal,
   TextField,
   Button,
+  styled,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EditIcon from "@mui/icons-material/Edit";
@@ -28,6 +29,8 @@ import { useSearchParams } from "react-router-dom";
 
 import { url } from "../../ENV";
 import FollowingList from "../../components/FolllowingList";
+
+global.Buffer = global.Buffer || require("buffer").Buffer;
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -111,7 +114,7 @@ const ProfileDetails = ({ data }) => {
 
   const [searchParams] = useSearchParams();
 
-  const myEmail = localStorage.getItem("email")
+  // const myEmail = localStorage.getItem("email")
 
   const [match] = useState(
     searchParams.get("user") === localStorage.getItem("username")
@@ -158,33 +161,75 @@ const ProfileDetails = ({ data }) => {
   const [invalidChangeBio, setInvalidChangeBio] = useState(false);
   const [changeBioErrMsg, setChangeBioErrMsg] = useState("");
 
-  const [changeFollowingUsers, setChangeFollowingUsers] = useState(data.followingUsers);
+  const buf = Buffer.from(data.profilePic.split("base64,")[1]).toString(
+    "base64"
+  );
 
-  const justNames = []
-  for (let i=0; i <  data.followingUsers.length; i++) {
-    justNames.push(data.followingUsers[i]["name"])
+  console.log(buf);
+
+  useEffect(() => {
+    async function onSubmit() {
+      await fetch(`${url}/getUser`, {
+        method: "POST",
+        body: JSON.stringify({
+          profileUser: searchParams.get("user"),
+          loggedUser: localStorage.getItem("username"),
+        }),
+      });
+    }
+    onSubmit();
+  }, [searchParams]);
+
+  const Input = styled("input")({
+    display: "none",
+  });
+
+  const handleFileChange = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append("profileImage", e.target.files[0]);
+    formData.append("email", localStorage.getItem("email"));
+    async function onSubmit() {
+      await fetch(`${url}/addProfileImage`, {
+        method: "POST",
+        body: formData,
+      });
+    }
+    onSubmit();
+  };
+
+  const [changeFollowingUsers, setChangeFollowingUsers] = useState(
+    data.followingUsers
+  );
+
+  const justNames = [];
+  for (let i = 0; i < data.followingUsers.length; i++) {
+    justNames.push(data.followingUsers[i]["name"]);
   }
 
-  const [following,setFollowing] = useState(isSignedIn && match ? 0 : Number(data.loggedFollows)+1);
-  console.log(following)
+  const [following, setFollowing] = useState(
+    isSignedIn && match ? 0 : Number(data.loggedFollows) + 1
+  );
+  console.log(following);
 
   async function updateUserFollow() {
     const followRecipient = {
-      "follower": localStorage.getItem("email"),
-      "following": data._id
-    }
-    console.log(followRecipient)
+      follower: localStorage.getItem("email"),
+      following: data._id,
+    };
+    console.log(followRecipient);
     let response;
-    if (following===1) {
-      response = await fetch(`http://localhost:5000/followUser`,{
+    if (following === 1) {
+      response = await fetch(`http://localhost:5000/followUser`, {
         method: "POST",
         body: JSON.stringify(followRecipient),
         headers: {
           "Content-Type": "application/json",
         },
       });
-    } else if (following===2) {
-      response = await fetch(`http://localhost:5000/unfollowUser`,{
+    } else if (following === 2) {
+      response = await fetch(`http://localhost:5000/unfollowUser`, {
         method: "POST",
         body: JSON.stringify(followRecipient),
         headers: {
@@ -194,33 +239,33 @@ const ProfileDetails = ({ data }) => {
     }
 
     if (!response.ok) {
-      const message = `An error oc`;
+      // const message = `An error oc`;
       // window.alert(message);
-      console.log(response)
+      console.log(response);
       return;
     }
 
     const res = await response.json();
-    console.log(res)
+    console.log(res);
     if (res.message) {
-      response = await fetch(`http://localhost:5000/getFollowers`,{
+      response = await fetch(`http://localhost:5000/getFollowers`, {
         method: "POST",
-        body: JSON.stringify({"email":data._id}),
+        body: JSON.stringify({ email: data._id }),
         headers: {
           "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
-        const message = `An error oc`;
+        // const message = `An error oc`;
         // window.alert(message);
-        console.log(response)
+        console.log(response);
         return;
       }
-      
+
       const newFollowing = await response.json();
-      console.log(newFollowing)
-      setChangeFollowingUsers(newFollowing.newFollowing)
+      console.log(newFollowing);
+      setChangeFollowingUsers(newFollowing.newFollowing);
     }
   }
 
@@ -264,9 +309,31 @@ const ProfileDetails = ({ data }) => {
           spacing={4}
         >
           <Grid sm={2} item>
-            <IconButton color={"primary"}>
-              <AccountCircleIcon sx={{ fontSize: "100px" }} />
-            </IconButton>
+            <label htmlFor="upload-profile-picture">
+              <Input
+                accept="image/png"
+                id="upload-profile-picture"
+                type="file"
+                onChange={(e) => handleFileChange(e)}
+              />
+              <IconButton
+                color={"primary"}
+                component="span"
+                aria-label="upload profile picture"
+              >
+                {data.profilePic ? (
+                  <img
+                    // src={`data:image/png;base64,${buf}`}
+                    src={data.profilePic}
+                    alt="profile pic of user"
+                    width={100}
+                    height={100}
+                  />
+                ) : (
+                  <AccountCircleIcon sx={{ fontSize: "100px" }} />
+                )}
+              </IconButton>
+            </label>
           </Grid>
           <Grid sm={7} item>
             <Stack direction="column">
@@ -288,12 +355,19 @@ const ProfileDetails = ({ data }) => {
                 <EditIcon />
               </IconButton>
             ) : (
-              <IconButton color="primary" onClick={() => {
-                updateUserFollow();
-                setFollowing(following===1 ? 2 : 1);
-              }}>
-                {following===2 ? <FollowFillIcon color="primary"/> : <FollowEmptyIcon color="primary"/>}
-                {following===2 ? "Following" : "Follow"}
+              <IconButton
+                color="primary"
+                onClick={() => {
+                  updateUserFollow();
+                  setFollowing(following === 1 ? 2 : 1);
+                }}
+              >
+                {following === 2 ? (
+                  <FollowFillIcon color="primary" />
+                ) : (
+                  <FollowEmptyIcon color="primary" />
+                )}
+                {following === 2 ? "Following" : "Follow"}
               </IconButton>
             )}
             <Modal
@@ -354,7 +428,11 @@ const ProfileDetails = ({ data }) => {
                 <Button
                   variant="filled"
                   color={"success"}
-                  disabled={invalidChangeBio || invalidChangeLastName || invalidChangeFirstName}
+                  disabled={
+                    invalidChangeBio ||
+                    invalidChangeLastName ||
+                    invalidChangeFirstName
+                  }
                   onClick={handleClose}
                 >
                   Submit
@@ -377,9 +455,17 @@ const ProfileDetails = ({ data }) => {
             isTopic={false}
           />
 
-          <FollowingList property={"Following"} data={data.usersFollowing} isTopic={false} />
+          <FollowingList
+            property={"Following"}
+            data={data.usersFollowing}
+            isTopic={false}
+          />
 
-          <FollowingList property={"Topics"} data={data.topicsFollowing} isTopic />
+          <FollowingList
+            property={"Topics"}
+            data={data.topicsFollowing}
+            isTopic
+          />
         </Stack>
       </Grid>
       <Grid item sm={12}>

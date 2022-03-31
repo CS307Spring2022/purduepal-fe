@@ -54,7 +54,7 @@ const TopicCard = ({ data }) => {
     }
 
     if (!response.ok) {
-      const message = `An error oc`;
+      // const message = `An error oc`;
       // window.alert(message);
       console.log(response)
       return;

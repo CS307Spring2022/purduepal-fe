@@ -30,7 +30,7 @@ import { useSearchParams } from "react-router-dom";
 import { url } from "../../ENV";
 import FollowingList from "../../components/FolllowingList";
 
-global.Buffer = global.Buffer || require("buffer").Buffer;
+// global.Buffer = global.Buffer || require("buffer").Buffer;
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -158,14 +158,14 @@ const ProfileDetails = ({ data }) => {
   const [changeLastNameErrMsg, setChangeLastNameErrMsg] = useState("");
 
   const [changeBio, setChangeBio] = useState(data.bio);
-  const [invalidChangeBio, setInvalidChangeBio] = useState(false);
+  const [invalidChangeBio, setInvalidChangeBio] = useState(true);
   const [changeBioErrMsg, setChangeBioErrMsg] = useState("");
 
-  const buf = Buffer.from(data.profilePic.split("base64,")[1]).toString(
-    "base64"
-  );
+  // const buf = Buffer.from(data.profilePic.split("base64,")[1]).toString(
+  //   "base64"
+  // );
 
-  console.log(buf);
+  // console.log(buf);
 
   useEffect(() => {
     async function onSubmit() {
@@ -285,6 +285,8 @@ const ProfileDetails = ({ data }) => {
     if (changeFirstName.length > 0 && changeFirstNameErrMsg) {
       setChangeFirstNameErrMsg("");
       setInvalidChangeFirstName(false);
+    } else {
+      setInvalidChangeBio(true);
     }
   }, [changeFirstName, changeFirstNameErrMsg]);
 
@@ -292,13 +294,17 @@ const ProfileDetails = ({ data }) => {
     if (changeLastName.length > 0 && changeLastNameErrMsg) {
       setChangeLastNameErrMsg("");
       setInvalidChangeLastName(false);
+    } else {
+      setInvalidChangeBio(true);
     }
   }, [changeLastName, changeLastNameErrMsg]);
 
   useEffect(() => {
-    if (changeBio.length > 0 && changeBioErrMsg && changeBio.length < 240) {
+    if (changeBio.length > 0 && changeBio.length < 240) {
       setChangeBioErrMsg("");
       setInvalidChangeBio(false);
+    } else {
+      setInvalidChangeBio(true);
     }
   }, [changeBio, changeBioErrMsg]);
 

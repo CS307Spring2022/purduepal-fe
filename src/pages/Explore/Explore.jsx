@@ -113,6 +113,7 @@ const Explore = () => {
       const records = await response.json();
       // console.log(records[0]["_id"])
       setTopicLists(records);
+      console.log(records);
     }
 
     // const topicTimer = setInterval(() => {

@@ -35,7 +35,7 @@ const TopicCard = ({ data }) => {
         backgroundColor: "#121212",
       }}
     >
-      <CardHeader title={data.topicName} />
+      <CardHeader title={data._id.replace(/"/g,'')} />
       <IconButton href={"/purduepal-fe/topicFeed?topic=" + data.topicName}>
         <ExploreIcon color="primary" />
         <Typography color="primary" sx={{ marginLeft: 1 }}>
@@ -69,6 +69,7 @@ const Explore = () => {
 
       const records = await response.json();
       setTopicLists(records);
+      console.log(records);
     }
 
     const topicTimer = setInterval(() => {

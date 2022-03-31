@@ -19,7 +19,7 @@ export const Navbar = () => {
     // if (page === "home") {
     //   return "/purduepal-fe";
     // }
-    return "/purduepal-fe/" + page.toLowerCase();
+    return page.toLowerCase();
   };
 
   return (
@@ -35,6 +35,7 @@ export const Navbar = () => {
           value={value}
           onChange={(event, newValue) => {
             setValue(newValue);
+            console.log(newValue);
           }}
         >
           <BottomNavigationAction
@@ -60,8 +61,10 @@ export const Navbar = () => {
           />
           <BottomNavigationAction
             label="Profile"
-            to={routeParser("profile")}
-            value={routeParser("profile")}
+            to={routeParser("profile?user=" + localStorage.getItem("username"))}
+            value={routeParser(
+              "profile?user=" + localStorage.getItem("username")
+            )}
             component={Link}
             icon={<AccountCircleRoundedIcon />}
           />

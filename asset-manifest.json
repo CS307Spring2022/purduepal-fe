@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/purduepal-fe/static/css/main.d7781678.css",
-    "main.js": "/purduepal-fe/static/js/main.c035c371.js",
+    "main.js": "/purduepal-fe/static/js/main.2c88f5ca.js",
     "static/js/544.1a03e26c.chunk.js": "/purduepal-fe/static/js/544.1a03e26c.chunk.js",
     "static/css/717.de9f65ea.chunk.css": "/purduepal-fe/static/css/717.de9f65ea.chunk.css",
     "static/js/717.2aa08598.chunk.js": "/purduepal-fe/static/js/717.2aa08598.chunk.js",
-    "static/js/25.3b97c2ca.chunk.js": "/purduepal-fe/static/js/25.3b97c2ca.chunk.js",
+    "static/js/25.c61f6a4a.chunk.js": "/purduepal-fe/static/js/25.c61f6a4a.chunk.js",
     "static/css/187.0e4dbee5.chunk.css": "/purduepal-fe/static/css/187.0e4dbee5.chunk.css",
     "static/js/187.54cd6797.chunk.js": "/purduepal-fe/static/js/187.54cd6797.chunk.js",
     "static/js/609.1a3642c7.chunk.js": "/purduepal-fe/static/js/609.1a3642c7.chunk.js",
@@ -26,11 +26,11 @@
     "static/media/logo.svg": "/purduepal-fe/static/media/logo.36bba99d9c34abe431f1fe0cdea2d949.svg",
     "index.html": "/purduepal-fe/index.html",
     "main.d7781678.css.map": "/purduepal-fe/static/css/main.d7781678.css.map",
-    "main.c035c371.js.map": "/purduepal-fe/static/js/main.c035c371.js.map",
+    "main.2c88f5ca.js.map": "/purduepal-fe/static/js/main.2c88f5ca.js.map",
     "544.1a03e26c.chunk.js.map": "/purduepal-fe/static/js/544.1a03e26c.chunk.js.map",
     "717.de9f65ea.chunk.css.map": "/purduepal-fe/static/css/717.de9f65ea.chunk.css.map",
     "717.2aa08598.chunk.js.map": "/purduepal-fe/static/js/717.2aa08598.chunk.js.map",
-    "25.3b97c2ca.chunk.js.map": "/purduepal-fe/static/js/25.3b97c2ca.chunk.js.map",
+    "25.c61f6a4a.chunk.js.map": "/purduepal-fe/static/js/25.c61f6a4a.chunk.js.map",
     "187.0e4dbee5.chunk.css.map": "/purduepal-fe/static/css/187.0e4dbee5.chunk.css.map",
     "187.54cd6797.chunk.js.map": "/purduepal-fe/static/js/187.54cd6797.chunk.js.map",
     "609.1a3642c7.chunk.js.map": "/purduepal-fe/static/js/609.1a3642c7.chunk.js.map",
@@ -48,6 +48,6 @@
   },
   "entrypoints": [
     "static/css/main.d7781678.css",
-    "static/js/main.c035c371.js"
+    "static/js/main.2c88f5ca.js"
   ]
 }

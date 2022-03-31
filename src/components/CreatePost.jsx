@@ -7,7 +7,7 @@ import {
   Fab,
   IconButton,
   Stack,
-  Input,
+  // Input,
   TextField,
   Autocomplete,
   createFilterOptions,
@@ -17,7 +17,7 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { CommentRounded } from "@mui/icons-material";
 import { useTheme, useMediaQuery } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
-import { url } from "../ENV";
+// import { url } from "../ENV";
 
 const filter = createFilterOptions();
 
@@ -26,7 +26,7 @@ export default function FreeSoloCreateOption({ isComment }) {
   const [errorTopic, setErrorTopic] = useState(false);
   const [errorTopicMessage, setErrorTopicMessage] = useState("");
 
-  console.log(isComment)
+  console.log(isComment);
 
   // const [searchParams] = useSearchParams();
 
@@ -53,7 +53,7 @@ export default function FreeSoloCreateOption({ isComment }) {
       onChange={(event, newValue) => {
         console.log(newValue);
         if (typeof newValue === "string") {
-          console.log("here",newValue, newValue.length);
+          console.log("here", newValue, newValue.length);
           if (newValue.length === 0 || newValue.length > 50) {
             setErrorTopic(true);
             setErrorTopicMessage("Topic must be 1-50 characters");
@@ -63,8 +63,8 @@ export default function FreeSoloCreateOption({ isComment }) {
             setValue({
               title: newValue,
             });
-            console.log(newValue)
-            localStorage.setItem("topicName",newValue.title);
+            console.log(newValue);
+            localStorage.setItem("topicName", newValue.title);
           }
         } else if (newValue && newValue.inputValue) {
           // Create a new value from the user input
@@ -81,14 +81,13 @@ export default function FreeSoloCreateOption({ isComment }) {
             setValue({
               title: newValue.inputValue,
             });
-            console.log(newValue)
-            localStorage.setItem("topicName",newValue.inputValue);
+            console.log(newValue);
+            localStorage.setItem("topicName", newValue.inputValue);
           }
         } else {
           setValue(newValue);
           console.log(newValue);
-          localStorage.setItem("topicName",newValue.title);
-
+          localStorage.setItem("topicName", newValue.title);
         }
       }}
       filterOptions={(options, params) => {
@@ -117,16 +116,16 @@ export default function FreeSoloCreateOption({ isComment }) {
         // console.log(option)
         // Value selected with enter, right from the input
         if (typeof option === "string") {
-          console.log("hit 1")
+          console.log("hit 1");
           return option;
         }
         // Add "xxx" option created dynamically
         if (option.inputValue) {
-          console.log("hit 2")
+          console.log("hit 2");
           return option.inputValue;
         }
         // Regular option
-        console.log("hit 3")
+        console.log("hit 3");
         return option.title;
       }}
       renderOption={(props, option) => <li {...props}>{option.title}</li>}
@@ -169,7 +168,7 @@ const ariaLabel = { "aria-label": "description" };
 export const CreatePost = () => {
   const [searchParams] = useSearchParams();
 
-  const [isComment, setIsComment] = useState(
+  const [isComment] = useState(
     searchParams.get("postId") !== null
   );
   const theme = useTheme();
@@ -194,16 +193,16 @@ export const CreatePost = () => {
 
     async function makePost() {
       const body = {
-        "user": localStorage.getItem("email"),
-        "contentType": 0,
-        "content": postText,
-        "postImage": image,
-        "parentID": isComment ? searchParams.get("postId") : null,
-        "topicName": localStorage.getItem("topicName")
-      }
-      console.log(body)
+        user: localStorage.getItem("email"),
+        contentType: 0,
+        content: postText,
+        postImage: image,
+        parentID: isComment ? searchParams.get("postId") : null,
+        topicName: localStorage.getItem("topicName"),
+      };
+      console.log(body);
       let response;
-      response = await fetch(`http://localhost:5000/createPost`,{
+      response = await fetch(`http://localhost:5000/createPost`, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
@@ -212,20 +211,19 @@ export const CreatePost = () => {
       });
 
       if (!response.ok) {
-        const message = `An error oc`;
+        // const message = `An error oc`;
         // window.alert(message);
-        console.log(response)
+        console.log(response);
         return;
       }
 
-      const records = await response.json();
+      // const records = await response.json();
       // console.log(records)
-
-      }
-
-      makePost();
-      handleClose();
     }
+
+    makePost();
+    handleClose();
+  };
 
   const isURL = (str) => {
     let url;
@@ -239,7 +237,7 @@ export const CreatePost = () => {
     return true;
   };
 
-  const [image,setImage] = useState("");
+  const [image, setImage] = useState("");
 
   const [paste, setPaste] = useState(false);
   const [errorText, setErrorText] = useState(false);
@@ -280,15 +278,15 @@ export const CreatePost = () => {
     e.preventDefault();
 
     // let formData = new FormData();
-    let reader = new FileReader()
-    reader.readAsDataURL(e.target.files[0])
+    let reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
     reader.onload = (e) => {
-      let res = reader.result
-      console.log(res)
-      setImage(res)
-      console.log(image)
-    }
-  };
+      let res = reader.result;
+      console.log(res);
+      setImage(res);
+      console.log(image);
+    };
+  }
 
   return (
     <div>
@@ -350,16 +348,23 @@ export const CreatePost = () => {
             <Stack direction={"row"}>
               <input
                 accept="image/*"
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
                 id="upload-pic"
                 type="file"
-                onChange={(e) => {let file = e.target.files[0]; console.log(file); let reader = new FileReader(); reader.readAsDataURL(file); console.log(reader.result); handleFileChange(e)}}
+                onChange={(e) => {
+                  let file = e.target.files[0];
+                  console.log(file);
+                  let reader = new FileReader();
+                  reader.readAsDataURL(file);
+                  console.log(reader.result);
+                  handleFileChange(e);
+                }}
               />
               <label htmlFor="upload-pic">
                 <IconButton color="primary" variant="raised" component="span">
-                  <AddAPhotoIcon/>
+                  <AddAPhotoIcon />
                 </IconButton>
-              </label> 
+              </label>
             </Stack>
             <Button
               disabled={errorText ? true : false}

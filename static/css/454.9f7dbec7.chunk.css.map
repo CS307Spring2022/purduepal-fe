@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/454.9f7dbec7.chunk.css","mappings":"AAAA,yBACI,0BAAmB,CAAnB,kBACJ","sources":["pages/Profile/loader.css"],"sourcesContent":[".MuiCircularProgress-svg {\n    transform: scale(5);\n}"],"names":[],"sourceRoot":""}

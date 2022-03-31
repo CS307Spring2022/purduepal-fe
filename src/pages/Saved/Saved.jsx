@@ -31,7 +31,7 @@ const Saved = () => {
       }
 
       const records = await response.json();
-      // console.log(records)
+      console.log(records)
       setPosts(records);
     }
 

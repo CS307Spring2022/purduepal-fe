@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import {
   NotificationsOutlined as FollowEmptyIcon,
+  NotificationsActiveRounded as FollowFillIcon,
   Explore as ExploreIcon,
 } from "@mui/icons-material";
 import { Navigate } from "react-router-dom";
@@ -24,6 +25,45 @@ import GlobalState from "../../contexts/GlobalStates";
 // ];
 
 const TopicCard = ({ data }) => {
+  const [followed,setFollowed] = useState(data.usersFollowing.includes(localStorage.getItem("email")));
+  const topic = data._id.replaceAll('"','');
+
+  async function updateFollow() {
+    const followRecipient = {
+      "email": localStorage.getItem("email"),
+      "topic": topic
+    }
+    console.log(followRecipient)
+    let response;
+    if (!followed) {
+      response = await fetch(`http://localhost:5000/followTopic`,{
+        method: "POST",
+        body: JSON.stringify(followRecipient),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } else {
+      response = await fetch(`http://localhost:5000/unfollowTopic`,{
+        method: "POST",
+        body: JSON.stringify(followRecipient),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    if (!response.ok) {
+      const message = `An error oc`;
+      // window.alert(message);
+      console.log(response)
+      return;
+    }
+
+    const msg = await response.json();
+    console.log(msg)
+  }
+
   return (
     <Card
       sx={{
@@ -35,15 +75,18 @@ const TopicCard = ({ data }) => {
         backgroundColor: "#121212",
       }}
     >
-      <CardHeader title={data.topicName} />
-      <IconButton href={"/purduepal-fe/topicFeed?topic=" + data.topicName}>
+      <CardHeader title={topic} />
+      <IconButton href={"/purduepal-fe/topicFeed?topic=" + topic}>
         <ExploreIcon color="primary" />
         <Typography color="primary" sx={{ marginLeft: 1 }}>
           Explore
         </Typography>
       </IconButton>
-      <IconButton>
-        <FollowEmptyIcon color="primary" />
+      <IconButton onClick={() => {
+          updateFollow();
+          setFollowed(!followed);
+        }}>
+        {followed ? <FollowFillIcon color="primary" /> : <FollowEmptyIcon color="primary"/>}
         <Typography color="primary" sx={{ marginLeft: 1 }}>
           Follow
         </Typography>
@@ -68,14 +111,16 @@ const Explore = () => {
       }
 
       const records = await response.json();
+      // console.log(records[0]["_id"])
       setTopicLists(records);
     }
 
-    const topicTimer = setInterval(() => {
-      getTopics();
-    }, 650);
-    return () => clearInterval(topicTimer);
-  }, [topicLists.length]);
+    // const topicTimer = setInterval(() => {
+    //   getTopics();
+    // }, 650);
+    // return () => clearInterval(topicTimer);
+    getTopics()
+  }, []);
 
   if (!isSignedIn) {
     return <Navigate to="/" />;

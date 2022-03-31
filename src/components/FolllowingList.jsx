@@ -34,7 +34,6 @@ const DisplayCard = ({ name, bio }) => {
       <CardHeader
         avatar={<Avatar aria-label="recipe"></Avatar>}
         title={name}
-        subheader={bio}
       />
     </Card>
   );
@@ -47,7 +46,7 @@ const DisplayTopic = ({ name }) => {
   );
 };
 
-export default function FollowingList({ number, property, isTopic }) {
+export default function FollowingList({ number, property, data, isTopic }) {
   const theme = useTheme();
 
 
@@ -60,7 +59,7 @@ export default function FollowingList({ number, property, isTopic }) {
       <Button onClick={handleOpen} disableRipple disableElevation>
         <Stack direction="row" spacing={0.5}>
           <Typography variant="subtitle2">
-            {number ? number : topics.length}
+            {number ? number : data.length}
           </Typography>
           <Typography variant="subtitle2" color="#c4c4c4">
             {property}
@@ -79,11 +78,11 @@ export default function FollowingList({ number, property, isTopic }) {
               <strong>{property}</strong>
             </Typography>
             {isTopic
-              ? topics.map((d) => {
+              ? data.map((d) => {
                   return <DisplayTopic key={d} name={d} />;
                 })
-              : followingList.map((d, i) => {
-                  return <DisplayCard key={i} name={d.name} bio={d.bio} />;
+              : data.map((d, i) => {
+                  return <DisplayCard key={i} name={d.name} />;
                 })}
           </Stack>
         </Box>

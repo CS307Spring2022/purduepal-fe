@@ -17,6 +17,10 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import {
+  NotificationsOutlined as FollowEmptyIcon,
+  NotificationsActiveRounded as FollowFillIcon,
+} from "@mui/icons-material";
 import { useEffect, useContext } from "react";
 import GlobalState from "../../contexts/GlobalStates";
 
@@ -100,12 +104,14 @@ const style = {
   p: 4,
 };
 
-const ProfileDetails = () => {
+const ProfileDetails = ({ data }) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
   const widthCalc = `calc(100vw - ${matches ? "200" : "75"}px)`;
 
   const [searchParams] = useSearchParams();
+
+  const myEmail = localStorage.getItem("email")
 
   const [match] = useState(
     searchParams.get("user") === localStorage.getItem("username")
@@ -121,15 +127,15 @@ const ProfileDetails = () => {
     async function onSubmit() {
       const email = localStorage.getItem("email");
       const editedPerson = {
-        firstName: firstName,
-        lastName: lastName,
-        bio: bio,
+        firstName: changeFirstName,
+        lastName: changeLastName,
+        bio: changeBio,
         email: email,
       };
 
       console.log(JSON.stringify(editedPerson));
 
-      await fetch(`${url}/update`, {
+      await fetch(`${url}/updateUserInfo`, {
         method: "POST",
         body: JSON.stringify(editedPerson),
         headers: {
@@ -140,38 +146,104 @@ const ProfileDetails = () => {
     onSubmit();
   };
 
-  const [firstName, setFirstName] = useState("Dr. Stephen");
-  const [invalidFirstName, setInvalidFirstName] = useState(false);
-  const [firstNameErrMsg, setFirstNameErrMsg] = useState("");
+  const [changeFirstName, setChangeFirstName] = useState(data.firstName);
+  const [invalidChangeFirstName, setInvalidChangeFirstName] = useState(false);
+  const [changeFirstNameErrMsg, setChangeFirstNameErrMsg] = useState("");
 
-  const [lastName, setLastName] = useState("Strange");
-  const [invalidLastName, setInvalidLastName] = useState(false);
-  const [lastNameErrMsg, setLastNameErrMsg] = useState("");
+  const [changeLastName, setChangeLastName] = useState(data.lastName);
+  const [invalidChangeLastName, setInvalidChangeLastName] = useState(false);
+  const [changeLastNameErrMsg, setChangeLastNameErrMsg] = useState("");
 
-  const [bio, setBio] = useState("MD. Sorcerer Supreme. Avenger.");
-  const [invalidBio, setInvalidBio] = useState(false);
-  const [bioErrMsg, setBioErrMsg] = useState("");
+  const [changeBio, setChangeBio] = useState(data.bio);
+  const [invalidChangeBio, setInvalidChangeBio] = useState(false);
+  const [changeBioErrMsg, setChangeBioErrMsg] = useState("");
+
+  const [changeFollowingUsers, setChangeFollowingUsers] = useState(data.followingUsers);
+
+  const justNames = []
+  for (let i=0; i <  data.followingUsers.length; i++) {
+    justNames.push(data.followingUsers[i]["name"])
+  }
+
+  const [following,setFollowing] = useState(isSignedIn && match ? 0 : Number(data.loggedFollows)+1);
+  console.log(following)
+
+  async function updateUserFollow() {
+    const followRecipient = {
+      "follower": localStorage.getItem("email"),
+      "following": data._id
+    }
+    console.log(followRecipient)
+    let response;
+    if (following===1) {
+      response = await fetch(`http://localhost:5000/followUser`,{
+        method: "POST",
+        body: JSON.stringify(followRecipient),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } else if (following===2) {
+      response = await fetch(`http://localhost:5000/unfollowUser`,{
+        method: "POST",
+        body: JSON.stringify(followRecipient),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    if (!response.ok) {
+      const message = `An error oc`;
+      // window.alert(message);
+      console.log(response)
+      return;
+    }
+
+    const res = await response.json();
+    console.log(res)
+    if (res.message) {
+      response = await fetch(`http://localhost:5000/getFollowers`,{
+        method: "POST",
+        body: JSON.stringify({"email":data._id}),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const message = `An error oc`;
+        // window.alert(message);
+        console.log(response)
+        return;
+      }
+      
+      const newFollowing = await response.json();
+      console.log(newFollowing)
+      setChangeFollowingUsers(newFollowing.newFollowing)
+    }
+  }
 
   useEffect(() => {
-    if (firstName.length > 0 && firstNameErrMsg) {
-      setFirstNameErrMsg("");
-      setInvalidFirstName(false);
+    if (changeFirstName.length > 0 && changeFirstNameErrMsg) {
+      setChangeFirstNameErrMsg("");
+      setInvalidChangeFirstName(false);
     }
-  }, [firstName, firstNameErrMsg]);
+  }, [changeFirstName, changeFirstNameErrMsg]);
 
   useEffect(() => {
-    if (lastName.length > 0 && lastNameErrMsg) {
-      setLastNameErrMsg("");
-      setInvalidLastName(false);
+    if (changeLastName.length > 0 && changeLastNameErrMsg) {
+      setChangeLastNameErrMsg("");
+      setInvalidChangeLastName(false);
     }
-  }, [lastName, lastNameErrMsg]);
+  }, [changeLastName, changeLastNameErrMsg]);
 
   useEffect(() => {
-    if (bio.length > 0 && bioErrMsg && bio.length < 240) {
-      setBioErrMsg("");
-      setInvalidBio(false);
+    if (changeBio.length > 0 && changeBioErrMsg && changeBio.length < 240) {
+      setChangeBioErrMsg("");
+      setInvalidChangeBio(false);
     }
-  }, [bio, bioErrMsg]);
+  }, [changeBio, changeBioErrMsg]);
 
   return (
     <Grid container spacing={2}>
@@ -199,10 +271,10 @@ const ProfileDetails = () => {
           <Grid sm={7} item>
             <Stack direction="column">
               <Typography color={"#fff"} variant={"h4"}>
-                {`${firstName} ${lastName}`}
+                {`${changeFirstName} ${changeLastName}`}
               </Typography>
               <Typography color={"#ddd"} variant={"subtitle1"}>
-                @drstrange
+                {`@${data.username}`}
               </Typography>
             </Stack>
           </Grid>
@@ -216,7 +288,13 @@ const ProfileDetails = () => {
                 <EditIcon />
               </IconButton>
             ) : (
-              <Button>Follow</Button>
+              <IconButton color="primary" onClick={() => {
+                updateUserFollow();
+                setFollowing(following===1 ? 2 : 1);
+              }}>
+                {following===2 ? <FollowFillIcon color="primary"/> : <FollowEmptyIcon color="primary"/>}
+                {following===2 ? "Following" : "Follow"}
+              </IconButton>
             )}
             <Modal
               open={open}
@@ -238,27 +316,27 @@ const ProfileDetails = () => {
                   margin="normal"
                   required
                   fullWidth
-                  id="FirstName"
+                  id="changeFirstName"
                   label="First Name"
-                  name="firstName"
+                  name="changeFirstName"
                   autoComplete="given-name"
                   autoFocus
-                  error={invalidFirstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  helperText={firstNameErrMsg}
+                  error={invalidChangeFirstName}
+                  onChange={(e) => setChangeFirstName(e.target.value)}
+                  helperText={changeFirstNameErrMsg}
                 />
                 <TextField
                   margin="normal"
                   required
                   fullWidth
-                  id="Lastname"
+                  id="changeLastName"
                   label="Last Name"
-                  name="lastName"
+                  name="changeLastName"
                   autoComplete="given-name"
                   autoFocus
-                  error={invalidLastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  helperText={lastNameErrMsg}
+                  error={invalidChangeLastName}
+                  onChange={(e) => setChangeLastName(e.target.value)}
+                  helperText={changeLastNameErrMsg}
                 />
                 <TextField
                   margin="normal"
@@ -269,13 +347,14 @@ const ProfileDetails = () => {
                   name="bio"
                   autoComplete="given-name"
                   autoFocus
-                  error={invalidBio}
-                  onChange={(e) => setBio(e.target.value)}
-                  helperText={bioErrMsg}
+                  error={invalidChangeBio}
+                  onChange={(e) => setChangeBio(e.target.value)}
+                  helperText={changeBioErrMsg}
                 />
                 <Button
                   variant="filled"
                   color={"success"}
+                  disabled={invalidChangeBio || invalidChangeLastName || invalidChangeFirstName}
                   onClick={handleClose}
                 >
                   Submit
@@ -287,20 +366,20 @@ const ProfileDetails = () => {
       </Grid>
       <Grid item ml={2.5}>
         <Typography variant="h6" color="#fff">
-          {`${bio}`}
+          {`${changeBio}`}
         </Typography>
       </Grid>
       <Grid item ml={2.5} sm={12}>
         <Stack direction={"row"} spacing={3}>
           <FollowingList
-            number={"10M"}
             property={"Followers"}
+            data={changeFollowingUsers}
             isTopic={false}
           />
 
-          <FollowingList number={3} property={"Following"} isTopic={false} />
+          <FollowingList property={"Following"} data={data.usersFollowing} isTopic={false} />
 
-          <FollowingList property={"Topics"} isTopic />
+          <FollowingList property={"Topics"} data={data.topicsFollowing} isTopic />
         </Stack>
       </Grid>
       <Grid item sm={12}>

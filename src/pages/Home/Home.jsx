@@ -83,30 +83,35 @@ import GlobalState from "../../contexts/GlobalStates";
 
 const Home = () => {
   const theme = useTheme();
-  const [isSignedIn] = useContext(GlobalState);
+  const [isSignedIn, setIsSignedIn] = useContext(GlobalState);
 
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     async function getPosts() {
       const timelineRecipient = {
-        "email": localStorage.getItem("email")
-      }
-      const response = await fetch(`http://localhost:5000/timeline`,{
+        email: localStorage.getItem("email"),
+      };
+      const response = await fetch(`http://localhost:5000/timeline`, {
         method: "POST",
         body: JSON.stringify(timelineRecipient),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (!response.ok) {
-        const message = `An error oc`;
-        // window.alert(message);
-        console.log(response)
-        return;
-      }
 
       const records = await response.json();
+
+      if (response.status !== 200) {
+        const message = `An error oc`;
+        // window.alert(message);
+        if ("logout" in records[0]) {
+          localStorage.removeItem("email");
+          localStorage.removeItem("username");
+          setIsSignedIn(false);
+        }
+        return;
+      }
       // console.log(records)
       setPosts(records);
     }

@@ -169,12 +169,24 @@ const ProfileDetails = ({ data }) => {
 
   useEffect(() => {
     async function onSubmit() {
+      const loggedEmail = localStorage.getItem("email");
+      const loggedUser = localStorage.getItem("username");
+      const profileUser = searchParams.get("user");
+      console.log({
+        loggedEmail: loggedEmail,
+        loggedUser: loggedUser,
+        profileUser: profileUser,
+      });
       await fetch(`${url}/getUser`, {
         method: "POST",
         body: JSON.stringify({
-          profileUser: searchParams.get("user"),
-          loggedUser: localStorage.getItem("username"),
+          loggedEmail: loggedEmail,
+          loggedUser: loggedUser,
+          profileUser: profileUser,
         }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
     }
     onSubmit();
@@ -187,8 +199,6 @@ const ProfileDetails = ({ data }) => {
   const handleFileChange = (e) => {
     e.preventDefault();
 
-    let reader = new FileReader()
-    
     let formData = new FormData();
     formData.append("profileImage", e.target.files[0]);
     formData.append("email", localStorage.getItem("email"));
@@ -323,7 +333,7 @@ const ProfileDetails = ({ data }) => {
                 component="span"
                 aria-label="upload profile picture"
               >
-                {data.profilePic ? (
+                {data.profilePic.length > "data:image/png;base64,".length ? (
                   <img
                     // src={`data:image/png;base64,${buf}`}
                     src={data.profilePic}

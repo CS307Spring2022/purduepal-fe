@@ -224,6 +224,7 @@ export const CreatePost = () => {
       }
 
       makePost();
+      handleClose();
     }
 
   const isURL = (str) => {

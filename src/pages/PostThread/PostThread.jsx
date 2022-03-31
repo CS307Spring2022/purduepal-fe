@@ -69,7 +69,7 @@ const PostThread = () => {
       mt={2}
       sx={{ marginLeft: { xs: "0px", sm: "75px", md: "200px", lg: "200px" } }}
     >
-      {Object.keys(parentPost).length == 0 ? null : <ContentLarge key={0} data={parentPost}/>}
+      {Object.keys(parentPost).length === 0 ? null : <ContentLarge key={0} data={parentPost}/>}
       {comments.map((data, index) => {
         return <Content key={index+1} data={data} />;
       })}

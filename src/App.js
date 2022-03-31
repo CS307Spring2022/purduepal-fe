@@ -80,6 +80,7 @@ function App() {
   //   navigate('/home')
   // }
 
+
   return (
     <GlobalState.Provider value={[isSignedIn, setIsSignedIn]}>
       <ThemeProvider theme={theme}>

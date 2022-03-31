@@ -25,18 +25,20 @@ import GlobalState from "../../contexts/GlobalStates";
 // ];
 
 const TopicCard = ({ data }) => {
-  const [followed,setFollowed] = useState(data.usersFollowing.includes(localStorage.getItem("email")));
-  const topic = data._id.replaceAll('"','');
+  const [followed, setFollowed] = useState(
+    data.usersFollowing.includes(localStorage.getItem("email"))
+  );
+  const topic = data._id.replaceAll('"', "");
 
   async function updateFollow() {
     const followRecipient = {
-      "email": localStorage.getItem("email"),
-      "topic": topic
-    }
-    console.log(followRecipient)
+      email: localStorage.getItem("email"),
+      topic: topic,
+    };
+    console.log(followRecipient);
     let response;
     if (!followed) {
-      response = await fetch(`http://localhost:5000/followTopic`,{
+      response = await fetch(`http://localhost:5000/followTopic`, {
         method: "POST",
         body: JSON.stringify(followRecipient),
         headers: {
@@ -44,7 +46,7 @@ const TopicCard = ({ data }) => {
         },
       });
     } else {
-      response = await fetch(`http://localhost:5000/unfollowTopic`,{
+      response = await fetch(`http://localhost:5000/unfollowTopic`, {
         method: "POST",
         body: JSON.stringify(followRecipient),
         headers: {
@@ -56,12 +58,12 @@ const TopicCard = ({ data }) => {
     if (!response.ok) {
       // const message = `An error oc`;
       // window.alert(message);
-      console.log(response)
+      console.log(response);
       return;
     }
 
     const msg = await response.json();
-    console.log(msg)
+    console.log(msg);
   }
 
   return (
@@ -82,11 +84,17 @@ const TopicCard = ({ data }) => {
           Explore
         </Typography>
       </IconButton>
-      <IconButton onClick={() => {
+      <IconButton
+        onClick={() => {
           updateFollow();
           setFollowed(!followed);
-        }}>
-        {followed ? <FollowFillIcon color="primary" /> : <FollowEmptyIcon color="primary"/>}
+        }}
+      >
+        {followed ? (
+          <FollowFillIcon color="primary" />
+        ) : (
+          <FollowEmptyIcon color="primary" />
+        )}
         <Typography color="primary" sx={{ marginLeft: 1 }}>
           Follow
         </Typography>
@@ -120,7 +128,7 @@ const Explore = () => {
     //   getTopics();
     // }, 650);
     // return () => clearInterval(topicTimer);
-    getTopics()
+    getTopics();
   }, []);
 
   if (!isSignedIn) {

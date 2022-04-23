@@ -9,11 +9,11 @@ import { Button, Stack, Snackbar, Alert } from "@mui/material";
 import { useNavigate, Navigate } from "react-router-dom";
 
 import GlobalState from "../../contexts/GlobalStates";
-import {url} from "../../ENV";
+import { url } from "../../ENV";
 
 const Settings = () => {
   const navigate = useNavigate();
-  const [isSignedIn,setIsSignedIn] = useContext(GlobalState);
+  const [isSignedIn, setIsSignedIn] = useContext(GlobalState);
 
   const [expanded, setExpanded] = useState(false);
 
@@ -29,6 +29,26 @@ const Settings = () => {
   };
 
   const [open, setOpen] = useState(false);
+  const [isPublic, setIsPublic] = useState(localStorage.getItem("public"));
+
+  const handlePublicClick = () => {
+    const publicObj = {
+      email: localStorage.getItem("email"),
+      public: isPublic,
+    };
+    async function onPublic() {
+      await fetch(`${url}/updatePublic`, {
+        method: "POST",
+        body: JSON.stringify(publicObj),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setIsPublic(!isPublic);
+      localStorage.setItem("public", isPublic);
+    }
+    onPublic();
+  };
 
   const handleDeleteClick = () => {
     setOpen(true);
@@ -36,7 +56,7 @@ const Settings = () => {
 
     async function onSubmit() {
       const email = localStorage.getItem("email");
-      localStorage.setItem("email","");
+      localStorage.setItem("email", "");
       const editedPerson = {
         email: email,
       };
@@ -56,8 +76,6 @@ const Settings = () => {
     onSubmit();
   };
 
-  
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -66,7 +84,7 @@ const Settings = () => {
   };
 
   if (!isSignedIn) {
-    return <Navigate to="/"/>;
+    return <Navigate to="/" />;
   }
 
   return (
@@ -99,6 +117,22 @@ const Settings = () => {
         <AccordionDetails>
           <Button onClick={handleLogoutClick}>Logout</Button>
           <Button onClick={handleDeleteClick}>Delete Account and Data</Button>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {`Account Deleted :(`}
+            </Alert>
+          </Snackbar>
+        </AccordionDetails>
+
+        <AccordionDetails>
+          <Button onClick={handlePublicClick}>
+            Make Account {!isPublic ? "Public" : "Private"}
+          </Button>
+
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert
               onClose={handleClose}

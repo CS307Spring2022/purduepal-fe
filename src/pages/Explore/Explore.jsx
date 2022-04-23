@@ -96,7 +96,7 @@ const TopicCard = ({ data }) => {
           <FollowEmptyIcon color="primary" />
         )}
         <Typography color="primary" sx={{ marginLeft: 1 }}>
-          Follow
+          {followed ? "Following" : "Follow"}
         </Typography>
       </IconButton>
     </Card>

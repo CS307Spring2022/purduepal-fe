@@ -15,6 +15,18 @@ import { Link } from "react-router-dom";
 export const ContentLarge = ({ data }) => {
   const theme = useTheme();
 
+  const isURL = (str) => {
+    let url;
+
+    try {
+      url = new URL(str);
+    } catch (_) {
+      return false;
+    }
+
+    return true;
+  };
+  
   const dateTimeFormatter = new Intl.DateTimeFormat("en", {
     year: "numeric",
     month: "long",
@@ -34,42 +46,46 @@ export const ContentLarge = ({ data }) => {
         backgroundColor: "#121212",
       }}
     >
-      <Link to="/home" style={{textDecoration: "none", color: "inherit"}}>
-        <CardHeader
-          avatar={
+      <CardHeader
+        avatar={
+          <Link to={"/profile?user=" + data.user.username}>
             <Avatar
               sx={{ bgcolor: theme.palette.primary.main }}
               aria-label={data.user.firstname + " " + data.user.lastName}
             ></Avatar>
-          }
-          action={
-            <>
-              <Typography
-                variant="body1"
-                fontSize={15}
-                component={"p"}
-                color={"#fff"}
-              >
-                {data.topic}
-              </Typography>
-              <Typography
-                variant="body1"
-                fontSize={12}
-                component={"p"}
-                color={"#c4c4c4"}
-              >
-                {dateTimeFormatter.format(new Date(data.timestamp))}
-              </Typography>
-            </>
-          }
-          title={data.user.firstName + " " + data.user.lastName}
-        subheader={`@${data.user.username}`}
-        />
-      </Link>
+          </Link>
+        }
+        action={
+          <>
+            <Typography
+              variant="body1"
+              fontSize={15}
+              component={"p"}
+              color={"#fff"}
+            >
+              {data.topic}
+            </Typography>
+            <Typography
+              variant="body1"
+              fontSize={12}
+              component={"p"}
+              color={"#c4c4c4"}
+            >
+              {dateTimeFormatter.format(new Date(data.timestamp))}
+            </Typography>
+          </>
+        }
+        title={data.user.firstName + " " + data.user.lastName}
+      subheader={`@${data.user.username}`}
+      />
       {data.img ? <CardMedia component="img" image={data.img} /> : null}
       <CardContent>
         <Typography variant="body1" sx={{fontWeight: "bold", fontSize: 32}} color="text.secondary">
-          {data.content}
+          {isURL(data.content) ? (
+              <a href={data.content}>{data.content}</a>
+            ) : (
+              data.content
+          )}
         </Typography>
       </CardContent>
       <CardActions>

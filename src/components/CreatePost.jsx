@@ -17,6 +17,7 @@ import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { CommentRounded } from "@mui/icons-material";
 import { useTheme, useMediaQuery } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
+import { Switch } from "@mui/material";
 // import { url } from "../ENV";
 
 const filter = createFilterOptions();
@@ -168,9 +169,7 @@ const ariaLabel = { "aria-label": "description" };
 export const CreatePost = () => {
   const [searchParams] = useSearchParams();
 
-  const [isComment] = useState(
-    searchParams.get("postId") !== null
-  );
+  const [isComment] = useState(searchParams.get("postId") !== null);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const fabPosWidth = matches ? "80px" : "16px";
@@ -183,6 +182,7 @@ export const CreatePost = () => {
     setErrorText(true);
     setErrorTextMessage("Post must contain 0-280 characters");
   };
+  const [anonymous, setAnonymous] = useState(false);
   // const [post, setPost] = useState(false);
   const handleSubmit = () => {
     //dummy code to handle creating post
@@ -192,8 +192,9 @@ export const CreatePost = () => {
     // console.log(post);
 
     async function makePost() {
+      console.log("Making Post!!")
       const body = {
-        user: localStorage.getItem("email"),
+        user: anonymous ? "anonymous@purdue.edu" : localStorage.getItem("email"),
         contentType: 0,
         content: postText,
         postImage: image,
@@ -217,8 +218,8 @@ export const CreatePost = () => {
         return;
       }
 
-      // const records = await response.json();
-      // console.log(records)
+      const records = await response.json();
+      console.log(records)
     }
 
     makePost();
@@ -241,7 +242,9 @@ export const CreatePost = () => {
 
   const [paste, setPaste] = useState(false);
   const [errorText, setErrorText] = useState(true);
-  const [errorTextMessage, setErrorTextMessage] = useState("Post Must Contain Between 1-280 characters");
+  const [errorTextMessage, setErrorTextMessage] = useState(
+    "Post Must Contain Between 1-280 characters"
+  );
   const handleTextLength = (text) => {
     // console.log(isURL(text),text);
     const urlValid = isURL(text);
@@ -345,7 +348,7 @@ export const CreatePost = () => {
                 });
               }}
             />
-            <Stack direction={"row"}>
+            <Stack direction={"row"} justifyContent="space-between">
               <input
                 accept="image/*"
                 style={{ display: "none" }}
@@ -365,13 +368,25 @@ export const CreatePost = () => {
                   <AddAPhotoIcon />
                 </IconButton>
               </label>
+              <Stack direction="row">
+                <Switch
+                  label={"Anonymous"}
+                  checked={anonymous}
+                  onChange={() => {
+                    setAnonymous(!anonymous);
+                  }}
+                />
+                <Typography mt={1} color="primary">
+                  Anonymous
+                </Typography>
+              </Stack>
             </Stack>
             <Button
               disabled={errorText ? true : false}
               variant="contained"
               onClick={handleSubmit}
             >
-              Post
+              {anonymous ? "Post As Anonymous" : "Post"}
             </Button>
           </Stack>
         </Box>

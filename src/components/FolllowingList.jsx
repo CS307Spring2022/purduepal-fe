@@ -6,6 +6,9 @@ import Modal from "@mui/material/Modal";
 import { Stack, useTheme } from "@mui/material";
 import { Card, CardHeader, Avatar } from "@mui/material";
 import { CardActions } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
+import { useContext, useState } from "react";
+import GlobalState from "../contexts/GlobalStates";
 
 const followingList = [
   { name: "Bruce Banner", bio: "Smash" },
@@ -15,7 +18,7 @@ const followingList = [
 
 const topics = ["Marvel", "Twitter", "DC", "Netflix", "Cricket"];
 
-const handleUnfollow = (username) => {
+const handleUnfollowUser = (username) => {
   console.log(username);
   async function updateUnfollow() {
     const followRecipient = {
@@ -30,6 +33,27 @@ const handleUnfollow = (username) => {
         "Content-Type": "application/json",
       },
     });
+    window.location.reload();
+  }
+  updateUnfollow();
+};
+
+const handleUnfollowTopic = (name) => {
+  console.log(name);
+  async function updateUnfollow() {
+    const followRecipient = {
+      email: localStorage.getItem("email"),
+      topic: name,
+    };
+
+    await fetch(`http://localhost:5000/unfollowTopic`, {
+      method: "POST",
+      body: JSON.stringify(followRecipient),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    window.location.reload();
   }
   updateUnfollow();
 };
@@ -48,26 +72,39 @@ const style = {
   overflowY: "scroll",
 };
 
-const DisplayCard = ({ name, username }) => {
+const DisplayCard = ({ name, username, showUnfollow }) => {
   return (
     <Card>
       <CardHeader avatar={<Avatar aria-label="recipe"></Avatar>} title={name} />
-      <CardActions>
-        <Button
-          onClick={() => {
-            handleUnfollow(username);
-          }}
-        >
-          Unfollow
-        </Button>
-      </CardActions>
+      {showUnfollow ? (
+        <CardActions>
+          <Button
+            onClick={() => {
+              handleUnfollowUser(username);
+            }}
+          >
+            Unfollow
+          </Button>
+        </CardActions>
+      ) : null}
     </Card>
   );
 };
-const DisplayTopic = ({ name }) => {
+const DisplayTopic = ({ name, showUnfollow }) => {
   return (
     <Card>
       <CardHeader title={name} />
+      {showUnfollow ? (
+        <CardActions>
+          <Button
+            onClick={() => {
+              handleUnfollowTopic(name);
+            }}
+          >
+            Unfollow
+          </Button>
+        </CardActions>
+      ) : null}
     </Card>
   );
 };
@@ -79,6 +116,16 @@ export default function FollowingList({ number, property, data, isTopic }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [searchParams] = useSearchParams();
+
+  // const myEmail = localStorage.getItem("email")
+
+  const [match] = useState(
+    searchParams.get("user") === localStorage.getItem("username")
+  );
+
+  const [isSignedIn] = useContext(GlobalState);
 
   return (
     <div>
@@ -110,11 +157,22 @@ export default function FollowingList({ number, property, data, isTopic }) {
             </Typography>
             {isTopic
               ? data.map((d) => {
-                  return <DisplayTopic key={d} name={d} />;
+                  return (
+                    <DisplayTopic
+                      key={d}
+                      name={d}
+                      showUnfollow={isSignedIn && match}
+                    />
+                  );
                 })
               : data.map((d, i) => {
                   return (
-                    <DisplayCard key={i} name={d.name} username={d.username} />
+                    <DisplayCard
+                      key={i}
+                      name={d.name}
+                      username={d.username}
+                      showUnfollow={isSignedIn && match}
+                    />
                   );
                 })}
           </Stack>

@@ -16,6 +16,7 @@ const Profile = () => {
   const [isPrivate, setIsPrivate] = useState(false);
   const [searchParams] = useSearchParams();
   const [profileData, setProfileData] = useState([]);
+  
 
   useEffect(() => {
     async function getProfile() {
@@ -60,6 +61,7 @@ const Profile = () => {
 
       console.log(data);
       setProfileData(data);
+      localStorage.setItem("public",data.public);
     }
 
     getProfile();

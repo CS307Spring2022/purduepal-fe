@@ -12,9 +12,11 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 
 import "./Content.css";
+import { CardActionArea } from "@mui/material";
 
 export const Content = ({ data, saved }) => {
   const theme = useTheme();
+  // console.log(data)
 
   const dateTimeFormatter = new Intl.DateTimeFormat("en", {
     year: "numeric",
@@ -23,6 +25,18 @@ export const Content = ({ data, saved }) => {
     hour: "numeric",
     minute: "numeric",
   });
+
+  const isURL = (str) => {
+    let url;
+
+    try {
+      url = new URL(str);
+    } catch (_) {
+      return false;
+    }
+
+    return true;
+  };
 
   return (
     <Card
@@ -35,53 +49,59 @@ export const Content = ({ data, saved }) => {
         backgroundColor: "#121212",
       }}
     >
-      <CardHeader
-        avatar={
-          <Link to={"/profile?user=" + data.user.username}>
-            <Avatar
-              sx={{ bgcolor: theme.palette.primary.main }}
-              aria-label={data.user.firstname + " " + data.user.lastName}
-            ></Avatar>
-          </Link>
-        }
-        action={
-          <>
-            <Typography
-              variant="body1"
-              fontSize={15}
-              component={"p"}
-              color={"#fff"}
-            >
-              {data.topic}
-            </Typography>
-            <Typography
-              variant="body1"
-              fontSize={12}
-              component={"p"}
-              color={"#c4c4c4"}
-            >
-              {dateTimeFormatter.format(new Date(data.timestamp))}
-            </Typography>
-          </>
-        }
-        title={data.user.firstName + " " + data.user.lastName}
-        subheader={`@${data.user.username}`}
-      />
-      {data.parentId !== undefined ? (
-        <Typography
-          sx={{ fontWeight: 300, whiteSpace: "pre-wrap" }}
-          variant="body1"
-          color="text.primary"
-        >
-          {"Replying to @" + data.parentId}
-        </Typography>
-      ) : null}
-      {data.img ? <CardMedia component="img" image={data.img} /> : null}
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {data.content}
-        </Typography>
-      </CardContent>
+      <CardActionArea href={"/purduepal-fe/postThread?postId=" + data._id}>
+        <CardHeader
+          avatar={
+            <Link to={"/profile?user=" + data.user.username}>
+              <Avatar
+                sx={{ bgcolor: theme.palette.primary.main }}
+                aria-label={data.user.firstname + " " + data.user.lastName}
+              ></Avatar>
+            </Link>
+          }
+          action={
+            <>
+              <Typography
+                variant="body1"
+                fontSize={15}
+                component={"p"}
+                color={"#fff"}
+              >
+                {data.topic}
+              </Typography>
+              <Typography
+                variant="body1"
+                fontSize={12}
+                component={"p"}
+                color={"#c4c4c4"}
+              >
+                {dateTimeFormatter.format(new Date(data.timestamp))}
+              </Typography>
+            </>
+          }
+          title={data.user.firstName + " " + data.user.lastName}
+          subheader={`@${data.user.username}`}
+        />
+        {data.parentId !== undefined ? (
+          <Typography
+            sx={{ fontWeight: 300, whiteSpace: "pre-wrap" }}
+            variant="body1"
+            color="text.primary"
+          >
+            {"Replying to @" + data.parentId}
+          </Typography>
+        ) : null}
+        {data.img ? <CardMedia component="img" image={data.img} /> : null}
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {isURL(data.content) ? (
+              <a href={data.content}>{data.content}</a>
+            ) : (
+              data.content
+            )}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
       <CardActions>
         <Interactions
           up={data.likeCount == null ? 0 : data.likeCount}

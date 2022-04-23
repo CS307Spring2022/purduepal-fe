@@ -3,7 +3,7 @@ import { Stack, Typography } from "@mui/material";
 import { Content } from "../../components/Content/Content";
 import { useState, useContext } from "react";
 import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import GlobalState from "../../contexts/GlobalStates";
 
 const sampleData = [
@@ -18,7 +18,7 @@ const sampleData = [
     img: null,
     up: 14000605,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "0756sd8asdsdfhj",
@@ -30,7 +30,7 @@ const sampleData = [
     img: null,
     up: 3000,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "agg6jgsgdsbsd2gj",
@@ -42,7 +42,7 @@ const sampleData = [
     img: null,
     up: 75,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "6zbkp4s4a43sghgeha",
@@ -54,7 +54,7 @@ const sampleData = [
     img: "https://i0.wp.com/thenewsfetcher.com/wp-content/uploads/2020/01/45dc07a7fec3414781000b10577e539e.jpeg",
     up: 1000,
     down: 0,
-    parentId: ""
+    parentId: "",
   },
   {
     uuid: "b04uwqual3s2f0j",
@@ -66,18 +66,24 @@ const sampleData = [
     img: null,
     up: 80,
     down: 0,
-    parentId: ""
-  }
+    parentId: "",
+  },
 ];
 
-const RecordsList = () => {
+const RecordsList = ({ topicName }) => {
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
     async function getRecords() {
-      const response = await fetch("http://127.0.0.1:5000/posts/");
+      const response = await fetch(
+        `http://127.0.0.1:5000/topic_posts?email=${localStorage.getItem(
+          "email"
+        )}&topic=${topicName}`
+      );
+      
 
-      if (!response.OK) {
+      if (!response.ok) {
+        console.log(response)
         const messsage = `An error occurred: ${response.statusText}`;
         console.log(messsage);
         return;
@@ -92,12 +98,17 @@ const RecordsList = () => {
   }, [records.length]);
 
   // console.log(records);
-  return <h1>Something</h1>;
+  // return <h1>Something</h1>;
+  return records.map((data, index) => {
+    return <Content key={index} data={data} />;
+  });
 };
 
 export const TopicFeed = () => {
   const theme = useTheme();
   const [isSignedIn] = useContext(GlobalState);
+
+  const [searchParams] = useSearchParams();
 
   if (!isSignedIn) {
     return <Navigate to="/" />;
@@ -114,9 +125,7 @@ export const TopicFeed = () => {
       mt={2}
       sx={{ marginLeft: { xs: "0px", sm: "75px", md: "200px", lg: "200px" } }}
     >
-      {sampleData.map((data, index) => {
-        return <Content key={index} data={data} />;
-      })}
+      <RecordsList topicName={searchParams.get("topic")} />
       <Typography variant="p" sx={{ fontSize: "30px" }} color="primary">
         End of Posts!
       </Typography>

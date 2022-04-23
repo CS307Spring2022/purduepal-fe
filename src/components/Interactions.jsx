@@ -40,7 +40,6 @@ export const Interactions = ({ up, down, initialReaction, uuid, isSaved }) => {
   };
 
   useEffect(() => {
-    console.log(messageToSend, uuid);
     async function onSubmit() {
       const interactionData = {
         email: localStorage.getItem("email"),

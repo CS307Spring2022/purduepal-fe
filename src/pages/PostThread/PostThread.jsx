@@ -74,7 +74,7 @@ const PostThread = () => {
         return <Content key={index+1} data={data} />;
       })}
       <Typography variant="p" sx={{ fontSize: "30px" }} color="primary">
-        End of Posts!
+        End of Comments!
       </Typography>
       <div>
         <svg width={100} height={50}>

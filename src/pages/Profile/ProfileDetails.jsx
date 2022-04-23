@@ -207,8 +207,10 @@ const ProfileDetails = ({ data }) => {
         method: "POST",
         body: formData,
       });
+      window.location.reload();
     }
     onSubmit();
+    
   };
 
   const [changeFollowingUsers, setChangeFollowingUsers] = useState(
@@ -276,7 +278,7 @@ const ProfileDetails = ({ data }) => {
       }
 
       const newFollowing = await response.json();
-      console.log(newFollowing);
+      console.log("New Following:"+newFollowing);
       setChangeFollowingUsers(newFollowing.newFollowing);
     }
   }
@@ -333,11 +335,13 @@ const ProfileDetails = ({ data }) => {
                 id="upload-profile-picture"
                 type="file"
                 onChange={(e) => handleFileChange(e)}
+                disabled={!(isSignedIn && match)}
               />
               <IconButton
                 color={"primary"}
                 component="span"
                 aria-label="upload profile picture"
+                disabled={!(isSignedIn && match)}
               >
                 {data.profilePic.length > "data:image/png;base64,".length ? (
                   <img
@@ -346,6 +350,7 @@ const ProfileDetails = ({ data }) => {
                     alt="profile pic of user"
                     width={100}
                     height={100}
+                    style={{ borderRadius: "50%" }}
                   />
                 ) : (
                   <AccountCircleIcon sx={{ fontSize: "100px" }} />

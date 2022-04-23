@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Stack, useTheme } from "@mui/material";
 import { Card, CardHeader, Avatar } from "@mui/material";
+import { CardActions } from "@mui/material";
 
 const followingList = [
   { name: "Bruce Banner", bio: "Smash" },
@@ -13,6 +14,25 @@ const followingList = [
 ];
 
 const topics = ["Marvel", "Twitter", "DC", "Netflix", "Cricket"];
+
+const handleUnfollow = (username) => {
+  console.log(username);
+  async function updateUnfollow() {
+    const followRecipient = {
+      follower: localStorage.getItem("email"),
+      username: username,
+    };
+
+    await fetch(`http://localhost:5000/unfollowUser`, {
+      method: "POST",
+      body: JSON.stringify(followRecipient),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+  updateUnfollow();
+};
 
 const style = {
   position: "absolute",
@@ -28,13 +48,19 @@ const style = {
   overflowY: "scroll",
 };
 
-const DisplayCard = ({ name, bio }) => {
+const DisplayCard = ({ name, username }) => {
   return (
     <Card>
-      <CardHeader
-        avatar={<Avatar aria-label="recipe"></Avatar>}
-        title={name}
-      />
+      <CardHeader avatar={<Avatar aria-label="recipe"></Avatar>} title={name} />
+      <CardActions>
+        <Button
+          onClick={() => {
+            handleUnfollow(username);
+          }}
+        >
+          Unfollow
+        </Button>
+      </CardActions>
     </Card>
   );
 };
@@ -47,8 +73,8 @@ const DisplayTopic = ({ name }) => {
 };
 
 export default function FollowingList({ number, property, data, isTopic }) {
+  console.log(data);
   const theme = useTheme();
-
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -74,7 +100,12 @@ export default function FollowingList({ number, property, data, isTopic }) {
       >
         <Box sx={style}>
           <Stack spacing={1}>
-            <Typography id="modal-modal-title" variant="h4" component="h2" color={theme.palette.primary.main}>
+            <Typography
+              id="modal-modal-title"
+              variant="h4"
+              component="h2"
+              color={theme.palette.primary.main}
+            >
               <strong>{property}</strong>
             </Typography>
             {isTopic
@@ -82,7 +113,9 @@ export default function FollowingList({ number, property, data, isTopic }) {
                   return <DisplayTopic key={d} name={d} />;
                 })
               : data.map((d, i) => {
-                  return <DisplayCard key={i} name={d.name} />;
+                  return (
+                    <DisplayCard key={i} name={d.name} username={d.username} />
+                  );
                 })}
           </Stack>
         </Box>

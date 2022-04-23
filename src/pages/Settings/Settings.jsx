@@ -17,6 +17,13 @@ const Settings = () => {
 
   const [expanded, setExpanded] = useState(false);
 
+  const handleLogoutClick = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("username");
+    setIsSignedIn(false);
+    navigate("/");
+  };
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -43,16 +50,13 @@ const Settings = () => {
           "Content-Type": "application/json",
         },
       });
+
+      handleLogoutClick();
     }
     onSubmit();
   };
 
-  const handleLogoutClick = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("username");
-    setIsSignedIn(false);
-    navigate("/");
-  };
+  
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {

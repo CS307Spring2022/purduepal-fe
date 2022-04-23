@@ -180,8 +180,8 @@ export const CreatePost = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setErrorText(false);
-    setErrorTextMessage("");
+    setErrorText(true);
+    setErrorTextMessage("Post must contain 0-280 characters");
   };
   // const [post, setPost] = useState(false);
   const handleSubmit = () => {
@@ -240,8 +240,8 @@ export const CreatePost = () => {
   const [image, setImage] = useState("");
 
   const [paste, setPaste] = useState(false);
-  const [errorText, setErrorText] = useState(false);
-  const [errorTextMessage, setErrorTextMessage] = useState("");
+  const [errorText, setErrorText] = useState(true);
+  const [errorTextMessage, setErrorTextMessage] = useState("Post Must Contain Between 1-280 characters");
   const handleTextLength = (text) => {
     // console.log(isURL(text),text);
     const urlValid = isURL(text);

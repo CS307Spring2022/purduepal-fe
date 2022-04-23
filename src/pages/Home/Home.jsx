@@ -113,7 +113,7 @@ const Home = () => {
         return;
       }
       // console.log(records)
-      setPosts(records);
+      setPosts(records.reverse());
     }
 
     const postTimer = setInterval(() => {

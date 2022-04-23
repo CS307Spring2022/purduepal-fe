@@ -7,7 +7,7 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 
@@ -26,8 +26,8 @@ const SignUp = () => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [signUpStatus,setSignUpStatus] = useState("");
-  const [signUpSuccess,setSignUpSuccess] = useState(false);
+  const [signUpStatus, setSignUpStatus] = useState("");
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [invalidFirstName, setInvalidFirstName] = useState(false);
@@ -52,9 +52,8 @@ const SignUp = () => {
   const [confirmPass, setConfirmPass] = useState("");
   const [invalidConfirmPass, setInvalidConfirmPass] = useState(false);
   const [confirmPassErrMsg, setConfirmPassErrMsg] = useState("");
-  
-  // const [isCommonPass, setIsCommonPass] =useState(false);
 
+  // const [isCommonPass, setIsCommonPass] =useState(false);
 
   useEffect(() => {
     if (
@@ -78,40 +77,54 @@ const SignUp = () => {
   }, [email, emailErrMsg]);
 
   useEffect(() => {
-    
     const uppercaseRegex = /[A-Z]+/;
     const digitRegex = /\d+/;
     const specialCharacterRegex = /[~`!@#$%^&*()_+={}[\]|\\/\-<,>.?;:"']+/;
     const MIN_PASS_LENGTH = 8;
 
-    if (firstName.length > 0 && firstNameErrMsg) {
+    if (firstName.length > 0) {
       setFirstNameErrMsg("");
       setInvalidFirstName(false);
+    } else {
+      setInvalidFirstName(true);
+      setFirstNameErrMsg("First Name is Required");
     }
 
-    if (lastName.length > 0 && lastNameErrMsg) {
+    if (lastName.length > 0) {
       setLastNameErrMsg("");
       setInvalidLastName(false);
+    } else {
+      setInvalidLastName(true);
+      setLastNameErrMsg("Last Name is Required");
     }
 
-    if (username.length > 0 && usernameErrMsg) {
+    if (username.length >= 4 && username.length <= 15) {
       setUsernameErrMsg("");
       setInvalidUsername(false);
+    } else {
+      setInvalidUsername(true);
+      setUsernameErrMsg("Username should be between 4 and 15 characters");
     }
 
-    if (pass.length >= MIN_PASS_LENGTH && 
-        pass.match(uppercaseRegex) !== null &&
-        pass.match(digitRegex) !== null &&
-        pass.match(specialCharacterRegex) !== null &&
-        passErrMsg) {
+    if (
+      pass.length >= MIN_PASS_LENGTH &&
+      pass.match(uppercaseRegex) !== null &&
+      pass.match(digitRegex) !== null &&
+      pass.match(specialCharacterRegex) !== null &&
+      passErrMsg
+    ) {
       setPassErrMsg("");
       setInvalidPass(false);
     } else if (pass.length > 0) {
-      if (pass.length < MIN_PASS_LENGTH ||
-          pass.match(uppercaseRegex) === null ||
-          pass.match(digitRegex) === null ||
-          pass.match(specialCharacterRegex) === null) {
-        setPassErrMsg("Password is too weak: Ensure at least:\n 1 uppercase letters\n 2 digits\n 1 special character\n 8 characters in total\n");
+      if (
+        pass.length < MIN_PASS_LENGTH ||
+        pass.match(uppercaseRegex) === null ||
+        pass.match(digitRegex) === null ||
+        pass.match(specialCharacterRegex) === null
+      ) {
+        setPassErrMsg(
+          "Password is too weak: Ensure at least:\n 1 uppercase letters\n 2 digits\n 1 special character\n 8 characters in total\n"
+        );
         setInvalidPass(true);
       }
     }
@@ -125,14 +138,31 @@ const SignUp = () => {
         setInvalidConfirmPass(false);
       }
     }
-  }, [firstName, firstNameErrMsg, lastName, lastNameErrMsg,
-      username, usernameErrMsg, pass, passErrMsg,confirmPass,confirmPassErrMsg]);
+  }, [
+    firstName,
+    firstNameErrMsg,
+    lastName,
+    lastNameErrMsg,
+    username,
+    usernameErrMsg,
+    pass,
+    passErrMsg,
+    confirmPass,
+    confirmPassErrMsg,
+  ]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    let valid = !(invalidFirstName || invalidLastName || invalidEmail || invalidUsername || invalidPass || invalidConfirmPass);
+    let valid = !(
+      invalidFirstName ||
+      invalidLastName ||
+      invalidEmail ||
+      invalidUsername ||
+      invalidPass ||
+      invalidConfirmPass
+    );
 
     if (!valid) {
       alert("Form data Invalid!");
@@ -172,7 +202,7 @@ const SignUp = () => {
     }
 
     if (data.get("confirmPassword").length === 0) {
-      setConfirmPassErrMsg("Confim Password is Required")
+      setConfirmPassErrMsg("Confim Password is Required");
       setInvalidConfirmPass(true);
       valid = false;
     }
@@ -181,7 +211,6 @@ const SignUp = () => {
       alert("Form data Invalid!!");
     } else {
       async function onSubmit() {
-
         // const email = localStorage.getItem("email");
         const signInDetails = {
           firstName: data.get("firstName"),
@@ -189,11 +218,11 @@ const SignUp = () => {
           email: data.get("email"),
           username: data.get("username"),
           password: data.get("password"),
-          confirmPassword: data.get("confirmPassword")
+          confirmPassword: data.get("confirmPassword"),
         };
-  
+
         console.log(JSON.stringify(signInDetails));
-  
+
         const response = await fetch(`${url}/sign_up`, {
           method: "POST",
           body: JSON.stringify(signInDetails),
@@ -202,38 +231,44 @@ const SignUp = () => {
           },
         });
 
-        return response.json()
+        return response.json();
       }
 
       function sleep(delay) {
-        return new Promise( res => setTimeout(res, delay) );
+        return new Promise((res) => setTimeout(res, delay));
       }
       async function handleResponse(result) {
-        console.log(result)
-        if (result['return_code']) {
+        console.log(result);
+        if (result["return_code"]) {
           setSignUpSuccess(true);
-          setSignUpStatus("Signup Successful! Redirecting to Login Page shortly...");
+          setSignUpStatus(
+            "Signup Successful! Redirecting to Login Page shortly..."
+          );
           await sleep(1200);
           navigate("/");
           setSignUpStatus("");
           setSignUpSuccess(false);
         } else {
-          if (result['msg'] === "Email in Use!" || result['msg'] === "Username Taken! Please Choose Another.") {
+          if (
+            result["msg"] === "Email in Use!" ||
+            result["msg"] === "Username Taken! Please Choose Another."
+          ) {
             setSignUpSuccess(false);
-            setSignUpStatus(result["msg"])
+            setSignUpStatus(result["msg"]);
           } else {
             setSignUpSuccess(false);
-            setSignUpStatus("We've Encountered an Error! Sorry, please try again at a later time.")
+            setSignUpStatus(
+              "We've Encountered an Error! Sorry, please try again at a later time."
+            );
           }
         }
       }
 
-      const signUpResponse = onSubmit().then(result => {
+      const signUpResponse = onSubmit().then((result) => {
         handleResponse(result);
       });
       return signUpResponse;
     }
-
   };
 
   return (
@@ -256,7 +291,11 @@ const SignUp = () => {
         <Typography
           component="h1"
           variant="h3"
-          style={{ marginTop: "10vh", textAlign: "center", color: theme.palette.primary.main }}
+          style={{
+            marginTop: "10vh",
+            textAlign: "center",
+            color: theme.palette.primary.main,
+          }}
         >
           PurduePAL
         </Typography>
@@ -280,7 +319,15 @@ const SignUp = () => {
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
-          <Typography component="p" variant="p" color={signUpSuccess ? theme.palette.success.main : theme.palette.error.main}>
+          <Typography
+            component="p"
+            variant="p"
+            color={
+              signUpSuccess
+                ? theme.palette.success.main
+                : theme.palette.error.main
+            }
+          >
             {signUpStatus}
           </Typography>
           <Box
@@ -347,7 +394,9 @@ const SignUp = () => {
               id="password"
               autoComplete="current-password"
               error={invalidPass}
-              onChange={(e) => {setPass(e.target.value)}}
+              onChange={(e) => {
+                setPass(e.target.value);
+              }}
               helperText={passErrMsg}
             />
             <TextField
@@ -359,7 +408,9 @@ const SignUp = () => {
               type="password"
               id="confirmPassword"
               error={invalidConfirmPass}
-              onChange={(e) => {setConfirmPass(e.target.value)}}
+              onChange={(e) => {
+                setConfirmPass(e.target.value);
+              }}
               helperText={confirmPassErrMsg}
             />
             <Button

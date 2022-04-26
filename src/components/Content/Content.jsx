@@ -1,5 +1,6 @@
 import { Interactions } from "../Interactions";
 
+import { Button } from "@mui/material";
 import Card from "@mui/material/Card";
 import { useTheme } from "@mui/material";
 import CardHeader from "@mui/material/CardHeader";
@@ -46,7 +47,7 @@ export const Content = ({ data, saved }) => {
         maxWidth: { sm: 400, md: 500, lg: 600, xl: 600 },
         maxHeight: "150vh",
         borderRadius: "15px",
-        backgroundColor: "#121212",
+        backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#CFB991",
       }}
     >
       <CardActionArea href={"/purduepal-fe/postThread?postId=" + data._id}>
@@ -65,7 +66,7 @@ export const Content = ({ data, saved }) => {
                 variant="body1"
                 fontSize={15}
                 component={"p"}
-                color={"#fff"}
+                color={theme.palette.mode === "dark" ? "#fff" : "#000"}
               >
                 {data.topic}
               </Typography>
@@ -73,7 +74,7 @@ export const Content = ({ data, saved }) => {
                 variant="body1"
                 fontSize={12}
                 component={"p"}
-                color={"#c4c4c4"}
+                color={theme.palette.mode === "dark" ? "#c4c4c4" : "#555960"}
               >
                 {dateTimeFormatter.format(new Date(data.timestamp))}
               </Typography>
@@ -82,14 +83,16 @@ export const Content = ({ data, saved }) => {
           title={data.user.firstName + " " + data.user.lastName}
           subheader={`@${data.user.username}`}
         />
-        {data.parentId !== undefined ? (
-          <Typography
-            sx={{ fontWeight: 300, whiteSpace: "pre-wrap" }}
-            variant="body1"
-            color="text.primary"
+        {data.parentID !== null ? (
+          <Button
+            color="primary"
+            sx = {{
+              textTransform: "none",
+            }}
+            href = {"/purduepal-fe/postThread?postId=" + data.parentID}
           >
-            {"Replying to @" + data.parentId}
-          </Typography>
+            Replying to @{data.parentUser}
+          </Button>
         ) : null}
         {data.img ? <CardMedia component="img" image={data.img} /> : null}
         <CardContent>

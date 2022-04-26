@@ -44,7 +44,9 @@ const Settings = lazy(() => import("./pages/Settings/Settings"));
 // export const UserContext = createContext();
 
 function App() {
-  const theme = createTheme(getDesignTokens("dark"));
+  let cachedTheme = localStorage.getItem("userTheme") 
+  const [userTheme, setUserTheme] = useState(cachedTheme === undefined || cachedTheme === null ? "dark" : localStorage.getItem("userTheme"))
+  const theme = createTheme(getDesignTokens(userTheme));
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
   const navigation = matches ? <Navbar /> : <VerticalNavbar />;
@@ -74,6 +76,7 @@ function App() {
   const [isSignedIn, setIsSignedIn] = useState(
     localStorage.email !== undefined
   );
+
   // const navigate = useNavigate()
 
   // if (isSignedIn) {
@@ -82,7 +85,7 @@ function App() {
 
 
   return (
-    <GlobalState.Provider value={[isSignedIn, setIsSignedIn]}>
+    <GlobalState.Provider value={{isSignedIn, setIsSignedIn, userTheme,setUserTheme}}>
       <ThemeProvider theme={theme}>
         <Suspense fallback={<CircularProgress />}>
           <Stack

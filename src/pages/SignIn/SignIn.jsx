@@ -24,13 +24,17 @@ import "./SignIn.css";
 
 const SignIn = () => {
   const theme = useTheme();
-  const [isSignedIn, setIsSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
   const navigate = useNavigate();
+
+  // const [isSignedIn,setIsSignedIn] = isSignedInState;
+  // const [userTheme,setUserTheme] = userThemeState;
 
   // console.log(isSignedIn);
 
   useEffect(() => {
     if (isSignedIn) {
+      
       navigate("/home");
     }
   });
@@ -122,6 +126,10 @@ const SignIn = () => {
         if (result["return_code"]) {
           localStorage.setItem("email", result["email"]);
           localStorage.setItem("username", result["username"]);
+          localStorage.setItem("userTheme", result["darkMode"] ? "dark" : "light")
+          setUserTheme(localStorage.getItem("userTheme"))
+          // console.log(result["public"])
+          localStorage.setItem("public",result["public"] ? "public" : "private")
           setIsSignedIn(true);
           // navigate('/home');
           navigate("/home");

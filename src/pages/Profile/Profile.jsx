@@ -1,4 +1,4 @@
-import { Grid, Button, CircularProgress, Typography } from "@mui/material";
+import { Grid, Button, CircularProgress, Typography, useTheme } from "@mui/material";
 import { lazy } from "react";
 // import { ProfileDetails } from "./ProfileDetails";
 import { useContext, useState, useEffect } from "react";
@@ -11,7 +11,8 @@ import "./loader.css";
 const ProfileDetails = lazy(() => import("./ProfileDetails"));
 
 const Profile = () => {
-  const [isSignedIn] = useContext(GlobalState);
+  const theme = useTheme()
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [isPrivate, setIsPrivate] = useState(false);
   const [searchParams] = useSearchParams();
@@ -48,9 +49,10 @@ const Profile = () => {
       }
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
-      if (data.msg === "Profile is Private!") {
+
+      if (data.msg === "Profile is Private!" && localStorage.getItem("username")!==searchParams.get("user")) {
         setIsPrivate(true);
         setProfileLoaded(true);
         return;
@@ -61,19 +63,19 @@ const Profile = () => {
 
       console.log(data);
       setProfileData(data);
-      localStorage.setItem("public",data.public);
+      localStorage.setItem("public",data.public ? "public" : "private");
     }
 
     getProfile();
   }, [searchParams]);
 
-  if (!isSignedIn) {
-    return <Navigate to="/" />;
-  }
+  // if (!isSignedIn) {
+  //   return <Navigate to="/" />;
+  // }
 
   return (
     <Grid
-      sx={{ overflowX: "hidden", backgroundColor: "black" }}
+      sx={{ overflowX: "hidden", backgroundColor: theme.palette.background.default }}
       ml={{ xs: 0, sm: "110px", md: "240px", lg: "240px" }}
       maxWidth="100vw"
       minHeight={"100vh"}
@@ -83,7 +85,7 @@ const Profile = () => {
         justifyContent="center"
         display={!profileLoaded ? "flex" : "block"}
         sm={8}
-        sx={{ backgroundColor: "black" }}
+        sx={{ backgroundColor: theme.palette.background.default }}
         item
       >
         {profileLoaded ? (

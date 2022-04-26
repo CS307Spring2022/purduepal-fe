@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 import GlobalState from "../../contexts/GlobalStates";
 
 const Notifications = () => {
-  const [isSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
 
   if (!isSignedIn) {
     return <Navigate to="/" />;

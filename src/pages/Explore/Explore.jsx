@@ -24,7 +24,7 @@ import GlobalState from "../../contexts/GlobalStates";
 //   { name: "Cricket" },
 // ];
 
-const TopicCard = ({ data }) => {
+const TopicCard = ({ data, theme }) => {
   const [followed, setFollowed] = useState(
     data.usersFollowing.includes(localStorage.getItem("email"))
   );
@@ -74,7 +74,7 @@ const TopicCard = ({ data }) => {
         maxWidth: { sm: 400, md: 500, lg: 600, xl: 600 },
         maxHeight: "150vh",
         borderRadius: "15px",
-        backgroundColor: "#121212",
+        backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#CFB991"
       }}
     >
       <CardHeader title={topic} />
@@ -105,7 +105,7 @@ const TopicCard = ({ data }) => {
 
 const Explore = () => {
   const theme = useTheme();
-  const [isSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
 
   const [topicLists, setTopicLists] = useState([]);
 
@@ -151,7 +151,7 @@ const Explore = () => {
       </Typography>
       {topicLists &&
         topicLists.map((d, i) => {
-          return <TopicCard key={i} data={d} />;
+          return <TopicCard key={i} data={d} theme={theme}/>;
         })}
     </Stack>
   );

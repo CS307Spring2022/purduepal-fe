@@ -120,7 +120,7 @@ const ProfileDetails = ({ data }) => {
     searchParams.get("user") === localStorage.getItem("username")
   );
 
-  const [isSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -360,10 +360,10 @@ const ProfileDetails = ({ data }) => {
           </Grid>
           <Grid sm={7} item>
             <Stack direction="column">
-              <Typography color={"#fff"} variant={"h4"}>
+              <Typography color={theme.palette.mode === "dark" ? "#fff" : "#000"} variant={"h4"}>
                 {`${changeFirstName} ${changeLastName}`}
               </Typography>
-              <Typography color={"#ddd"} variant={"subtitle1"}>
+              <Typography color={theme.palette.mode === "dark" ? "#ddd" : "#222"} variant={"subtitle1"}>
                 {`@${data.username}`}
               </Typography>
             </Stack>
@@ -377,7 +377,7 @@ const ProfileDetails = ({ data }) => {
               >
                 <EditIcon />
               </IconButton>
-            ) : (
+            ) : (isSignedIn ? (
               <IconButton
                 color="primary"
                 onClick={() => {
@@ -392,7 +392,7 @@ const ProfileDetails = ({ data }) => {
                 )}
                 {following === 2 ? "Following" : "Follow"}
               </IconButton>
-            )}
+            ) : null)}
             <Modal
               open={open}
               onClose={handleClose}
@@ -466,7 +466,7 @@ const ProfileDetails = ({ data }) => {
         </Grid>
       </Grid>
       <Grid item ml={2.5}>
-        <Typography variant="h6" color="#fff">
+        <Typography variant="h6" color={theme.palette.mode === "dark" ? "#fff" : "#000"}>
           {`${changeBio}`}
         </Typography>
       </Grid>

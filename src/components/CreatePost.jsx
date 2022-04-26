@@ -10,11 +10,15 @@ import {
   // Input,
   TextField,
   Autocomplete,
+  Popover,
   createFilterOptions,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import { CommentRounded } from "@mui/icons-material";
+import { CommentRounded, LinkOutlined } from "@mui/icons-material";
 import { useTheme, useMediaQuery } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { Switch } from "@mui/material";
@@ -168,6 +172,8 @@ const ariaLabel = { "aria-label": "description" };
 
 export const CreatePost = () => {
   const [searchParams] = useSearchParams();
+  const [image, setImage] = useState("");
+  const [postType, setPostType] = useState(0);
 
   const [isComment] = useState(searchParams.get("postId") !== null);
   const theme = useTheme();
@@ -179,6 +185,7 @@ export const CreatePost = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
+    setImage("");
     setErrorText(true);
     setErrorTextMessage("Post must contain 0-280 characters");
   };
@@ -192,16 +199,14 @@ export const CreatePost = () => {
     // console.log(post);
 
     async function makePost() {
-      console.log("Making Post!!")
       const body = {
         user: anonymous ? "anonymous@purdue.edu" : localStorage.getItem("email"),
-        contentType: 0,
+        contentType: postType,
         content: postText,
         postImage: image,
         parentID: isComment ? searchParams.get("postId") : null,
-        topicName: localStorage.getItem("topicName"),
+        topicName: isComment ? localStorage.getItem("currentTopic") : localStorage.getItem("topicName"),
       };
-      console.log(body);
       let response;
       response = await fetch(`http://localhost:5000/createPost`, {
         method: "POST",
@@ -238,7 +243,6 @@ export const CreatePost = () => {
     return true;
   };
 
-  const [image, setImage] = useState("");
 
   const [paste, setPaste] = useState(false);
   const [errorText, setErrorText] = useState(true);
@@ -284,11 +288,118 @@ export const CreatePost = () => {
     let reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = (e) => {
-      let res = reader.result;
-      console.log(res);
-      setImage(res);
-      console.log(image);
+    let res = reader.result;
+    console.log(res);
+    setImage(res);
     };
+  }
+
+  function postInput() {
+    if (postType <= 1) {
+      return (
+        <TextField
+          multiline
+          rows={4}
+          error={errorText}
+          fullWidth
+          placeholder="Type something"
+          inputProps={ariaLabel}
+          helperText={errorTextMessage}
+          onChange={(e) => {
+            if (!paste) {
+              // console.log("changed!! "+e.target.value)
+              setPostText(e.target.value);
+              console.log("changed!! " + postText);
+              handleTextLength(e.target.value);
+            }
+            setPaste(false);
+          }}
+          onPaste={(e) => {
+            // console.log("pasted!! ")
+            setPaste(true);
+            e.clipboardData.items[0].getAsString((text) => {
+              setPostText(text);
+              handleTextLength(text);
+            });
+          }}
+        />
+      );
+    }
+
+    if (postType === 2) {
+      return (
+        <Stack direction={"column"} justifyContent="space-between" spacing={2}>
+          <TextField
+            multiline
+            rows={4}
+            error={errorText}
+            fullWidth
+            placeholder="Type something"
+            inputProps={ariaLabel}
+            helperText={errorTextMessage}
+            onChange={(e) => {
+              if (!paste) {
+                // console.log("changed!! "+e.target.value)
+                setPostText(e.target.value);
+                console.log("changed!! " + postText);
+                handleTextLength(e.target.value);
+              }
+              setPaste(false);
+            }}
+            onPaste={(e) => {
+              // console.log("pasted!! ")
+              setPaste(true);
+              e.clipboardData.items[0].getAsString((text) => {
+                setPostText(text);
+                handleTextLength(text);
+              });
+            }}
+          />
+          <Stack direction={"row"} justifyContent="space-between" spacing={2}>
+            <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="upload-pic"
+            type="file"
+            onChange={(e) => {
+              let file = e.target.files[0];
+              console.log(file);
+              let reader = new FileReader();
+              reader.readAsDataURL(file);
+              console.log(reader.result);
+              handleFileChange(e);
+            }}
+            />
+            <label htmlFor="upload-pic">
+              <Typography color={image.includes("data:image") ? theme.palette.success.main : "primary"}>
+                {
+                  image.includes("data:image") ? "Image Uploaded Successfully!" : "Upload Image"
+                }
+              </Typography>
+              <IconButton color="primary" variant="raised" component="span">
+                <AddAPhotoIcon />
+              </IconButton>
+            </label> 
+            <Stack direction="column">
+            <Typography color={image.includes("://") ? theme.palette.success.main : "primary"}>
+                {
+                  image.includes("://") ? "Image Linked Succesfully" : "Link To Image"
+                }
+              </Typography>
+              <TextField 
+                variant="standard"
+                label="Input Image Link"
+                onChange={(e) => {
+                  if (isURL(e.target.value)) {
+                    setImage(e.target.value)
+                  }
+                }}
+                />     
+            </Stack>
+          </Stack>
+        </Stack>
+      )
+    }
   }
 
   return (
@@ -321,54 +432,29 @@ export const CreatePost = () => {
             >
               {isComment ? "Reply to Post" : "Create a Post"}
             </Typography>
-            <FreeSoloCreateOption isComment={isComment} />
-            <TextField
-              multiline
-              rows={4}
-              error={errorText}
-              fullWidth
-              placeholder="Type something"
-              inputProps={ariaLabel}
-              helperText={errorTextMessage}
-              onChange={(e) => {
-                if (!paste) {
-                  // console.log("changed!! "+e.target.value)
-                  setPostText(e.target.value);
-                  console.log("changed!! " + postText);
-                  handleTextLength(e.target.value);
-                }
-                setPaste(false);
-              }}
-              onPaste={(e) => {
-                // console.log("pasted!! ")
-                setPaste(true);
-                e.clipboardData.items[0].getAsString((text) => {
-                  setPostText(text);
-                  handleTextLength(text);
-                });
-              }}
-            />
-            <Stack direction={"row"} justifyContent="space-between">
-              <input
-                accept="image/*"
-                style={{ display: "none" }}
-                id="upload-pic"
-                type="file"
+            <Stack direction="column">
+              <InputLabel id="PostTypeSelector">Post Type</InputLabel>
+              <Select labelId="PostType" 
+                label="Post Type" 
+                value={postType}
                 onChange={(e) => {
-                  let file = e.target.files[0];
-                  console.log(file);
-                  let reader = new FileReader();
-                  reader.readAsDataURL(file);
-                  console.log(reader.result);
-                  handleFileChange(e);
+                  setPostType(e.target.value)
                 }}
-              />
-              <label htmlFor="upload-pic">
-                <IconButton color="primary" variant="raised" component="span">
-                  <AddAPhotoIcon />
-                </IconButton>
-              </label>
-              <Stack direction="row">
+                > 
+                <MenuItem value={0}>Text</MenuItem>
+                <MenuItem value={1}>URL</MenuItem>
+                <MenuItem value={2}>Image</MenuItem>
+              </Select>
+            </Stack>
+            <FreeSoloCreateOption isComment={isComment} />
+            {
+              postInput()
+            }
+            <Stack direction={"row"} justifyContent="space-between" spacing={2}>
+              <Stack direction="column">
+                <Typography mt={1} color="primary">
+                  Anonymous
+                </Typography>
                 <Switch
                   label={"Anonymous"}
                   checked={anonymous}
@@ -376,9 +462,6 @@ export const CreatePost = () => {
                     setAnonymous(!anonymous);
                   }}
                 />
-                <Typography mt={1} color="primary">
-                  Anonymous
-                </Typography>
               </Stack>
             </Stack>
             <Button

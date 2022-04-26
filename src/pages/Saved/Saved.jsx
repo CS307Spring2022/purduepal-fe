@@ -7,7 +7,7 @@ import GlobalState from "../../contexts/GlobalStates";
 
 const Saved = () => {
   const theme = useTheme();
-  const [isSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
 
   const [posts, setPosts] = useState([]);
 

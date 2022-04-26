@@ -75,7 +75,7 @@ export const VerticalNavbar = () => {
     <Stack
       minWidth={matches ? "200px" : "75px"}
       spacing={1.5}
-      sx={{ backgroundColor: "rgba(255,255,255,0.07)", position: "fixed" }}
+      sx={{ backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#CFB991", position: "fixed" }}
       height={"100vh"}
       pt={2}
       px={matches ? 2 : 0}

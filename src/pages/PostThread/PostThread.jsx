@@ -11,7 +11,7 @@ import GlobalState from '../../contexts/GlobalStates'
 
 const PostThread = () => {
   const theme = useTheme();
-  const [isSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
   const [searchParams] = useSearchParams();
 
   const [parentPost, setParentPost] = useState({});
@@ -56,6 +56,8 @@ const PostThread = () => {
   }  
 
   console.log(searchParams.get('postId'))
+
+  localStorage.setItem("currentTopic",parentPost.topic)
 
   return (
     <Stack

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -13,7 +13,7 @@ import { url } from "../../ENV";
 
 const Settings = () => {
   const navigate = useNavigate();
-  const [isSignedIn, setIsSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
 
   const [expanded, setExpanded] = useState(false);
 
@@ -29,12 +29,20 @@ const Settings = () => {
   };
 
   const [open, setOpen] = useState(false);
-  const [isPublic, setIsPublic] = useState(localStorage.getItem("public"));
+  const [isPublic, setIsPublic] = useState(localStorage.getItem("public") === "public");
+  console.log(isPublic)
+  console.log(isPublic ? "Public" : "Private")
+  console.log(isPublic)
+
+  // useEffect(() => {
+  //   localStorage.setItem("public",isPublic);
+  // },[isPublic])
+
 
   const handlePublicClick = () => {
     const publicObj = {
       email: localStorage.getItem("email"),
-      public: isPublic,
+      public: localStorage.getItem("public")==="public",
     };
     async function onPublic() {
       await fetch(`${url}/updatePublic`, {
@@ -44,11 +52,21 @@ const Settings = () => {
           "Content-Type": "application/json",
         },
       });
-      setIsPublic(!isPublic);
-      localStorage.setItem("public", isPublic);
+      // setIsPublic(!isPublic);
+      let curStat = localStorage.getItem("public")
+      localStorage.setItem("public",curStat === "public" ? "private" : "public")
+      setIsPublic(localStorage.getItem("public")==="public")
     }
     onPublic();
   };
+
+  useEffect(() => {
+    localStorage.setItem("userTheme",userTheme);
+  },[userTheme])
+
+  const handleThemeClick = () => {
+    setUserTheme(userTheme === "dark" ? "light" : "dark")
+  }
 
   const handleDeleteClick = () => {
     setOpen(true);
@@ -110,9 +128,6 @@ const Settings = () => {
           <Typography sx={{ width: "33%", flexShrink: 0 }}>
             Account Settings
           </Typography>
-          <Typography sx={{ color: "text.secondary" }}>
-            Logout and Account Deletion
-          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Button onClick={handleLogoutClick}>Logout</Button>
@@ -131,6 +146,9 @@ const Settings = () => {
         <AccordionDetails>
           <Button onClick={handlePublicClick}>
             Make Account {!isPublic ? "Public" : "Private"}
+          </Button>
+          <Button onClick={handleThemeClick}>
+            Switch To {userTheme === "dark" ? "light" : "dark"} Theme
           </Button>
 
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

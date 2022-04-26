@@ -58,23 +58,10 @@ const handleUnfollowTopic = (name) => {
   updateUnfollow();
 };
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  height: "75%",
-  bgcolor: "#000",
-  border: "2px solid #ddd",
-  boxShadow: 24,
-  p: 4,
-  overflowY: "scroll",
-};
 
-const DisplayCard = ({ name, username, showUnfollow }) => {
+const DisplayCard = ({ name, username, showUnfollow, theme }) => {
   return (
-    <Card>
+    <Card sx={{backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#CFB991"}}>
       <CardHeader avatar={<Avatar aria-label="recipe"></Avatar>} title={name} />
       {showUnfollow ? (
         <CardActions>
@@ -90,9 +77,9 @@ const DisplayCard = ({ name, username, showUnfollow }) => {
     </Card>
   );
 };
-const DisplayTopic = ({ name, showUnfollow }) => {
+const DisplayTopic = ({ name, showUnfollow, theme }) => {
   return (
-    <Card>
+    <Card sx={{backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#CFB991"}}>
       <CardHeader title={name} />
       {showUnfollow ? (
         <CardActions>
@@ -113,6 +100,20 @@ export default function FollowingList({ number, property, data, isTopic }) {
   console.log(data);
   const theme = useTheme();
 
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    height: "75%",
+    bgcolor: theme.palette.background.default,
+    border: "2px solid #ddd",
+    boxShadow: 24,
+    p: 4,
+    overflowY: "scroll",
+  };
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -125,16 +126,16 @@ export default function FollowingList({ number, property, data, isTopic }) {
     searchParams.get("user") === localStorage.getItem("username")
   );
 
-  const [isSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
 
   return (
     <div>
       <Button onClick={handleOpen} disableRipple disableElevation>
         <Stack direction="row" spacing={0.5}>
-          <Typography variant="subtitle2">
+          <Typography color={theme.palette.primary.main} variant="subtitle2">
             {number ? number : data.length}
           </Typography>
-          <Typography variant="subtitle2" color="#c4c4c4">
+          <Typography variant="subtitle2" color={theme.palette.mode === "dark" ? "#c4c4c4" : "#222"}>
             {property}
           </Typography>
         </Stack>
@@ -162,6 +163,7 @@ export default function FollowingList({ number, property, data, isTopic }) {
                       key={d}
                       name={d}
                       showUnfollow={isSignedIn && match}
+                      theme={theme}
                     />
                   );
                 })
@@ -172,6 +174,7 @@ export default function FollowingList({ number, property, data, isTopic }) {
                       name={d.name}
                       username={d.username}
                       showUnfollow={isSignedIn && match}
+                      theme={theme}
                     />
                   );
                 })}

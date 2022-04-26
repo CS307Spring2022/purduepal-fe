@@ -106,7 +106,7 @@ const RecordsList = ({ topicName }) => {
 
 export const TopicFeed = () => {
   const theme = useTheme();
-  const [isSignedIn] = useContext(GlobalState);
+  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
 
   const [searchParams] = useSearchParams();
 

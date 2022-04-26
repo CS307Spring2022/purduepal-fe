@@ -1,5 +1,6 @@
 import { Interactions } from "../Interactions";
 
+import { Button } from "@mui/material";
 import Card from "@mui/material/Card";
 import { useTheme } from "@mui/material";
 import CardHeader from "@mui/material/CardHeader";
@@ -43,7 +44,7 @@ export const ContentLarge = ({ data }) => {
         maxWidth: { sm: 500, md: 600, lg: 900, xl: 1200 },
         maxHeight: "150vh",
         borderRadius: "15px",
-        backgroundColor: "#121212",
+        backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#CFB991",
       }}
     >
       <CardHeader
@@ -61,7 +62,7 @@ export const ContentLarge = ({ data }) => {
               variant="body1"
               fontSize={15}
               component={"p"}
-              color={"#fff"}
+              color={theme.palette.mode === "dark" ? "#fff" : "#000"}
             >
               {data.topic}
             </Typography>
@@ -69,7 +70,7 @@ export const ContentLarge = ({ data }) => {
               variant="body1"
               fontSize={12}
               component={"p"}
-              color={"#c4c4c4"}
+              color={theme.palette.mode === "dark" ? "#c4c4c4" : "#555960"}
             >
               {dateTimeFormatter.format(new Date(data.timestamp))}
             </Typography>
@@ -78,6 +79,17 @@ export const ContentLarge = ({ data }) => {
         title={data.user.firstName + " " + data.user.lastName}
       subheader={`@${data.user.username}`}
       />
+      {data.parentID !== null ? (
+        <Button
+          color="primary"
+          sx = {{
+            textTransform: "none",
+          }}
+          href = {"/purduepal-fe/postThread?postId=" + data.parentID}
+        >
+          Replying to @{data.parentUser}
+        </Button>
+      ) : null}
       {data.img ? <CardMedia component="img" image={data.img} /> : null}
       <CardContent>
         <Typography variant="body1" sx={{fontWeight: "bold", fontSize: 32}} color="text.secondary">

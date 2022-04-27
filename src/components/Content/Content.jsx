@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import "./Content.css";
 import { CardActionArea } from "@mui/material";
 
-export const Content = ({ data, saved }) => {
+export const Content = ({ data, saved, isProfile }) => {
   const theme = useTheme();
   // console.log(data)
 
@@ -112,6 +112,7 @@ export const Content = ({ data, saved }) => {
           uuid={data._id}
           initialReaction={data.reactionType}
           isSaved={data.isSaved}
+          isProfile={isProfile}
         />
       </CardActions>
     </Card>

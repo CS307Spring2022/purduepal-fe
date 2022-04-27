@@ -5,16 +5,16 @@ export const getDesignTokens = (mode) => ({
       ? {
           // palette values for light mode
           primary: {
-            main: "#555960",
+            main: "#222222",
           },
           secondary: {
-            main: "#6F727B",
+            main: "#989ba4",
           },
           background: {
-            default: "#EDEDED",
+            default: "#d4d9e1",
           },
           text: {
-            primary: "#555960",
+            primary: "#333333",
             secondary: "#000000"
           },
         }

@@ -13,7 +13,8 @@ import { url } from "../../ENV";
 
 const Settings = () => {
   const navigate = useNavigate();
-  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
+  const { isSignedIn, setIsSignedIn, userTheme, setUserTheme } =
+    useContext(GlobalState);
 
   const [expanded, setExpanded] = useState(false);
 
@@ -29,22 +30,25 @@ const Settings = () => {
   };
 
   const [open, setOpen] = useState(false);
-  const [isPublic, setIsPublic] = useState(localStorage.getItem("public") === "public");
-  console.log(isPublic)
-  console.log(isPublic ? "Public" : "Private")
-  console.log(isPublic)
+  const [isPublic, setIsPublic] = useState(
+    localStorage.getItem("public") === "public"
+  );
+  console.log(isPublic);
+  console.log(isPublic ? "Public" : "Private");
+  console.log(isPublic);
+  const [openPublic, setOpenPublic] = useState(false);
 
   // useEffect(() => {
   //   localStorage.setItem("public",isPublic);
   // },[isPublic])
 
-
   const handlePublicClick = () => {
     const publicObj = {
       email: localStorage.getItem("email"),
-      public: localStorage.getItem("public")==="public",
+      public: localStorage.getItem("public") === "public",
     };
     async function onPublic() {
+      setOpenPublic(true);
       await fetch(`${url}/updatePublic`, {
         method: "POST",
         body: JSON.stringify(publicObj),
@@ -53,20 +57,23 @@ const Settings = () => {
         },
       });
       // setIsPublic(!isPublic);
-      let curStat = localStorage.getItem("public")
-      localStorage.setItem("public",curStat === "public" ? "private" : "public")
-      setIsPublic(localStorage.getItem("public")==="public")
+      let curStat = localStorage.getItem("public");
+      localStorage.setItem(
+        "public",
+        curStat === "public" ? "private" : "public"
+      );
+      setIsPublic(localStorage.getItem("public") === "public");
     }
     onPublic();
   };
 
   useEffect(() => {
-    localStorage.setItem("userTheme",userTheme);
-  },[userTheme])
+    localStorage.setItem("userTheme", userTheme);
+  }, [userTheme]);
 
   const handleThemeClick = () => {
-    setUserTheme(userTheme === "dark" ? "light" : "dark")
-  }
+    setUserTheme(userTheme === "dark" ? "light" : "dark");
+  };
 
   const handleDeleteClick = () => {
     setOpen(true);
@@ -99,6 +106,7 @@ const Settings = () => {
       return;
     }
     setOpen(false);
+    setOpenPublic(false);
   };
 
   if (!isSignedIn) {
@@ -147,6 +155,19 @@ const Settings = () => {
           <Button onClick={handlePublicClick}>
             Make Account {!isPublic ? "Public" : "Private"}
           </Button>
+          <Snackbar
+            open={openPublic}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {localStorage.getItem("public") !== "public" ? "Account is Private now" : "Account is Public now"}
+            </Alert>
+          </Snackbar>
           <Button onClick={handleThemeClick}>
             Switch To {userTheme === "dark" ? "light" : "dark"} Theme
           </Button>

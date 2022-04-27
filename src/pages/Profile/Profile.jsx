@@ -84,7 +84,7 @@ const Profile = () => {
       <Grid
         justifyContent="center"
         display={!profileLoaded ? "flex" : "block"}
-        sm={8}
+        sm={12}
         sx={{ backgroundColor: theme.palette.background.default }}
         item
       >
@@ -104,15 +104,6 @@ const Profile = () => {
             }}
           />
         )}
-      </Grid>
-      <Grid
-        sm={4}
-        item
-        container
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <Button>Right Nav</Button>
       </Grid>
     </Grid>
   );

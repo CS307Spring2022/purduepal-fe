@@ -17,7 +17,8 @@ const thousandFormat = format(",.2s");
 const numberFormat = format(",~s");
 let messageToSend = 5;
 
-export const Interactions = ({ up, down, initialReaction, uuid, isSaved }) => {
+export const Interactions = ({ up, down, initialReaction, uuid, isSaved, isProfile }) => {
+  console.log(initialReaction);
   const [action, setAction] = useState(initialReaction); //temporary to test interaction
   // 1: upvote, 2: downvote, 3: undo up, 4: undo down, 5: uninteraction
 
@@ -73,6 +74,7 @@ export const Interactions = ({ up, down, initialReaction, uuid, isSaved }) => {
             console.log(`like ${action}`);
           }}
           color="primary"
+          disabled={isProfile}
         >
           {action === 1 ? (
             <ThumbUpAltRoundedIcon />
@@ -92,6 +94,7 @@ export const Interactions = ({ up, down, initialReaction, uuid, isSaved }) => {
             console.log(`dislike ${action}`);
           }}
           color="primary"
+          disabled={isProfile}
         >
           {action === 2 ? (
             <ThumbDownAltRoundedIcon />
@@ -106,13 +109,14 @@ export const Interactions = ({ up, down, initialReaction, uuid, isSaved }) => {
       <IconButton
         color="primary"
         href={"/purduepal-fe/postThread?postId=" + uuid}
+        disabled={isProfile}
       >
         <ChatRoundedIcon />
       </IconButton>
-      <IconButton color="primary">
+      <IconButton color="primary" disabled={isProfile}>
         <ShareRoundedIcon />
       </IconButton>
-      <IconButton color="primary" onClick={handleSavePost}>
+      <IconButton color="primary" onClick={handleSavePost} disabled={isProfile}>
         {saved ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
       </IconButton>
     </Stack>

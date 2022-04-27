@@ -24,6 +24,7 @@ import {
 } from "@mui/icons-material";
 import { useEffect, useContext } from "react";
 import GlobalState from "../../contexts/GlobalStates";
+import { Content } from "../../components/Content/Content";
 
 import { useSearchParams } from "react-router-dom";
 
@@ -33,8 +34,12 @@ import FollowingList from "../../components/FolllowingList";
 // global.Buffer = global.Buffer || require("buffer").Buffer;
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
+  let { children, value, index, data, isSignedIn, ...other } = props;
+  const isPosts = children === "Posts";
+  // console.log(data);
+  // data.reverse();
+  // console.log(isSignedIn);
+  // console.log(data);
   return (
     <div
       role="tabpanel"
@@ -43,9 +48,13 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
+      {value === index && data && (
         <Box sx={{ p: 3 }}>
-          <Typography color={"#fff"}>{children}</Typography>
+          <Stack spacing={1} justifyContent="center" alignItems="center">
+            {data.map((d, index) => {
+              return <Content isProfile={isSignedIn} key={index} data={d} />;
+            })}
+          </Stack>
         </Box>
       )}
     </div>
@@ -65,7 +74,7 @@ function a11yProps(index) {
   };
 }
 
-function BasicTabs() {
+function BasicTabs({ data, isSignedIn }) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -85,10 +94,10 @@ function BasicTabs() {
           <Tab label="Interactions" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel isSignedIn={localStorage.getItem("email") === null} value={value} index={0} data={data.createdPostsObject}>
         Posts
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel isSignedIn={true} value={value} index={1} data={data.interactedPostsObject}>
         Interactions
       </TabPanel>
     </Box>
@@ -108,6 +117,7 @@ const style = {
 };
 
 const ProfileDetails = ({ data }) => {
+  console.log(data);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
   const widthCalc = `calc(100vw - ${matches ? "200" : "75"}px)`;
@@ -120,7 +130,8 @@ const ProfileDetails = ({ data }) => {
     searchParams.get("user") === localStorage.getItem("username")
   );
 
-  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
+  const { isSignedIn, setIsSignedIn, userTheme, setUserTheme } =
+    useContext(GlobalState);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -210,7 +221,6 @@ const ProfileDetails = ({ data }) => {
       window.location.reload();
     }
     onSubmit();
-    
   };
 
   const [changeFollowingUsers, setChangeFollowingUsers] = useState(
@@ -278,7 +288,7 @@ const ProfileDetails = ({ data }) => {
       }
 
       const newFollowing = await response.json();
-      console.log("New Following:"+newFollowing);
+      console.log("New Following:" + newFollowing);
       setChangeFollowingUsers(newFollowing.newFollowing);
     }
   }
@@ -360,10 +370,16 @@ const ProfileDetails = ({ data }) => {
           </Grid>
           <Grid sm={7} item>
             <Stack direction="column">
-              <Typography color={theme.palette.mode === "dark" ? "#fff" : "#000"} variant={"h4"}>
+              <Typography
+                color={theme.palette.mode === "dark" ? "#fff" : "#000"}
+                variant={"h4"}
+              >
                 {`${changeFirstName} ${changeLastName}`}
               </Typography>
-              <Typography color={theme.palette.mode === "dark" ? "#ddd" : "#222"} variant={"subtitle1"}>
+              <Typography
+                color={theme.palette.mode === "dark" ? "#ddd" : "#222"}
+                variant={"subtitle1"}
+              >
                 {`@${data.username}`}
               </Typography>
             </Stack>
@@ -377,7 +393,7 @@ const ProfileDetails = ({ data }) => {
               >
                 <EditIcon />
               </IconButton>
-            ) : (isSignedIn ? (
+            ) : isSignedIn ? (
               <IconButton
                 color="primary"
                 onClick={() => {
@@ -392,7 +408,7 @@ const ProfileDetails = ({ data }) => {
                 )}
                 {following === 2 ? "Following" : "Follow"}
               </IconButton>
-            ) : null)}
+            ) : null}
             <Modal
               open={open}
               onClose={handleClose}
@@ -466,7 +482,10 @@ const ProfileDetails = ({ data }) => {
         </Grid>
       </Grid>
       <Grid item ml={2.5}>
-        <Typography variant="h6" color={theme.palette.mode === "dark" ? "#fff" : "#000"}>
+        <Typography
+          variant="h6"
+          color={theme.palette.mode === "dark" ? "#fff" : "#000"}
+        >
           {`${changeBio}`}
         </Typography>
       </Grid>
@@ -492,7 +511,7 @@ const ProfileDetails = ({ data }) => {
         </Stack>
       </Grid>
       <Grid item sm={12}>
-        <BasicTabs />
+        <BasicTabs data={data} isSignedIn/>
       </Grid>
     </Grid>
   );

@@ -1,5 +1,5 @@
 import { useTheme } from "@mui/material/styles";
-import { Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import { Content } from "../../components/Content/Content";
 import { useContext, useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
@@ -67,6 +67,7 @@ const Home = () => {
       mt={2}
       sx={{ marginLeft: { xs: "0px", sm: "75px", md: "200px", lg: "200px" } }}
     >
+      {posts.length === 0 && <CircularProgress/>}
       {posts.map((data, index) => {
         return <Content key={index} data={data} />;
       })}

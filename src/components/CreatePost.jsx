@@ -26,20 +26,19 @@ import { Switch } from "@mui/material";
 
 const filter = createFilterOptions();
 
-export default function FreeSoloCreateOption({ isComment }) {
-  const [value, setValue] = useState(null);
+export default function FreeSoloCreateOption({ isComment, topic, setTopic }) {
+  // const [value, setValue] = useState("All");
   const [errorTopic, setErrorTopic] = useState(false);
   const [errorTopicMessage, setErrorTopicMessage] = useState("");
 
-  console.log(isComment);
 
   // const [searchParams] = useSearchParams();
 
   // const [isComment,setIsComment] = useState(searchParams.get("postId")!==null);
 
   useEffect(() => {
-    if (value !== null) {
-      if (value.length <= 0 || value.length > 50) {
+    if (topic !== null) {
+      if (topic.length <= 0 || topic.length > 50) {
         setErrorTopic(true);
         setErrorTopicMessage("Topic must be between 1-50 characters");
       } else {
@@ -47,14 +46,14 @@ export default function FreeSoloCreateOption({ isComment }) {
         setErrorTopicMessage("");
       }
     }
-  }, [value]);
+  }, [topic]);
 
   if (isComment) {
     return null;
   }
   return (
     <Autocomplete
-      value={value}
+      value={topic}
       onChange={(event, newValue) => {
         console.log(newValue);
         if (typeof newValue === "string") {
@@ -65,7 +64,7 @@ export default function FreeSoloCreateOption({ isComment }) {
           } else {
             setErrorTopic(false);
             setErrorTopicMessage("");
-            setValue({
+            setTopic({
               title: newValue,
             });
             console.log(newValue);
@@ -83,14 +82,14 @@ export default function FreeSoloCreateOption({ isComment }) {
           } else {
             setErrorTopic(false);
             setErrorTopicMessage("");
-            setValue({
+            setTopic({
               title: newValue.inputValue,
             });
             console.log(newValue);
             localStorage.setItem("topicName", newValue.inputValue);
           }
         } else {
-          setValue(newValue);
+          setTopic(newValue);
           console.log(newValue);
           localStorage.setItem("topicName", newValue.title);
         }
@@ -190,6 +189,7 @@ export const CreatePost = () => {
     setErrorTextMessage("Post must contain 0-280 characters");
   };
   const [anonymous, setAnonymous] = useState(false);
+  const [topic, setTopic] = useState("All");
   // const [post, setPost] = useState(false);
   const handleSubmit = () => {
     //dummy code to handle creating post
@@ -249,6 +249,7 @@ export const CreatePost = () => {
   const [errorTextMessage, setErrorTextMessage] = useState(
     "Post Must Contain Between 1-280 characters"
   );
+  
   const handleTextLength = (text) => {
     // console.log(isURL(text),text);
     const urlValid = isURL(text);
@@ -446,7 +447,7 @@ export const CreatePost = () => {
                 <MenuItem value={2}>Image</MenuItem>
               </Select>
             </Stack>
-            <FreeSoloCreateOption isComment={isComment} />
+            <FreeSoloCreateOption topic = {topic} setTopic = {setTopic} isComment={isComment} />
             {
               postInput()
             }
@@ -465,7 +466,7 @@ export const CreatePost = () => {
               </Stack>
             </Stack>
             <Button
-              disabled={errorText ? true : false}
+              disabled={(errorText || topic === null) ? true : false}
               variant="contained"
               onClick={handleSubmit}
             >

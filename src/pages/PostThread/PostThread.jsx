@@ -34,12 +34,12 @@ const PostThread = () => {
       if (!response.ok) {
         const message = `An error oc`;
         // window.alert(message);
-        console.log(response)
+        // console.log(response)
         return;
       }
 
       const records = await response.json();
-      console.log(records)
+      // console.log(records)
 
       setParentPost(records["parentPost"]);
       setComments(records["comments"])
@@ -55,7 +55,7 @@ const PostThread = () => {
     return <Navigate to="/"/>;
   }  
 
-  console.log(searchParams.get('postId'))
+  // console.log(searchParams.get('postId'))
 
   localStorage.setItem("currentTopic",parentPost.topic)
 

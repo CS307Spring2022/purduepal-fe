@@ -56,7 +56,7 @@ export const Content = ({ data, saved, isProfile }) => {
             <Link to={"/profile?user=" + data.user.username}>
               <Avatar
                 sx={{ bgcolor: theme.palette.primary.main }}
-                aria-label={data.user.firstname + " " + data.user.lastName}
+                // aria-label={data.user.firstName + " " + data.user.lastName}
               ></Avatar>
             </Link>
           }
@@ -94,7 +94,7 @@ export const Content = ({ data, saved, isProfile }) => {
             Replying to @{data.parentUser}
           </Button>
         ) : null}
-        {data.img ? <CardMedia component="img" image={data.img} /> : null}
+        {data.img ? <CardMedia component="img" image={data.img} alt={`post by ${data.user.username}`} /> : null}
         <CardContent>
           <Typography variant="body2" color="text.secondary">
             {isURL(data.content) ? (

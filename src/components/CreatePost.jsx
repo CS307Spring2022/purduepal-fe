@@ -55,9 +55,9 @@ export default function FreeSoloCreateOption({ isComment, topic, setTopic }) {
     <Autocomplete
       value={topic}
       onChange={(event, newValue) => {
-        console.log(newValue);
+        // console.log(newValue);
         if (typeof newValue === "string") {
-          console.log("here", newValue, newValue.length);
+          // console.log("here", newValue, newValue.length);
           if (newValue.length === 0 || newValue.length > 50) {
             setErrorTopic(true);
             setErrorTopicMessage("Topic must be 1-50 characters");
@@ -67,12 +67,12 @@ export default function FreeSoloCreateOption({ isComment, topic, setTopic }) {
             setTopic({
               title: newValue,
             });
-            console.log(newValue);
+            // console.log(newValue);
             localStorage.setItem("topicName", newValue.title);
           }
         } else if (newValue && newValue.inputValue) {
           // Create a new value from the user input
-          console.log(newValue, newValue.length);
+          // console.log(newValue, newValue.length);
           if (
             newValue.inputValue.length === 0 ||
             newValue.inputValue.length > 50
@@ -85,12 +85,12 @@ export default function FreeSoloCreateOption({ isComment, topic, setTopic }) {
             setTopic({
               title: newValue.inputValue,
             });
-            console.log(newValue);
+            // console.log(newValue);
             localStorage.setItem("topicName", newValue.inputValue);
           }
         } else {
           setTopic(newValue);
-          console.log(newValue);
+          // console.log(newValue);
           localStorage.setItem("topicName", newValue.title);
         }
       }}
@@ -120,16 +120,16 @@ export default function FreeSoloCreateOption({ isComment, topic, setTopic }) {
         // console.log(option)
         // Value selected with enter, right from the input
         if (typeof option === "string") {
-          console.log("hit 1");
+          // console.log("hit 1");
           return option;
         }
         // Add "xxx" option created dynamically
         if (option.inputValue) {
-          console.log("hit 2");
+          // console.log("hit 2");
           return option.inputValue;
         }
         // Regular option
-        console.log("hit 3");
+        // console.log("hit 3");
         return option.title;
       }}
       renderOption={(props, option) => <li {...props}>{option.title}</li>}
@@ -219,12 +219,12 @@ export const CreatePost = () => {
       if (!response.ok) {
         // const message = `An error oc`;
         // window.alert(message);
-        console.log(response);
+        // console.log(response);
         return;
       }
 
       const records = await response.json();
-      console.log(records)
+      // console.log(records);
     }
 
     makePost();
@@ -254,7 +254,7 @@ export const CreatePost = () => {
     // console.log(isURL(text),text);
     const urlValid = isURL(text);
     if (text.length > 280 || text.length <= 0) {
-      console.log(urlValid, text);
+      // console.log(urlValid, text);
       if (
         !urlValid &&
         (text.includes("http://") || text.includes("https://"))
@@ -290,7 +290,7 @@ export const CreatePost = () => {
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = (e) => {
     let res = reader.result;
-    console.log(res);
+    // console.log(res);
     setImage(res);
     };
   }
@@ -310,7 +310,7 @@ export const CreatePost = () => {
             if (!paste) {
               // console.log("changed!! "+e.target.value)
               setPostText(e.target.value);
-              console.log("changed!! " + postText);
+              // console.log("changed!! " + postText);
               handleTextLength(e.target.value);
             }
             setPaste(false);
@@ -342,7 +342,7 @@ export const CreatePost = () => {
               if (!paste) {
                 // console.log("changed!! "+e.target.value)
                 setPostText(e.target.value);
-                console.log("changed!! " + postText);
+                // console.log("changed!! " + postText);
                 handleTextLength(e.target.value);
               }
               setPaste(false);
@@ -364,10 +364,10 @@ export const CreatePost = () => {
             type="file"
             onChange={(e) => {
               let file = e.target.files[0];
-              console.log(file);
+              // console.log(file);
               let reader = new FileReader();
               reader.readAsDataURL(file);
-              console.log(reader.result);
+              // console.log(reader.result);
               handleFileChange(e);
             }}
             />

@@ -221,7 +221,7 @@ const SignUp = () => {
           confirmPassword: data.get("confirmPassword"),
         };
 
-        console.log(JSON.stringify(signInDetails));
+        // console.log(JSON.stringify(signInDetails));
 
         const response = await fetch(`${url}/sign_up`, {
           method: "POST",
@@ -238,7 +238,7 @@ const SignUp = () => {
         return new Promise((res) => setTimeout(res, delay));
       }
       async function handleResponse(result) {
-        console.log(result);
+        // console.log(result);
         if (result["return_code"]) {
           setSignUpSuccess(true);
           setSignUpStatus(

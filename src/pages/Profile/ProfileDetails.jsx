@@ -117,7 +117,7 @@ const style = {
 };
 
 const ProfileDetails = ({ data }) => {
-  console.log(data);
+
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("md"));
   const widthCalc = `calc(100vw - ${matches ? "200" : "75"}px)`;
@@ -147,7 +147,7 @@ const ProfileDetails = ({ data }) => {
         email: email,
       };
 
-      console.log(JSON.stringify(editedPerson));
+      // console.log(JSON.stringify(editedPerson));
 
       await fetch(`${url}/updateUserInfo`, {
         method: "POST",
@@ -183,11 +183,11 @@ const ProfileDetails = ({ data }) => {
       const loggedEmail = localStorage.getItem("email");
       const loggedUser = localStorage.getItem("username");
       const profileUser = searchParams.get("user");
-      console.log({
-        loggedEmail: loggedEmail,
-        loggedUser: loggedUser,
-        profileUser: profileUser,
-      });
+      // console.log({
+      //   loggedEmail: loggedEmail,
+      //   loggedUser: loggedUser,
+      //   profileUser: profileUser,
+      // });
       await fetch(`${url}/getUser`, {
         method: "POST",
         body: JSON.stringify({
@@ -235,14 +235,14 @@ const ProfileDetails = ({ data }) => {
   const [following, setFollowing] = useState(
     isSignedIn && match ? 0 : Number(data.loggedFollows) + 1
   );
-  console.log(following);
+  // console.log(following);
 
   async function updateUserFollow() {
     const followRecipient = {
       follower: localStorage.getItem("email"),
       following: data._id,
     };
-    console.log(followRecipient);
+    // console.log(followRecipient);
     let response;
     if (following === 1) {
       response = await fetch(`http://localhost:5000/followUser`, {
@@ -265,12 +265,12 @@ const ProfileDetails = ({ data }) => {
     if (!response.ok) {
       // const message = `An error oc`;
       // window.alert(message);
-      console.log(response);
+      // console.log(response);
       return;
     }
 
     const res = await response.json();
-    console.log(res);
+    // console.log(res);
     if (res.message) {
       response = await fetch(`http://localhost:5000/getFollowers`, {
         method: "POST",
@@ -283,12 +283,12 @@ const ProfileDetails = ({ data }) => {
       if (!response.ok) {
         // const message = `An error oc`;
         // window.alert(message);
-        console.log(response);
+        // console.log(response);
         return;
       }
 
       const newFollowing = await response.json();
-      console.log("New Following:" + newFollowing);
+      // console.log("New Following:" + newFollowing);
       setChangeFollowingUsers(newFollowing.newFollowing);
     }
   }

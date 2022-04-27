@@ -35,7 +35,7 @@ export const Navbar = () => {
           value={value}
           onChange={(event, newValue) => {
             setValue(newValue);
-            console.log(newValue);
+            // console.log(newValue);
           }}
         >
           <BottomNavigationAction

@@ -35,7 +35,7 @@ const TopicCard = ({ data, theme }) => {
       email: localStorage.getItem("email"),
       topic: topic,
     };
-    console.log(followRecipient);
+    // console.log(followRecipient);
     let response;
     if (!followed) {
       response = await fetch(`http://localhost:5000/followTopic`, {
@@ -58,12 +58,12 @@ const TopicCard = ({ data, theme }) => {
     if (!response.ok) {
       // const message = `An error oc`;
       // window.alert(message);
-      console.log(response);
+      // console.log(response);
       return;
     }
 
     const msg = await response.json();
-    console.log(msg);
+    // console.log(msg);
   }
 
   return (
@@ -121,7 +121,7 @@ const Explore = () => {
       const records = await response.json();
       // console.log(records[0]["_id"])
       setTopicLists(records);
-      console.log(records);
+      // console.log(records);
     }
 
     // const topicTimer = setInterval(() => {

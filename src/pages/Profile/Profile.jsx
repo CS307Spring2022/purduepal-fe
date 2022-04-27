@@ -25,7 +25,7 @@ const Profile = () => {
       const loggedUser = localStorage.getItem("username");
       const profileUser = searchParams.get("user");
 
-      console.log(profileUser);
+      // console.log(profileUser);
 
       const userBody = {
         loggedEmail: loggedEmail,
@@ -44,7 +44,7 @@ const Profile = () => {
       if (!response.ok) {
         // const message = `An error oc`;
         // window.alert(message);
-        console.log(response);
+        // console.log(response);
         return;
       }
 
@@ -61,7 +61,7 @@ const Profile = () => {
       setProfileLoaded(true);
       setIsPrivate(false);
 
-      console.log(data);
+
       setProfileData(data);
       localStorage.setItem("public",data.public ? "public" : "private");
     }

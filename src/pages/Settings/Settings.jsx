@@ -33,9 +33,7 @@ const Settings = () => {
   const [isPublic, setIsPublic] = useState(
     localStorage.getItem("public") === "public"
   );
-  console.log(isPublic);
-  console.log(isPublic ? "Public" : "Private");
-  console.log(isPublic);
+
   const [openPublic, setOpenPublic] = useState(false);
 
   // useEffect(() => {
@@ -86,7 +84,7 @@ const Settings = () => {
         email: email,
       };
 
-      console.log(JSON.stringify(editedPerson));
+      // console.log(JSON.stringify(editedPerson));
 
       await fetch(`${url}/delete_user`, {
         method: "POST",

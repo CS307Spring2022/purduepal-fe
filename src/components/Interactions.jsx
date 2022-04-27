@@ -17,8 +17,15 @@ const thousandFormat = format(",.2s");
 const numberFormat = format(",~s");
 let messageToSend = 5;
 
-export const Interactions = ({ up, down, initialReaction, uuid, isSaved, isProfile }) => {
-  console.log(initialReaction);
+export const Interactions = ({
+  up,
+  down,
+  initialReaction,
+  uuid,
+  isSaved,
+  isProfile,
+}) => {
+  // console.log(initialReaction);
   const [action, setAction] = useState(initialReaction); //temporary to test interaction
   // 1: upvote, 2: downvote, 3: undo up, 4: undo down, 5: uninteraction
 
@@ -71,10 +78,11 @@ export const Interactions = ({ up, down, initialReaction, uuid, isSaved, isProfi
           onClick={() => {
             messageToSend = action === 1 ? 3 : 1;
             setAction(action !== 1 ? 1 : 0);
-            console.log(`like ${action}`);
+            // console.log(`like ${action}`);
           }}
           color="primary"
           disabled={isProfile}
+          aria-label="interaction"
         >
           {action === 1 ? (
             <ThumbUpAltRoundedIcon />
@@ -88,10 +96,11 @@ export const Interactions = ({ up, down, initialReaction, uuid, isSaved, isProfi
       </Stack>
       <Stack direction={"row"} spacing={0} alignItems={"center"}>
         <IconButton
+          aria-label="interaction"
           onClick={() => {
             messageToSend = action === 2 ? 4 : 2;
             setAction(action !== 2 ? 2 : 0);
-            console.log(`dislike ${action}`);
+            // console.log(`dislike ${action}`);
           }}
           color="primary"
           disabled={isProfile}
@@ -107,16 +116,22 @@ export const Interactions = ({ up, down, initialReaction, uuid, isSaved, isProfi
         </Typography>
       </Stack>
       <IconButton
+        aria-label="interaction"
         color="primary"
         href={"/purduepal-fe/postThread?postId=" + uuid}
         disabled={isProfile}
       >
         <ChatRoundedIcon />
       </IconButton>
-      <IconButton color="primary" disabled={isProfile}>
+      <IconButton aria-label="interaction" color="primary" disabled={isProfile}>
         <ShareRoundedIcon />
       </IconButton>
-      <IconButton color="primary" onClick={handleSavePost} disabled={isProfile}>
+      <IconButton
+        aria-label="interaction"
+        color="primary"
+        onClick={handleSavePost}
+        disabled={isProfile}
+      >
         {saved ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
       </IconButton>
     </Stack>

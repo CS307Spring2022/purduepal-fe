@@ -83,9 +83,9 @@ const RecordsList = ({ topicName }) => {
       
 
       if (!response.ok) {
-        console.log(response)
+        // console.log(response)
         const messsage = `An error occurred: ${response.statusText}`;
-        console.log(messsage);
+        // console.log(messsage);
         return;
       }
 

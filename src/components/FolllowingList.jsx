@@ -19,7 +19,7 @@ const followingList = [
 const topics = ["Marvel", "Twitter", "DC", "Netflix", "Cricket"];
 
 const handleUnfollowUser = (username) => {
-  console.log(username);
+  // console.log(username);
   async function updateUnfollow() {
     const followRecipient = {
       follower: localStorage.getItem("email"),
@@ -39,7 +39,7 @@ const handleUnfollowUser = (username) => {
 };
 
 const handleUnfollowTopic = (name) => {
-  console.log(name);
+  // console.log(name);
   async function updateUnfollow() {
     const followRecipient = {
       email: localStorage.getItem("email"),
@@ -97,7 +97,7 @@ const DisplayTopic = ({ name, showUnfollow, theme }) => {
 };
 
 export default function FollowingList({ number, property, data, isTopic }) {
-  console.log(data);
+  // console.log(data);
   const theme = useTheme();
 
   const style = {

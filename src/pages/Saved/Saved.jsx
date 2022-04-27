@@ -7,16 +7,17 @@ import GlobalState from "../../contexts/GlobalStates";
 
 const Saved = () => {
   const theme = useTheme();
-  const {isSignedIn, setIsSignedIn, userTheme, setUserTheme} = useContext(GlobalState);
+  const { isSignedIn, setIsSignedIn, userTheme, setUserTheme } =
+    useContext(GlobalState);
 
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     async function getPosts() {
       const saveRecipient = {
-        "email": localStorage.getItem("email")
-      }
-      const response = await fetch(`http://localhost:5000/savedPosts`,{
+        email: localStorage.getItem("email"),
+      };
+      const response = await fetch(`http://localhost:5000/savedPosts`, {
         method: "POST",
         body: JSON.stringify(saveRecipient),
         headers: {
@@ -26,12 +27,12 @@ const Saved = () => {
       if (!response.ok) {
         const message = `An error oc`;
         // window.alert(message);
-        console.log(response)
+        // console.log(response)
         return;
       }
 
       const records = await response.json();
-      console.log(records)
+      // console.log(records)
       setPosts(records);
     }
 
@@ -56,9 +57,10 @@ const Saved = () => {
       mt={2}
       sx={{ marginLeft: { xs: "0px", sm: "75px", md: "200px", lg: "200px" } }}
     >
-      {posts && posts.map((data, index) => {
-        return <Content key={index} data={data} saved />;
-      })}
+      {posts &&
+        posts.map((data, index) => {
+          return <Content key={index} data={data} saved />;
+        })}
       <Typography variant="p" sx={{ fontSize: "30px" }} color="primary">
         End of Posts!
       </Typography>

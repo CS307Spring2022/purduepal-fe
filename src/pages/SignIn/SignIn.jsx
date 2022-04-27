@@ -110,7 +110,7 @@ const SignIn = () => {
           password: data.get("password"),
         };
 
-        console.log(JSON.stringify(signInDetails));
+        // console.log(JSON.stringify(signInDetails));
 
         const response = await fetch(`${url}/login`, {
           method: "POST",

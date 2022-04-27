@@ -24,7 +24,7 @@ export const VerticalNavbar = () => {
     // }
     return "/purduepal-fe/" + page;
   };
-  console.log("profile?user="+localStorage.getItem("username"));
+  // console.log("profile?user=" + localStorage.getItem("username"));
 
   // console.log(matches);
   const icons = [
@@ -51,7 +51,7 @@ export const VerticalNavbar = () => {
     },
     {
       logo: <AccountCircleRoundedIcon fontSize="large" />,
-      href: "profile?user="+localStorage.getItem("username"),
+      href: "profile?user=" + localStorage.getItem("username"),
       text: "Profile",
     },
     {
@@ -75,7 +75,10 @@ export const VerticalNavbar = () => {
     <Stack
       minWidth={matches ? "200px" : "75px"}
       spacing={1.5}
-      sx={{ backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#CFB991", position: "fixed" }}
+      sx={{
+        backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#CFB991",
+        position: "fixed",
+      }}
       height={"100vh"}
       pt={2}
       px={matches ? 2 : 0}
@@ -88,7 +91,12 @@ export const VerticalNavbar = () => {
             justifyContent={matches ? "flex-start" : "center"}
             alignItems={"center"}
           >
-            <IconButton color="primary" key={i} href={d.href}>
+            <IconButton
+              aria-label={"navigation buttons"}
+              color="primary"
+              key={i}
+              href={d.href}
+            >
               {d.logo}
             </IconButton>
             {matches ? (
